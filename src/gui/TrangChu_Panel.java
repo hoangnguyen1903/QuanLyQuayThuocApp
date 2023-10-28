@@ -1,8 +1,12 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.sql.SQLException;
 
 import javax.swing.JPanel;
+
+import dao.NhanVien_DAO;
+import entity.NhanVien;
 
 
 public class TrangChu_Panel extends JPanel{
@@ -20,12 +24,12 @@ public class TrangChu_Panel extends JPanel{
     private javax.swing.JPanel jPanel_north;
     private javax.swing.JPanel jPanel_right;
 
-    public TrangChu_Panel() {
-        initComponents();
+    public TrangChu_Panel(String tenTaiKhoan) throws SQLException {
+        initComponents(tenTaiKhoan);
     }
 
     @SuppressWarnings("unchecked")
-    private void initComponents() {
+    private void initComponents(String tenTaiKhoan) throws SQLException {
 
         jPanel_north = new javax.swing.JPanel();
         jLabel_tieuDe = new javax.swing.JLabel();
@@ -40,10 +44,12 @@ public class TrangChu_Panel extends JPanel{
         jLabel4 = new javax.swing.JLabel();
         
 
-        jLabel_tieuDe.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel_tieuDe.setFont(new java.awt.Font("Times New Roman", 1, 24)); 
         jLabel_tieuDe.setText("HỆ THỐNG QUẢN LÝ CỬA HÀNG QUẦY THUỐC");
-
-        jLabel_nguoiDung.setText("NV001_Nguyễn Huy Hoàng");
+        
+        NhanVien nhanVien = new NhanVien_DAO().getNhanVien(tenTaiKhoan);
+        jLabel_nguoiDung.setText(nhanVien.getChucVu() + " : " + nhanVien.getHoTen());
+        
 
         javax.swing.GroupLayout jPanel_northLayout = new javax.swing.GroupLayout(jPanel_north);
         jPanel_north.setLayout(jPanel_northLayout);
@@ -67,19 +73,19 @@ public class TrangChu_Panel extends JPanel{
                         .addContainerGap())))
         );
 
-        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18));  
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("CÁC THÀNH VIÊN");
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 2, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 2, 14));  
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Nguyễn Huy Hoàng (Nhóm Trưởng)");
 
-        jLabel5.setFont(new java.awt.Font("Times New Roman", 2, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Times New Roman", 2, 14));  
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Trần Gia Huy");
 
-        jLabel6.setFont(new java.awt.Font("Times New Roman", 2, 14)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Times New Roman", 2, 14));  
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Nguyễn Lê Nhật Huy");
 
@@ -121,7 +127,7 @@ public class TrangChu_Panel extends JPanel{
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/anh-quay-thuoc.jpg"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/anh-quay-thuoc.jpg")));  
         jLabel4.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jLabel4.setIconTextGap(0);
 

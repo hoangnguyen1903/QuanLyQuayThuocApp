@@ -3,13 +3,20 @@ package gui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
-public class DangNhap_GUI extends javax.swing.JFrame{
+import javax.swing.JOptionPane;
+
+import dao.DangNhap_DAO;
+
+public class DangNhap_GUI extends javax.swing.JFrame implements ActionListener{
 	
     private javax.swing.JButton jButton_dangNhap;
+    private javax.swing.JButton jButton_quenMatKhau;
     private javax.swing.JLabel jLabel_chuDe;
     private javax.swing.JLabel jLabel_matKhau;
-    private javax.swing.JLabel jLabel_quenMatKhau;
     private javax.swing.JLabel jLabel_tenDangNhap;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -33,7 +40,7 @@ public class DangNhap_GUI extends javax.swing.JFrame{
         jPasswordField_matKhau = new javax.swing.JPasswordField();
         jPanel3 = new javax.swing.JPanel();
         jButton_dangNhap = new javax.swing.JButton();
-        jLabel_quenMatKhau = new javax.swing.JLabel();
+        jButton_quenMatKhau = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -101,9 +108,12 @@ public class DangNhap_GUI extends javax.swing.JFrame{
         jButton_dangNhap.setFont(new java.awt.Font("Times New Roman", 1, 14)); 
         jButton_dangNhap.setText("Đăng nhập");
         jButton_dangNhap.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton_dangNhap.addActionListener(this);
 
-        jLabel_quenMatKhau.setFont(new java.awt.Font("Times New Roman", 1, 14)); 
-        jLabel_quenMatKhau.setText("Quên mật khẩu ?");
+        jButton_quenMatKhau.setFont(new java.awt.Font("Times New Roman", 1, 14)); 
+        jButton_quenMatKhau.setText("Quên mật khẩu ?");
+        jButton_quenMatKhau.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton_quenMatKhau.addActionListener(this);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -113,7 +123,7 @@ public class DangNhap_GUI extends javax.swing.JFrame{
                 .addGap(89, 89, 89)
                 .addComponent(jButton_dangNhap)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel_quenMatKhau)
+                .addComponent(jButton_quenMatKhau)
                 .addGap(28, 28, 28))
         );
         jPanel3Layout.setVerticalGroup(
@@ -121,7 +131,7 @@ public class DangNhap_GUI extends javax.swing.JFrame{
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton_dangNhap)
-                    .addComponent(jLabel_quenMatKhau))
+                    .addComponent(jButton_quenMatKhau))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -170,4 +180,32 @@ public class DangNhap_GUI extends javax.swing.JFrame{
             }
         });
     }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Object source = e.getSource();
+		if(source.equals(jButton_dangNhap)) {
+			String tenTaiKhoan = jTextField_tenDangNhap.getText().trim();
+			String matKhau = jTextField_tenDangNhap.getText().trim();
+			
+			try {
+				boolean ketQua = new DangNhap_DAO().dangNhap(tenTaiKhoan, matKhau);
+				if(ketQua) {
+					this.dispose();
+					new ManHinh_GUI(tenTaiKhoan).setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(this, "Tên đăng nhập hoặc mật khẩu không chính xác! Vui lòng nhập lại!");
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}	
+		}
+		
+		if(source.equals(jButton_quenMatKhau)) {
+			this.dispose();
+			new LamMoi_GUI().setVisible(true);;
+		}
+	}
 }

@@ -2,13 +2,15 @@ package gui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class LamMoi_GUI extends javax.swing.JFrame {
+public class LamMoi_GUI extends javax.swing.JFrame implements ActionListener {
 	
     private javax.swing.JButton jButton_lamMoi;
+    private javax.swing.JButton jButton_dangNhap;
     private javax.swing.JLabel jLabel_chuDe;
-    private javax.swing.JLabel jLabel_dangNhap;
-    private javax.swing.JLabel jLabel_matKhau;
+    private javax.swing.JLabel jLabel_email;
     private javax.swing.JLabel jLabel_tenDangNhap;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -28,11 +30,11 @@ public class LamMoi_GUI extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel_tenDangNhap = new javax.swing.JLabel();
         jTextField_tenDangNhap = new javax.swing.JTextField();
-        jLabel_matKhau = new javax.swing.JLabel();
+        jLabel_email = new javax.swing.JLabel();
         jTextField_email = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jButton_lamMoi = new javax.swing.JButton();
-        jLabel_dangNhap = new javax.swing.JLabel();
+        jButton_dangNhap = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -65,8 +67,8 @@ public class LamMoi_GUI extends javax.swing.JFrame {
         jLabel_tenDangNhap.setFont(new java.awt.Font("Times New Roman", 1, 14)); 
         jLabel_tenDangNhap.setText("Tên đăng nhập");
 
-        jLabel_matKhau.setFont(new java.awt.Font("Times New Roman", 1, 14)); 
-        jLabel_matKhau.setText("Email");
+        jLabel_email.setFont(new java.awt.Font("Times New Roman", 1, 14)); 
+        jLabel_email.setText("Email");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -76,7 +78,7 @@ public class LamMoi_GUI extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel_tenDangNhap)
-                    .addComponent(jLabel_matKhau))
+                    .addComponent(jLabel_email))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTextField_tenDangNhap, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
@@ -92,7 +94,7 @@ public class LamMoi_GUI extends javax.swing.JFrame {
                     .addComponent(jTextField_tenDangNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel_matKhau)
+                    .addComponent(jLabel_email)
                     .addComponent(jTextField_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
@@ -100,9 +102,12 @@ public class LamMoi_GUI extends javax.swing.JFrame {
         jButton_lamMoi.setFont(new java.awt.Font("Times New Roman", 1, 14)); 
         jButton_lamMoi.setText("Làm mới");
         jButton_lamMoi.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton_lamMoi.addActionListener(this);
 
-        jLabel_dangNhap.setFont(new java.awt.Font("Times New Roman", 1, 14));
-        jLabel_dangNhap.setText("Đăng nhập ?");
+        jButton_dangNhap.setFont(new java.awt.Font("Times New Roman", 1, 14));
+        jButton_dangNhap.setText("Đăng nhập ?");
+        jButton_dangNhap.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton_dangNhap.addActionListener(this);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -112,7 +117,7 @@ public class LamMoi_GUI extends javax.swing.JFrame {
                 .addGap(89, 89, 89)
                 .addComponent(jButton_lamMoi)
                 .addGap(37, 37, 37)
-                .addComponent(jLabel_dangNhap)
+                .addComponent(jButton_dangNhap)
                 .addContainerGap(48, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -120,7 +125,7 @@ public class LamMoi_GUI extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton_lamMoi)
-                    .addComponent(jLabel_dangNhap))
+                    .addComponent(jButton_dangNhap))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -165,8 +170,18 @@ public class LamMoi_GUI extends javax.swing.JFrame {
         }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LamMoi_GUI().setVisible(true);
+                new LamMoi_GUI().setVisible(false);
             }
         });
     }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object source = e.getSource();
+		if(source.equals(jButton_dangNhap)) {
+			this.dispose();
+			new DangNhap_GUI().setVisible(true);
+		}
+		
+	}
 }

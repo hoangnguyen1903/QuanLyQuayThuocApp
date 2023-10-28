@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -34,7 +35,7 @@ public class ManHinh_GUI extends JFrame{
     private CardLayout cardLayout;
     private JPanel cardPanel;
     
-	public ManHinh_GUI() {
+	public ManHinh_GUI(String tenTaiKhoan) throws SQLException {
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Quản Lý Quầy Thuốc");
         setLocationRelativeTo(null);
@@ -50,7 +51,7 @@ public class ManHinh_GUI extends JFrame{
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
-        cardPanel.add(new TrangChu_Panel(), "TrangChu");
+        cardPanel.add(new TrangChu_Panel(tenTaiKhoan), "TrangChu");
         cardPanel.add(new SanPham_Panel(), "SanPham");
         cardPanel.add(new KhachHang_Panel(), "KhachHang");
         cardPanel.add(new TaoHoaDon_Panel(), "TaoHoaDon");
@@ -253,7 +254,12 @@ public class ManHinh_GUI extends JFrame{
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ManHinh_GUI().setVisible(true);
+                try {
+					new ManHinh_GUI("huytran123").setVisible(true);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
     }
