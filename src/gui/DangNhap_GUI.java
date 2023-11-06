@@ -28,7 +28,6 @@ public class DangNhap_GUI extends javax.swing.JFrame implements ActionListener{
         initComponents();
     }
 
-    @SuppressWarnings("unchecked")
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
@@ -205,7 +204,7 @@ public class DangNhap_GUI extends javax.swing.JFrame implements ActionListener{
 		
 		if(source.equals(jButton_quenMatKhau)) {
 			this.dispose();
-			new LamMoi_GUI().setVisible(true);;
+			new LamMoi_GUI().setVisible(true);
 		}
 	}
 }

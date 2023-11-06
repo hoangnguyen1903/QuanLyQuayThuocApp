@@ -2,6 +2,16 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+
+import dao.KhachHang_DAO;
+import dao.SanPham_DAO;
+import entity.KhachHang;
+import entity.SanPham;
 
 public class TaoHoaDon_Panel extends javax.swing.JPanel implements ActionListener {
 	
@@ -11,6 +21,7 @@ public class TaoHoaDon_Panel extends javax.swing.JPanel implements ActionListene
     private javax.swing.JButton jButton_tim;
     private javax.swing.JButton jButton_timKiem;
     private javax.swing.JButton jButton_xoaGioHang;
+    private javax.swing.JButton jButton_tinh;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel5;
@@ -27,15 +38,18 @@ public class TaoHoaDon_Panel extends javax.swing.JPanel implements ActionListene
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPanel_sanPham;
+    private javax.swing.JScrollPane jScrollPanel_gioHang;
     private javax.swing.JTable jTable_gioHang;
+    private javax.swing.table.DefaultTableModel tableModel_gioHang;
     private javax.swing.JTable jTable_sanPham;
+    private javax.swing.table.DefaultTableModel tableModel_sanPham;
     private javax.swing.JTextField jTextField_ma;
     private javax.swing.JTextField jTextField_soDienThoai;
     private javax.swing.JTextField jTextField_soLuong;
     private javax.swing.JTextField jTextField_tienNhan;
-
+    
+    private ArrayList<SanPham> sanPhamList;
     public TaoHoaDon_Panel() {
         initComponents();
     }
@@ -51,15 +65,14 @@ public class TaoHoaDon_Panel extends javax.swing.JPanel implements ActionListene
         jButton_timKiem = new javax.swing.JButton();
         jButton_lamMoi = new javax.swing.JButton();
         jLabel_nhapMa = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable_sanPham = new javax.swing.JTable();
+        
         jPanel2 = new javax.swing.JPanel();
         jButton_themGioHang = new javax.swing.JButton();
         jTextField_soLuong = new javax.swing.JTextField();
         jLabel_soLuong = new javax.swing.JLabel();
         jButton_xoaGioHang = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable_gioHang = new javax.swing.JTable();
+        jScrollPanel_gioHang = new javax.swing.JScrollPane();
+        
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jTextField_soDienThoai = new javax.swing.JTextField();
@@ -67,6 +80,8 @@ public class TaoHoaDon_Panel extends javax.swing.JPanel implements ActionListene
         jLabel6 = new javax.swing.JLabel();
         jLabel_tenKhachHang = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jButton_tinh = new javax.swing.JButton();
+        
         jLabel_tongTien = new javax.swing.JLabel();
         jButton_taoHoaDon = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
@@ -141,40 +156,14 @@ public class TaoHoaDon_Panel extends javax.swing.JPanel implements ActionListene
                     .addComponent(jButton_lamMoi))
                 .addGap(10, 10, 10))
         );
-
-        jTable_sanPham.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jTable_sanPham.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Mã", "Tên", "Ảnh", "Thành phần", "Xuất xứ", "Ngày SX", "Ngày HH", "Lô sản xuất", "Đơn giá", "Loại", "Số lượng tồn", "Tình trạng"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(jTable_sanPham);
-        if (jTable_sanPham.getColumnModel().getColumnCount() > 0) {
-            jTable_sanPham.getColumnModel().getColumn(2).setHeaderValue("Ảnh");
-            jTable_sanPham.getColumnModel().getColumn(3).setHeaderValue("Thành phần");
-            jTable_sanPham.getColumnModel().getColumn(4).setHeaderValue("Xuất xứ");
-            jTable_sanPham.getColumnModel().getColumn(5).setHeaderValue("Ngày SX");
-            jTable_sanPham.getColumnModel().getColumn(6).setHeaderValue("Ngày HH");
-            jTable_sanPham.getColumnModel().getColumn(7).setHeaderValue("Lô sản xuất");
-            jTable_sanPham.getColumnModel().getColumn(9).setHeaderValue("Loại");
-            jTable_sanPham.getColumnModel().getColumn(11).setHeaderValue("Tình trạng");
-        }
+        
+        // Table SanPham
+		String[] cols = {"Mã sản phẩm", "Tên sản phẩm", "Ảnh", "Thành phần", "Cách dùng", "Xuất xứ", "Ngày sản xuất", "Ngày hết hạn", "Đơn giá", "Số lượng tồn", "Loại", "Tình trạng"};
+		tableModel_sanPham = new javax.swing.table.DefaultTableModel(cols, 0);
+		importSanPham();
+		jTable_sanPham = new javax.swing.JTable(tableModel_sanPham);
+        jTable_sanPham.setFont(new java.awt.Font("Times New Roman", 0, 14));
+        jScrollPanel_sanPham = new javax.swing.JScrollPane(jTable_sanPham);
 
         jButton_themGioHang.setText("Thêm vào giỏ hàng");
         jButton_themGioHang.addActionListener(this);
@@ -212,30 +201,13 @@ public class TaoHoaDon_Panel extends javax.swing.JPanel implements ActionListene
                     .addComponent(jButton_xoaGioHang))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
+        
+        // Table gio hang
+        String[] cols_gioHang = {"Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Giá bán", "Thành tiền"};
+		tableModel_gioHang = new javax.swing.table.DefaultTableModel(cols_gioHang, 0);
+		jTable_gioHang = new javax.swing.JTable(tableModel_gioHang);
         jTable_gioHang.setFont(new java.awt.Font("Times New Roman", 0, 14));
-        jTable_gioHang.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Mã sản phẩm", "Tên sản phẩm", "Đơn giá", "Số lượng"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(jTable_gioHang);
+		jScrollPanel_gioHang = new JScrollPane(jTable_gioHang);
 
         jLabel5.setText("Nhập số điện thoại");
 
@@ -246,16 +218,19 @@ public class TaoHoaDon_Panel extends javax.swing.JPanel implements ActionListene
 
         jLabel6.setText("Tên khách hàng");
 
-        jLabel_tenKhachHang.setText("Nguyễn Huy Hoàng");
+        jLabel_tenKhachHang.setText("");
 
         jLabel8.setText("Tổng tiền");
 
-        jLabel_tongTien.setText("100.000 VND");
+        jLabel_tongTien.setText("0 VND");
 
         jButton_taoHoaDon.setText("Tạo hoá đơn");
         jButton_taoHoaDon.addActionListener(this);
 
         jLabel10.setText("Tiền nhận");
+        
+        jButton_tinh.setText("Tính");
+        jButton_tinh.addActionListener(this);
 
         jLabel11.setText("Tiền gửi lại");
 
@@ -283,14 +258,18 @@ public class TaoHoaDon_Panel extends javax.swing.JPanel implements ActionListene
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel_tongTien, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel_tienGuiLai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jTextField_tienNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton_tim, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel_tongTien, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jTextField_tienNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addComponent(jButton_tinh)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(jButton_tim, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                .addGap(20, 20, 20))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton_taoHoaDon)
@@ -315,6 +294,7 @@ public class TaoHoaDon_Panel extends javax.swing.JPanel implements ActionListene
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
+                    .addComponent(jButton_tinh)
                     .addComponent(jTextField_tienNhan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -336,11 +316,11 @@ public class TaoHoaDon_Panel extends javax.swing.JPanel implements ActionListene
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1040, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPanel_sanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 1040, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPanel_gioHang, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -353,13 +333,13 @@ public class TaoHoaDon_Panel extends javax.swing.JPanel implements ActionListene
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPanel_sanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addComponent(jScrollPanel_gioHang, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -371,6 +351,166 @@ public class TaoHoaDon_Panel extends javax.swing.JPanel implements ActionListene
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		Object source = e.getSource();
+		if(source.equals(jButton_timKiem)) {
+			timKiemSanPham();
+			return;
+		}
+		if(source.equals(jButton_lamMoi)) {
+			lamMoi();
+			return;
+		}
+		if(source.equals(jButton_themGioHang)) {
+			themVaoGioHang();
+			return;
+		}
+		if(source.equals(jButton_xoaGioHang)) {
+			xoaKhoiGioHang();
+			return;
+		}
+		if(source.equals(jButton_tim)) {
+			timKiemKhachHang();
+			return;
+		}
+		if(source.equals(jButton_tinh)) {
+			tinhTien();
+			return;
+		}
+		if(source.equals(jButton_taoHoaDon)) {
+			taoHoaDon();
+			return;
+		}
+	}
+	
+	public void timKiemSanPham() {
+		String ma = jTextField_ma.getText().trim();
+		SanPham sanPham = null;
+		for (SanPham sp : sanPhamList) {
+			if(sp.getSanPhamID().equals(ma)) {
+				sanPham = sp;
+				break;
+			}
+		}
+		if(sanPham != null) {
+			tableModel_sanPham.getDataVector().removeAllElements();
+			tableModel_sanPham.addRow(sanPham.toString().split(";"));
+		} else {
+			JOptionPane.showMessageDialog(this, "Mã sản phẩm không tồn tại!");
+		}
+	}
+	
+	public void lamMoi() {
+		jTextField_ma.setText("");
+		jTextField_soLuong.setText("");
+		jTable_sanPham.clearSelection();
+		jTable_gioHang.clearSelection();
+		tableModel_sanPham.getDataVector().removeAllElements();
+		importSanPham();
+	}
+	
+	public void importSanPham() {
+		try {
+			sanPhamList = new SanPham_DAO().getAllSanPham();
+			for (SanPham sanPham : sanPhamList) {
+				tableModel_sanPham.addRow(sanPham.toString().split(";"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void themVaoGioHang() {
+		int row = jTable_sanPham.getSelectedRow();
+		if(jTextField_soLuong.getText().trim().equals("") || row < 0) {
+			JOptionPane.showMessageDialog(this, "Bạn chưa nhập số lượng hoặc chưa chọn sản phẩm!");
+			return;
+		}
+		
+		boolean flag = false;
+		String maSanPham = jTable_sanPham.getValueAt(row, 0).toString();
+		int soLuong = Integer.parseInt(jTextField_soLuong.getText().trim());
+		if(jTable_gioHang.getRowCount() > 0) {
+			for(int i = 0; i < jTable_gioHang.getRowCount(); i++) {
+			       String maSP = jTable_gioHang.getValueAt(i, 0).toString();
+			       if(maSP.equals(maSanPham)) {
+			    	   flag = true;
+			    	   int sl = Integer.parseInt(jTable_gioHang.getValueAt(i, 2).toString());
+			    	   int giaBan = Integer.parseInt(jTable_gioHang.getValueAt(i, 3).toString());
+			    	   jTable_gioHang.setValueAt(sl+soLuong, i, 2);
+			    	   jTable_gioHang.setValueAt(giaBan*(sl+soLuong), i, 4);
+			    	   break;
+			       }
+			}
+		}
+		
+		if(!flag) {
+			String tenSanPham = jTable_sanPham.getValueAt(row, 1).toString();
+			double donGia = Double.parseDouble(jTable_sanPham.getValueAt(row, 8).toString());
+			int giaBan = (int) (donGia*1.4);
+			int thanhTien = giaBan*soLuong;
+			
+			String[] data = {maSanPham, tenSanPham, soLuong+"", giaBan+"", thanhTien+""};
+			tableModel_gioHang.addRow(data);
+			jTextField_soLuong.setText("");
+			jTable_sanPham.clearSelection();
+		}
+		int tongTien=0;
+		for(int i = 0; i < jTable_gioHang.getRowCount(); i++) {
+		       int thanhTien = Integer.parseInt(jTable_gioHang.getValueAt(i, 4).toString());
+		       tongTien+=thanhTien;
+		}
+		jLabel_tongTien.setText(tongTien+""+" VND");
+		
+		lamMoi();
+	}
+	
+	public void xoaKhoiGioHang() {
+		int row = jTable_gioHang.getSelectedRow();
+		if(row < 0) {
+			JOptionPane.showMessageDialog(this, "Bạn chưa chọn sản phẩm để xoá!");
+			return;
+		}
+		
+		tableModel_gioHang.removeRow(row);
+	}
+	
+	public void timKiemKhachHang() {
+		String soDienThoai = jTextField_soDienThoai.getText().trim();
+		if(soDienThoai.equals("")) {
+			JOptionPane.showMessageDialog(this, "Bạn chưa nhập số điện thoại!");
+			return;
+		}
+		try {
+			KhachHang khachHang = new KhachHang_DAO().getKhachHangTheoSDT(soDienThoai);
+			if(!khachHang.toString().split(";")[0].equals("null")) {
+				jLabel_tenKhachHang.setText(khachHang.getHoTen());				
+			} else {				
+				jLabel_tenKhachHang.setText("");
+				JOptionPane.showMessageDialog(this, "Số điện thoại không tồn tại!");
+			}
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+	}
+	
+	public void tinhTien() {
+		if(jTextField_tienNhan.getText().trim().equals("")) {
+			JOptionPane.showMessageDialog(this, "Bạn chưa nhập tiền nhận!");
+			return;
+		}
+		int tienNhan = Integer.parseInt(jTextField_tienNhan.getText().trim());
+		int tongTien = Integer.parseInt(jLabel_tongTien.getText().split(" ")[0]);
+		if(tienNhan < tongTien) {
+			JOptionPane.showMessageDialog(this, "Tiền nhận phải lớn hơn tổng tiền!");
+			return;
+		}
+		int tienGuiLai = tienNhan - tongTien;
+		jLabel_tienGuiLai.setText(tienGuiLai+" VND");
+	}
+	
+	public void taoHoaDon() {
 		
 	}
 }

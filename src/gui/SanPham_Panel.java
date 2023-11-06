@@ -158,7 +158,7 @@ public class SanPham_Panel extends JPanel implements ActionListener{
                 {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Mã", "Tên", "Ảnh", "Thành phần", "Xuất xứ", "Ngày SX", "Ngày HH", "Lô sản xuất", "Đơn giá", "Loại", "Số lượng tồn", "Tình trạng"
+                "Mã", "Tên", "Ảnh", "Thành phần", "Xuất xứ", "Ngày SX", "Ngày HH", "Cách dùng", "Đơn giá", "Loại", "Số lượng tồn", "Tình trạng"
             }
         ) {
             Class[] types = new Class [] {

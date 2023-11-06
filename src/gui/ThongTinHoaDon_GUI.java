@@ -237,10 +237,7 @@ public class ThongTinHoaDon_GUI extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ThongTinHoaDon_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ThongTinHoaDon_GUI().setVisible(true);
@@ -248,7 +245,6 @@ public class ThongTinHoaDon_GUI extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_xuatHoaDon;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -268,5 +264,4 @@ public class ThongTinHoaDon_GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_tongTien;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable_sanPham;
-    // End of variables declaration//GEN-END:variables
 }

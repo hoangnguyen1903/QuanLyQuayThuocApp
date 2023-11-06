@@ -38,7 +38,6 @@ public class ManHinh_GUI extends JFrame{
 	public ManHinh_GUI(String tenTaiKhoan) throws SQLException {
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Quản Lý Quầy Thuốc");
-        setLocationRelativeTo(null);
         setPreferredSize(new java.awt.Dimension(1070, 600));
         setResizable(false);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
