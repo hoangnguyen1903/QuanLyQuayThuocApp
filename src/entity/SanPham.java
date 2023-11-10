@@ -4,8 +4,8 @@ import java.sql.Date;
 
 public class SanPham {
 	private String sanPhamID;
-	private String tenSanPham;
 	private String imgPath;
+	private String tenSanPham;
 	private String thanhPhan;
 	private String cachDung;
 	private String xuatXu;
@@ -13,7 +13,7 @@ public class SanPham {
 	private Date ngayHetHan;
 	private double donGia;
 	private int soLuongTon;
-	private String loai;
+	private LoaiSanPham loaiSanPham;
 	private String tinhTrang;
 	
 	public SanPham() {
@@ -100,12 +100,12 @@ public class SanPham {
 		this.soLuongTon = soLuongTon;
 	}
 
-	public String getLoai() {
-		return loai;
+	public LoaiSanPham getLoaiSanPham() {
+		return loaiSanPham;
 	}
 
-	public void setLoai(String loai) {
-		this.loai = loai;
+	public void setLoaiSanPham(LoaiSanPham loai) {
+		this.loaiSanPham = loai;
 	}
 
 	public String getTinhTrang() {
@@ -118,10 +118,10 @@ public class SanPham {
 
 	@Override
 	public String toString() {
-		return sanPhamID + ";" + tenSanPham + ";" + imgPath
+		return sanPhamID + ";" + imgPath + ";" + tenSanPham
 				+ ";" + thanhPhan + ";" + cachDung + ";" + xuatXu + ";"
-				+ ngaySanXuat + ";" + ngayHetHan + ";" + (int) donGia + ";" + soLuongTon
-				+ ";" + loai + ";" + tinhTrang;
+				+ ngaySanXuat + ";" + ngayHetHan + ";" + donGia + ";" + soLuongTon
+				+ ";" + loaiSanPham.getTenLoai() + ";" + tinhTrang;
 	}
 	
 }

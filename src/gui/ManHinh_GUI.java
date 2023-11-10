@@ -1,50 +1,60 @@
 package gui;
 
 import java.awt.CardLayout;
-import java.awt.Dimension;
-import java.awt.Label;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.SQLException;
 
+import javax.swing.UnsupportedLookAndFeelException;
+
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+<<<<<<< HEAD
+import javax.swing.table.DefaultTableModel;
+
+import connectDB.ConnectDB;
+=======
+import javax.swing.UIManager;
+>>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
 
 public class ManHinh_GUI extends JFrame{
-    private javax.swing.JMenuBar jMenuBar;
-    private javax.swing.JMenuItem jMenuItem_thayDoiMatKhau;
-    private javax.swing.JMenuItem jMenuItem_dangXuat;
-    private javax.swing.JMenuItem jMenuItem_phieuNhapHang;
-    private javax.swing.JMenuItem jMenuItem_quanLyHoaDon;
-    private javax.swing.JMenuItem jMenuItem_quanLyNhaCungCap;
-    private javax.swing.JMenuItem jMenuItem_quanLyPhieuNhapHang;
-    private javax.swing.JMenuItem jMenuItem_taoHoaDon;
-    private javax.swing.JMenu jMenu_taiKhoan;
-    private javax.swing.JMenu jMenu_hoaDon;
-    private javax.swing.JMenu jMenu_khachHang;
-    private javax.swing.JMenu jMenu_nhaCungCap;
-    private javax.swing.JMenu jMenu_nhanVien;
-    private javax.swing.JMenu jMenu_sanPham;
-    private javax.swing.JMenu jMenu_thongKe;
-    private javax.swing.JMenu jMenu_trangChu;
-    private javax.swing.JMenu jMenu_troGiup; 
+    private JMenuBar jMenuBar;
+    private JMenuItem jMenuItem_thayDoiMatKhau;
+    private JMenuItem jMenuItem_dangXuat;
+    private JMenuItem jMenuItem_phieuNhapHang;
+    private JMenuItem jMenuItem_quanLyHoaDon;
+    private JMenuItem jMenuItem_quanLyNhaCungCap;
+    private JMenuItem jMenuItem_quanLyPhieuNhapHang;
+    private JMenuItem jMenuItem_taoHoaDon;
+    private JMenu jMenu_taiKhoan;
+    private JMenu jMenu_hoaDon;
+    private JMenu jMenu_khachHang;
+    private JMenu jMenu_nhaCungCap;
+    private JMenu jMenu_nhanVien;
+    private JMenu jMenu_sanPham;
+    private JMenu jMenu_thongKe;
+    private JMenu jMenu_trangChu;
+    private JMenu jMenu_troGiup; 
     private CardLayout cardLayout;
     private JPanel cardPanel;
     
 	public ManHinh_GUI(String tenTaiKhoan) throws SQLException {
+<<<<<<< HEAD
+		ConnectDB.getInstance().connect();
+		
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+=======
+//		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+>>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
         setTitle("Quản Lý Quầy Thuốc");
         setPreferredSize(new java.awt.Dimension(1070, 600));
         setResizable(false);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (screenSize.width - getWidth()) / 6;
-        int y = (screenSize.height - getHeight()) / 6;
-        
-        setLocation(x, y);
         
         createMenu();
         cardLayout = new CardLayout();
@@ -65,12 +75,13 @@ public class ManHinh_GUI extends JFrame{
         setContentPane(cardPanel);
         
         pack();
+        setLocationRelativeTo(null);
 	}
 	
 	public void createMenu() {
-        jMenuBar = new javax.swing.JMenuBar();
+        jMenuBar = new JMenuBar();
         
-        jMenu_trangChu = new javax.swing.JMenu();
+        jMenu_trangChu = new JMenu();
         jMenu_trangChu.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -78,7 +89,7 @@ public class ManHinh_GUI extends JFrame{
         	}
 		});
         
-        jMenu_sanPham = new javax.swing.JMenu();
+        jMenu_sanPham = new JMenu();
         jMenu_sanPham.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -86,7 +97,7 @@ public class ManHinh_GUI extends JFrame{
         	}
 		});
         
-        jMenu_khachHang = new javax.swing.JMenu();
+        jMenu_khachHang = new JMenu();
         jMenu_khachHang.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -94,9 +105,9 @@ public class ManHinh_GUI extends JFrame{
         	}
 		});
         
-        jMenu_hoaDon = new javax.swing.JMenu();
+        jMenu_hoaDon = new JMenu();
         
-        jMenuItem_taoHoaDon = new javax.swing.JMenuItem();
+        jMenuItem_taoHoaDon = new JMenuItem();
         jMenuItem_taoHoaDon.addActionListener(new ActionListener() {
 			
 			@Override
@@ -105,7 +116,7 @@ public class ManHinh_GUI extends JFrame{
 			}
 		});
         
-        jMenuItem_quanLyHoaDon = new javax.swing.JMenuItem();
+        jMenuItem_quanLyHoaDon = new JMenuItem();
         jMenuItem_quanLyHoaDon.addActionListener(new ActionListener() {
 			
 			@Override
@@ -114,7 +125,7 @@ public class ManHinh_GUI extends JFrame{
 			}
 		});
         
-        jMenu_nhanVien = new javax.swing.JMenu();
+        jMenu_nhanVien = new JMenu();
         jMenu_nhanVien.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -122,9 +133,9 @@ public class ManHinh_GUI extends JFrame{
         	}
 		});
         
-        jMenu_nhaCungCap = new javax.swing.JMenu();
+        jMenu_nhaCungCap = new JMenu();
         
-        jMenuItem_phieuNhapHang = new javax.swing.JMenuItem();
+        jMenuItem_phieuNhapHang = new JMenuItem();
         jMenuItem_phieuNhapHang.addActionListener(new ActionListener() {
 			
 			@Override
@@ -133,7 +144,7 @@ public class ManHinh_GUI extends JFrame{
 			}
 		});
         
-        jMenuItem_quanLyPhieuNhapHang = new javax.swing.JMenuItem();
+        jMenuItem_quanLyPhieuNhapHang = new JMenuItem();
         jMenuItem_quanLyPhieuNhapHang.addActionListener(new ActionListener() {
 			
 			@Override
@@ -142,7 +153,7 @@ public class ManHinh_GUI extends JFrame{
 			}
 		});
         
-        jMenuItem_quanLyNhaCungCap = new javax.swing.JMenuItem();
+        jMenuItem_quanLyNhaCungCap = new JMenuItem();
         jMenuItem_quanLyNhaCungCap.addActionListener(new ActionListener() {
 			
 			@Override
@@ -151,7 +162,7 @@ public class ManHinh_GUI extends JFrame{
 			}
 		});
         
-        jMenu_thongKe = new javax.swing.JMenu();
+        jMenu_thongKe = new JMenu();
         jMenu_thongKe.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -159,11 +170,11 @@ public class ManHinh_GUI extends JFrame{
         	}
 		});
         
-        jMenu_troGiup = new javax.swing.JMenu();
+        jMenu_troGiup = new JMenu();
         
-        jMenu_taiKhoan = new javax.swing.JMenu();
+        jMenu_taiKhoan = new JMenu();
         
-        jMenuItem_thayDoiMatKhau = new javax.swing.JMenuItem();
+        jMenuItem_thayDoiMatKhau = new JMenuItem();
         jMenuItem_thayDoiMatKhau.addActionListener(new ActionListener() {
 			
 			@Override
@@ -171,7 +182,7 @@ public class ManHinh_GUI extends JFrame{
 				new ThayDoiMatKhau_GUI().setVisible(true);
 			}
 		});
-        jMenuItem_dangXuat = new javax.swing.JMenuItem();
+        jMenuItem_dangXuat = new JMenuItem();
         jMenuItem_dangXuat.addActionListener(new ActionListener() {
 			
 			@Override
@@ -233,34 +244,33 @@ public class ManHinh_GUI extends JFrame{
         jMenuBar.add(jMenu_taiKhoan);
 	}
 	
+
+	
     public static void main(String args[]) {
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
+            
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(TrangChu_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(TrangChu_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(TrangChu_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TrangChu_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        try {
+			new ManHinh_GUI("huytran123").setVisible(true);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-					new ManHinh_GUI("huytran123").setVisible(true);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            }
-        });
     }
 
 	

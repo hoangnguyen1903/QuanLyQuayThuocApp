@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
+import entity.LoaiSanPham;
 import entity.SanPham;
 
 public class SanPham_DAO {
@@ -21,7 +22,7 @@ public class SanPham_DAO {
         PreparedStatement statement = null;
         ArrayList<SanPham> sanPhamList = new ArrayList<SanPham>();
         try {
-            String sql = "SELECT sp.SanPhamID, ImgPath, TenSanPham, ThanhPhan, CachDung, XuatXu, NgaySanXuat, NgayHetHan, DonGia, SoLuongTon, TenLoai, TinhTrang  FROM SanPham as sp inner join LoaiSanPham as lsp on sp.LoaiID=lsp.LoaiID";
+            String sql = "SELECT sp.SanPhamID, ImgPath, TenSanPham, ThanhPhan, CachDung, XuatXu, NgaySanXuat, NgayHetHan, DonGia, SoLuongTon, TenLoai, TinhTrang, sp.LoaiID  FROM SanPham as sp inner join LoaiSanPham as lsp on sp.LoaiID=lsp.LoaiID";
             statement = con.prepareStatement(sql);
             
             ResultSet rs = statement.executeQuery();
@@ -38,7 +39,8 @@ public class SanPham_DAO {
             	sanPham.setNgayHetHan(rs.getDate(8));
             	sanPham.setDonGia(rs.getDouble(9));
             	sanPham.setSoLuongTon(rs.getInt(10));
-            	sanPham.setLoai(rs.getString(11));
+            	LoaiSanPham loai = new LoaiSanPham(rs.getString(13), rs.getString(11));
+            	sanPham.setLoaiSanPham(loai);
             	sanPham.setTinhTrang(rs.getString(12));
             	
             	sanPhamList.add(sanPham);

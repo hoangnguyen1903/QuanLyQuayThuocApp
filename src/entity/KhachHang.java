@@ -1,6 +1,7 @@
 package entity;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class KhachHang {
 	private String khachHangID;
@@ -15,11 +16,25 @@ public class KhachHang {
 		
 	}
 
+	public KhachHang(String khachHangID, String hoTen, String gioiTinh, Date ngaySinh, String soDienThoai, String email,
+			String diaChi) {
+		this.khachHangID = khachHangID;
+		this.hoTen = hoTen;
+		this.gioiTinh = gioiTinh;
+		this.ngaySinh = ngaySinh;
+		this.soDienThoai = soDienThoai;
+		this.email = email;
+		this.diaChi = diaChi;
+	}
+
 	public String getKhachHangID() {
 		return khachHangID;
 	}
 
-	public void setKhachHangID(String khachHangID) {
+	public void setKhachHangID(String khachHangID) throws Exception {
+//		 kiểm tra chuỗi rỗng hoặc chỉ chứa khoảng trắng.
+		if(khachHangID==null || khachHangID.trim().isEmpty())
+			throw new Exception("Mã khách hàng rỗng! Đã có lỗi trong quá trình phát sinh");
 		this.khachHangID = khachHangID;
 	}
 
@@ -27,7 +42,9 @@ public class KhachHang {
 		return hoTen;
 	}
 
-	public void setHoTen(String hoTen) {
+	public void setHoTen(String hoTen) throws Exception {
+		if (hoTen.trim() == "" || hoTen.isBlank() || hoTen.isEmpty())
+			throw new Exception("Tên khách hàng là trường bắt buộc!");
 		this.hoTen = hoTen;
 	}
 
@@ -51,7 +68,9 @@ public class KhachHang {
 		return soDienThoai;
 	}
 
-	public void setSoDienThoai(String soDienThoai) {
+	public void setSoDienThoai(String soDienThoai) throws Exception {
+		if (soDienThoai.trim()== "" || soDienThoai.isBlank() || soDienThoai.isEmpty())
+			throw new Exception("Số điện thoại là một trường bắt buộc!");
 		this.soDienThoai = soDienThoai;
 	}
 
@@ -67,8 +86,45 @@ public class KhachHang {
 		return diaChi;
 	}
 
-	public void setDiaChi(String diaChi) {
+	public void setDiaChi(String diaChi) throws Exception {
+		
+		if (diaChi.trim() == "" || diaChi.isBlank() || diaChi.isEmpty())
+			throw new Exception("Địa chỉ là một trường bắt buộc!");
+		
 		this.diaChi = diaChi;
+	}
+	
+	
+	
+	public KhachHang(String khachHangID, String hoTen, String gioiTinh, Date ngaySinh, String soDienThoai, String email,
+			String diaChi) throws Exception {
+		super();
+		setKhachHangID(khachHangID);
+		setHoTen(hoTen);
+		setGioiTinh(gioiTinh);
+		setNgaySinh(ngaySinh);;
+		setSoDienThoai(soDienThoai);;
+		setEmail(email);
+		setDiaChi(diaChi);
+	}
+	
+	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(khachHangID);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		KhachHang other = (KhachHang) obj;
+		return Objects.equals(khachHangID, other.khachHangID);
 	}
 
 	@Override
