@@ -1,24 +1,5 @@
 package gui;
 
-<<<<<<< HEAD
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-
-import connectDB.ConnectDB;
-import dao.NhaCungCap_DAO;
-import dao.NhanVien_DAO;
-import entity.NhaCungCap;
-import entity.NhanVien;
-
-/**
- *
- * @author Admin
- */
-public class ThemNhaCungCap_GUI extends javax.swing.JFrame implements ActionListener{
-=======
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -53,7 +34,6 @@ public class ThemNhaCungCap_GUI extends JFrame implements ActionListener {
     private JTextField jTextField_diaChi;
     private JTextField jTextField_soDienThoai;
     private JTextField jTextField_tenNhaCungCap;
->>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
 
     public ThemNhaCungCap_GUI() {
         khoiTao();
@@ -158,11 +138,9 @@ public class ThemNhaCungCap_GUI extends JFrame implements ActionListener {
 
         jButton_them.setFont(new Font("Times New Roman", 1, 14)); 
         jButton_them.setText("Thêm");
-        jButton_them.addActionListener(this);
 
         jButton_huyBo.setFont(new Font("Times New Roman", 1, 14)); 
         jButton_huyBo.setText("Huỷ bỏ");
-        jButton_huyBo.addActionListener(this);
 
         GroupLayout jPanel3Layout = new GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -227,55 +205,6 @@ public class ThemNhaCungCap_GUI extends JFrame implements ActionListener {
         }
         new ThemNhaCungCap_GUI().setVisible(true);
     }
-<<<<<<< HEAD
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton_huyBo;
-    private javax.swing.JButton jButton_them;
-    private javax.swing.JFileChooser jFileChooser1;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JLabel jLabel_chuDe;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JTextField jTextField_diaChi;
-    private javax.swing.JTextField jTextField_soDienThoai;
-    private javax.swing.JTextField jTextField_tenNhaCungCap;
-    // End of variables declaration//GEN-END:variables
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		String button = e.getActionCommand();
-		if(button.equals("Thêm"))
-		{
-			NhaCungCap ncc = new NhaCungCap();
-			try {
-				ncc.setTenNhaCungCap(this.jTextField_tenNhaCungCap.getText());
-				ncc.setSoDienThoai(jTextField_soDienThoai.getText());
-				ncc.setDiaChi(jTextField_diaChi.getText());
-				
-				try {
-					ConnectDB.getInstance().connect();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				NhaCungCap_DAO nhaCungCap_DAO = new NhaCungCap_DAO();
-				nhaCungCap_DAO.addNhaCungCap(ncc);
-				
-				this.setVisible(false);
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
-		else if(button.equals("Huỷ bỏ"))
-		{
-			this.setVisible(false);
-=======
     
     // Code
 	@Override
@@ -287,9 +216,7 @@ public class ThemNhaCungCap_GUI extends JFrame implements ActionListener {
 		
 		if(source.equals(jButton_them)) {
 			
->>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
 		}
 		
 	}
 }
-

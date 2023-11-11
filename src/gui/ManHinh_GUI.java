@@ -14,13 +14,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-<<<<<<< HEAD
-import javax.swing.table.DefaultTableModel;
-
-import connectDB.ConnectDB;
-=======
 import javax.swing.UIManager;
->>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
 
 public class ManHinh_GUI extends JFrame{
     private JMenuBar jMenuBar;
@@ -44,14 +38,8 @@ public class ManHinh_GUI extends JFrame{
     private JPanel cardPanel;
     
 	public ManHinh_GUI(String tenTaiKhoan) throws SQLException {
-<<<<<<< HEAD
-		ConnectDB.getInstance().connect();
-		
-		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-=======
 //		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
->>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
         setTitle("Quản Lý Quầy Thuốc");
         setPreferredSize(new java.awt.Dimension(1070, 600));
         setResizable(false);
@@ -243,8 +231,6 @@ public class ManHinh_GUI extends JFrame{
 
         jMenuBar.add(jMenu_taiKhoan);
 	}
-	
-
 	
     public static void main(String args[]) {
         try {

@@ -1,7 +1,6 @@
 package entity;
 
 import java.sql.Date;
-import java.util.Objects;
 
 public class KhachHang {
 	private String khachHangID;
@@ -31,10 +30,7 @@ public class KhachHang {
 		return khachHangID;
 	}
 
-	public void setKhachHangID(String khachHangID) throws Exception {
-//		 kiểm tra chuỗi rỗng hoặc chỉ chứa khoảng trắng.
-		if(khachHangID==null || khachHangID.trim().isEmpty())
-			throw new Exception("Mã khách hàng rỗng! Đã có lỗi trong quá trình phát sinh");
+	public void setKhachHangID(String khachHangID) {
 		this.khachHangID = khachHangID;
 	}
 
@@ -42,9 +38,7 @@ public class KhachHang {
 		return hoTen;
 	}
 
-	public void setHoTen(String hoTen) throws Exception {
-		if (hoTen.trim() == "" || hoTen.isBlank() || hoTen.isEmpty())
-			throw new Exception("Tên khách hàng là trường bắt buộc!");
+	public void setHoTen(String hoTen) {
 		this.hoTen = hoTen;
 	}
 
@@ -68,9 +62,7 @@ public class KhachHang {
 		return soDienThoai;
 	}
 
-	public void setSoDienThoai(String soDienThoai) throws Exception {
-		if (soDienThoai.trim()== "" || soDienThoai.isBlank() || soDienThoai.isEmpty())
-			throw new Exception("Số điện thoại là một trường bắt buộc!");
+	public void setSoDienThoai(String soDienThoai) {
 		this.soDienThoai = soDienThoai;
 	}
 
@@ -86,45 +78,8 @@ public class KhachHang {
 		return diaChi;
 	}
 
-	public void setDiaChi(String diaChi) throws Exception {
-		
-		if (diaChi.trim() == "" || diaChi.isBlank() || diaChi.isEmpty())
-			throw new Exception("Địa chỉ là một trường bắt buộc!");
-		
+	public void setDiaChi(String diaChi) {
 		this.diaChi = diaChi;
-	}
-	
-	
-	
-	public KhachHang(String khachHangID, String hoTen, String gioiTinh, Date ngaySinh, String soDienThoai, String email,
-			String diaChi) throws Exception {
-		super();
-		setKhachHangID(khachHangID);
-		setHoTen(hoTen);
-		setGioiTinh(gioiTinh);
-		setNgaySinh(ngaySinh);;
-		setSoDienThoai(soDienThoai);;
-		setEmail(email);
-		setDiaChi(diaChi);
-	}
-	
-	
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(khachHangID);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		KhachHang other = (KhachHang) obj;
-		return Objects.equals(khachHangID, other.khachHangID);
 	}
 
 	@Override

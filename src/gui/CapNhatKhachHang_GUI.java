@@ -1,24 +1,5 @@
 package gui;
 
-<<<<<<< HEAD
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-
-import connectDB.ConnectDB;
-import dao.KhachHang_DAO;
-import dao.NhanVien_DAO;
-import entity.KhachHang;
-import entity.NhanVien;
-
-/**
- *
- * @author Admin
- */
-public class CapNhatKhachHang_GUI extends javax.swing.JFrame implements ActionListener{
-=======
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -61,7 +42,6 @@ public class CapNhatKhachHang_GUI extends JFrame implements ActionListener {
     private JTextField jTextField_email;
     private JTextField jTextField_soDienThoai;
     private JTextField jTextField_tenKhachHang;
->>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
 
     public CapNhatKhachHang_GUI() {
         initComponents();
@@ -234,11 +214,9 @@ public class CapNhatKhachHang_GUI extends JFrame implements ActionListener {
 
         jButton_sua.setFont(new Font("Times New Roman", 1, 14)); 
         jButton_sua.setText("Sửa");
-        jButton_sua.addActionListener(this);
 
         jButton_huyBo.setFont(new Font("Times New Roman", 1, 14)); 
         jButton_huyBo.setText("Huỷ bỏ");
-        jButton_sua.addActionListener(this);
 
         GroupLayout jPanel3Layout = new GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -305,101 +283,6 @@ public class CapNhatKhachHang_GUI extends JFrame implements ActionListener {
         new CapNhatKhachHang_GUI().setVisible(true);
 
     }
-<<<<<<< HEAD
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton_huyBo;
-    private javax.swing.JButton jButton_sua;
-    private com.toedter.calendar.JDateChooser jDateChooser_ngaySinh;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JLabel jLabel_chuDe;
-    private javax.swing.JLabel jLabel_maKhachHang;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JRadioButton jRadioButton_nam;
-    private javax.swing.JRadioButton jRadioButton_nu;
-    private javax.swing.JTextField jTextField_diaChi;
-    private javax.swing.JTextField jTextField_email;
-    private javax.swing.JTextField jTextField_soDienThoai;
-    private javax.swing.JTextField jTextField_tenKhachHang;
-    // End of variables declaration//GEN-END:variables
-    
-	public void SuaThongTin(KhachHang kh) {
-		this.jTextField_tenKhachHang.setText(kh.getHoTen());
-    	if(kh.getGioiTinh().equals("Nam"))
-    	{
-    		this.jRadioButton_nam.setSelected(true);
-    		this.jRadioButton_nu.setSelected(false);
-    	}
-    	if(kh.getGioiTinh().equals("Nữ"))
-    	{
-    		this.jRadioButton_nam.setSelected(false);
-    		this.jRadioButton_nu.setSelected(true);
-    	}
-    	this.jLabel_maKhachHang.setText(kh.getKhachHangID());
-    	this.jDateChooser_ngaySinh.setDate(kh.getNgaySinh());
-    	this.jTextField_email.setText(kh.getEmail());
-    	this.jTextField_soDienThoai.setText(kh.getSoDienThoai());
-    	this.jTextField_diaChi.setText(kh.getDiaChi());
-
-		
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		String button = e.getActionCommand();
-		if(button.equals("Sửa"))
-		{
-
-			KhachHang kh = new KhachHang();
-			try {
-				kh.setKhachHangID(jLabel_maKhachHang.getText());
-				kh.setHoTen(this.jTextField_tenKhachHang.getText());
-				if(jRadioButton_nam.isSelected())
-				{
-					kh.setGioiTinh("Nam");
-				}
-				if(jRadioButton_nu.isSelected())
-				{
-					kh.setGioiTinh("Nữ");
-				}
-				SimpleDateFormat dcn = new SimpleDateFormat("yyyy-MM-dd");
-			    String date = dcn.format(jDateChooser_ngaySinh.getDate() );
-				//nv.setNgaySinh((new SimpleDateFormat("yyyy-MM-dd").parse(date)));
-				Date DATE = Date.valueOf(date);
-				kh.setNgaySinh(DATE);
-				kh.setEmail(jTextField_email.getText());
-				kh.setSoDienThoai(jTextField_soDienThoai.getText());
-				kh.setDiaChi(jTextField_diaChi.getText());
-				
-				try {
-					ConnectDB.getInstance().connect();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				KhachHang_DAO khachHang_DAO = new KhachHang_DAO();
-				khachHang_DAO.editNhanVien(kh);
-				
-				this.setVisible(false);
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
-		}
-		else if(button.equals("Huỷ bỏ"))
-		{
-			this.setVisible(false);
-		}
-=======
     
     
     // Code 
@@ -413,7 +296,5 @@ public class CapNhatKhachHang_GUI extends JFrame implements ActionListener {
 		if(source.equals(jButton_sua)) {
 			
 		}
->>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
 	}
 }
-

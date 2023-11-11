@@ -3,18 +3,6 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
-import connectDB.ConnectDB;
-import dao.NhaCungCap_DAO;
-import dao.NhanVien_DAO;
-import entity.NhaCungCap;
-import entity.NhanVien;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -29,50 +17,6 @@ import javax.swing.table.DefaultTableModel;
 
 public class NhaCungCap_Panel extends JPanel implements ActionListener {
 	
-<<<<<<< HEAD
-    private javax.swing.JButton jButton_lamMoi;
-    private javax.swing.JButton jButton_sua;
-    private javax.swing.JButton jButton_them;
-    private javax.swing.JButton jButton_timKiem;
-    private javax.swing.JButton jButton_xoa;
-    private javax.swing.JLabel jLabel_chuDe;
-    private javax.swing.JLabel jLabel_nguoiDung;
-    private javax.swing.JLabel jLabel_nhapMa;
-    private javax.swing.JLabel jLabel_soDienThoai;
-    private javax.swing.JPanel jPanel_center;
-    private javax.swing.JPanel jPanel_north;
-    private javax.swing.JScrollPane jScrollPane;
-    private javax.swing.JTable jTable;
-    private javax.swing.JTextField jTextField_nhapMa;
-    private javax.swing.JTextField jTextField_soDienThoai;
-	private DefaultTableModel table_model;
-    
-    public NhaCungCap_Panel() throws SQLException {
-        initComponents();
-    }
-
-    @SuppressWarnings("unchecked")
-    private void initComponents() throws SQLException {
-    	ConnectDB.getInstance().connect();
-        jPanel_north = new javax.swing.JPanel();
-        jLabel_chuDe = new javax.swing.JLabel();
-        jPanel_center = new javax.swing.JPanel();
-        jTextField_nhapMa = new javax.swing.JTextField();
-        jButton_timKiem = new javax.swing.JButton();
-        jButton_lamMoi = new javax.swing.JButton();
-        jButton_them = new javax.swing.JButton();
-        jButton_sua = new javax.swing.JButton();
-        jButton_xoa = new javax.swing.JButton();
-        jLabel_nhapMa = new javax.swing.JLabel();
-        jLabel_soDienThoai = new javax.swing.JLabel();
-        jTextField_soDienThoai = new javax.swing.JTextField();
-        jScrollPane = new javax.swing.JScrollPane();
-        jTable = new javax.swing.JTable();
-        jLabel_nguoiDung = new javax.swing.JLabel();
-
-        jLabel_chuDe.setFont(new java.awt.Font("Times New Roman", 1, 24)); 
-        jLabel_chuDe.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-=======
     private JButton jButton_lamMoi;
     private JButton jButton_sua;
     private JButton jButton_them;
@@ -115,7 +59,6 @@ public class NhaCungCap_Panel extends JPanel implements ActionListener {
 
         jLabel_chuDe.setFont(new Font("Times New Roman", 1, 24)); 
         jLabel_chuDe.setHorizontalAlignment(SwingConstants.CENTER);
->>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
         jLabel_chuDe.setText("QUẢN LÝ NHÀ CUNG CẤP");
 
         GroupLayout jPanel_northLayout = new GroupLayout(jPanel_north);
@@ -150,13 +93,8 @@ public class NhaCungCap_Panel extends JPanel implements ActionListener {
         jButton_sua.setText("Sửa");
         jButton_sua.addActionListener(this);
 
-<<<<<<< HEAD
-        jButton_xoa.setFont(new java.awt.Font("Times New Roman", 0, 14)); 
-        jButton_xoa.setText("Xóa");
-=======
         jButton_xoa.setFont(new Font("Times New Roman", 0, 14)); 
         jButton_xoa.setText("Xoá");
->>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
         jButton_xoa.addActionListener(this);
 
         jLabel_nhapMa.setFont(new Font("Times New Roman", 1, 14));
@@ -211,51 +149,9 @@ public class NhaCungCap_Panel extends JPanel implements ActionListener {
                 .addContainerGap())
         );
 
-<<<<<<< HEAD
-//        jTable.setFont(new java.awt.Font("Times New Roman", 0, 14)); 
-//        jTable.setModel(new javax.swing.table.DefaultTableModel(
-//            new Object [][] {
-//                {null, null, null, null},
-//                {null, null, null, null},
-//                {null, null, null, null},
-//                {null, null, null, null},
-//                {null, null, null, null},
-//                {null, null, null, null}
-//            },
-//            new String [] {
-//                "Mã", "Tên nhà cung cấp", "Số điện thoại", "Địa chỉ"
-//            }
-//        ) {
-//            Class[] types = new Class [] {
-//                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-//            };
-//
-//            public Class getColumnClass(int columnIndex) {
-//                return types [columnIndex];
-//            }
-//        });
-//        jScrollPane.setViewportView(jTable);
-        jTable.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        NhaCungCap_DAO nhaCungCap_DAO = new NhaCungCap_DAO();
-        ArrayList<NhaCungCap> list = nhaCungCap_DAO.getAllNhaCungCap();
-        Object[][] data = {};
-        String[] column = {"Mã", "Tên nhà cung cấp", "Số điện thoại", "Địa chỉ"};
-        table_model = new DefaultTableModel(data, column);
-        
-        jTable = new JTable(table_model);
-        for(NhaCungCap ncc: list)
-        {
-        	Object[] obj = {ncc.getNhaCungCapID(), ncc.getTenNhaCungCap(), ncc.getSoDienThoai(), ncc.getDiaChi()};
-        	table_model.addRow(obj);
-        }
-        jScrollPane.setViewportView(jTable);
-
-        jLabel_nguoiDung.setFont(new java.awt.Font("Times New Roman", 0, 14)); 
-=======
         jTable.setFont(new Font("Times New Roman", 0, 14)); 
 
         jLabel_nguoiDung.setFont(new Font("Times New Roman", 0, 14)); 
->>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
         jLabel_nguoiDung.setText("NV0001_Nguyễn Huy Hoàng");
 
         GroupLayout layout = new GroupLayout(this);
@@ -288,146 +184,9 @@ public class NhaCungCap_Panel extends JPanel implements ActionListener {
 
     }
     
-	public void emptyForTable(DefaultTableModel model_table)
-	{
-		while(model_table.getRowCount() > 0)
-		{
-			model_table.removeRow(0);
-		}
-	}
-    
     // Code sự kiện
 	@Override
 	public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
-		try {
-			ConnectDB.getInstance().connect();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		String button = e.getActionCommand();
-
-		if(button.equals("Tìm kiếm"))
-		{
-			try {
-				ConnectDB.getInstance().connect();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			NhaCungCap_DAO nhaCungCap_DAO = new NhaCungCap_DAO();
-			NhaCungCap ncc = nhaCungCap_DAO.getNhaCungCapByNumber(this.jTextField_soDienThoai.getText());
-;
-			if(ncc == null)
-			{
-				try {
-					ConnectDB.getInstance().connect();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				if(this.jTextField_nhapMa.getText().length() == 0 && this.jTextField_soDienThoai.getText().length() == 0)
-				{
-					JOptionPane.showMessageDialog(null, "Vui lòng nhập ít nhất 1 trường");
-					return;
-				}
-				ncc = nhaCungCap_DAO.getNhaCungCapByID(this.jTextField_nhapMa.getText());
-				if(ncc == null)
-				{
-					JOptionPane.showMessageDialog(null, "Nhân viên không tồn tại");
-					return;
-				}
-				emptyForTable(table_model);
-				Object[] obj = {ncc.getNhaCungCapID(), ncc.getTenNhaCungCap(), ncc.getSoDienThoai(), ncc.getDiaChi()};
-				table_model.addRow(obj);
-				return;
-			}
-			emptyForTable(table_model);
-			Object[] obj = {ncc.getNhaCungCapID(), ncc.getTenNhaCungCap(), ncc.getSoDienThoai(), ncc.getDiaChi()};
-			table_model.addRow(obj);
-			return;
-			
-		}
-		if(button.equals("Làm mới"))
-		{
-			refresh();
-		}
-		
-		if(button.equals("Thêm"))
-		{
-			try {
-				ConnectDB.getInstance().connect();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			NhaCungCap_DAO nhaCungCap_DAO = new NhaCungCap_DAO();
-			ThemNhaCungCap_GUI gd_Them =  new ThemNhaCungCap_GUI();
-			gd_Them.setVisible(true);
-			
-//			String tenNhanVien = gd_Them.
-//			NhanVien nv = new NhanVien();
-			
-			return;
-			
-		}
-		if(button.equals("Sửa"))
-		{
-			NhaCungCap ncc = new NhaCungCap();
-			if(jTable.getSelectedRow() != -1)
-			{
-				int row = jTable.getSelectedRow();
-				String mancc = jTable.getValueAt(row, 0) + "";
-				try {
-					ConnectDB.getInstance().connect();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				NhaCungCap_DAO nhaCungCap_DAO = new NhaCungCap_DAO();
-				ncc = nhaCungCap_DAO.getNhaCungCapByID(mancc);
-				
-				CapNhatNhaCungCap_GUI gui_capnhat = new CapNhatNhaCungCap_GUI();
-				gui_capnhat.setVisible(true);
-				gui_capnhat.SuaThongTin(ncc);
-				return;		
-			}
-		}
-		
-		if(button.equals("Xóa"))
-		{
-			if(jTable.getSelectedRow() != -1)
-			{
-				int row = jTable.getSelectedRow();
-				int decided = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn xóa không?");
-				if(decided == 0)
-				{
-					String mancc = table_model.getValueAt(row, 0).toString();
-					table_model.removeRow(row);
-					try {
-						ConnectDB.getInstance().connect();
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					NhaCungCap_DAO nhaCungCap_DAO = new NhaCungCap_DAO();
-					if(nhaCungCap_DAO.removeNhaCungCap(mancc));
-					{
-						JOptionPane.showMessageDialog(null, "Đã xóa");
-						return;
-					}
-				}
-				if(decided == 1)
-				{
-					return;
-				}
-				if(decided == 2)
-				{
-					return;
-				}
-			}
-=======
 		Object source = e.getSource();
 		if(source.equals(jButton_them)) {
 			new ThemNhaCungCap_GUI().setVisible(true);
@@ -443,29 +202,7 @@ public class NhaCungCap_Panel extends JPanel implements ActionListener {
 		}
 		if(source.equals(jButton_xoa)) {
 			
->>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
 		}
 		
-	}
-	public void refresh()
-	{
-		try {
-			ConnectDB.getInstance().connect();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		NhaCungCap_DAO nhaCungCap_DAO = new NhaCungCap_DAO();
-		jTextField_nhapMa.setText("");
-		jTextField_soDienThoai.setText("");
-		emptyForTable(table_model);
-		ArrayList<NhaCungCap> list = nhaCungCap_DAO.getAllNhaCungCap();
-		for(NhaCungCap ncc: list)
-        {
-        	Object[] obj = {ncc.getNhaCungCapID(), ncc.getTenNhaCungCap(), ncc.getSoDienThoai(), ncc.getDiaChi()};
-        	table_model.addRow(obj);
-        }
-		
-		return;
 	}
 }

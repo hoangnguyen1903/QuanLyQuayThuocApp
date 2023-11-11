@@ -3,70 +3,7 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.sql.Date;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.text.SimpleDateFormat;
 
-<<<<<<< HEAD
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
-import connectDB.ConnectDB;
-import dao.NhanVien_DAO;
-import entity.NhanVien;
-
-public class NhanVien_Panel extends javax.swing.JPanel implements ActionListener, MouseListener {
-
-    private javax.swing.JButton jButton_lamMoi;
-    private javax.swing.JButton jButton_sua;
-    private javax.swing.JButton jButton_them;
-    private javax.swing.JButton jButton_timKie;
-    private javax.swing.JButton jButton_xoa;
-    private javax.swing.JLabel jLabel_chuDe;
-    private javax.swing.JLabel jLabel_nguoiDung;
-    private javax.swing.JLabel jLabel_nhapMa;
-    private javax.swing.JLabel jLabel_soDienThoai;
-    private javax.swing.JPanel jPanel_center;
-    private javax.swing.JPanel jPanel_north;
-    private javax.swing.JScrollPane jScrollPane;
-    private javax.swing.JTable jTable;
-    private javax.swing.JTextField jTextField_nhapMa;
-    private javax.swing.JTextField jTextField_soDienThoai;
-	private DefaultTableModel table_model;
-    
-    public NhanVien_Panel() throws SQLException {
-        initComponents();
-    }
-
-    @SuppressWarnings("unchecked")
-    private void initComponents() throws SQLException {
-		ConnectDB.getInstance().connect();
-        jPanel_north = new javax.swing.JPanel();
-        jLabel_chuDe = new javax.swing.JLabel();
-        jLabel_nguoiDung = new javax.swing.JLabel();
-        jPanel_center = new javax.swing.JPanel();
-        jTextField_nhapMa = new javax.swing.JTextField();
-        jButton_timKie = new javax.swing.JButton();
-        jButton_lamMoi = new javax.swing.JButton();
-        jButton_them = new javax.swing.JButton();
-        jButton_sua = new javax.swing.JButton();
-        jButton_xoa = new javax.swing.JButton();
-        jLabel_nhapMa = new javax.swing.JLabel();
-        jLabel_soDienThoai = new javax.swing.JLabel();
-        jTextField_soDienThoai = new javax.swing.JTextField();
-        jScrollPane = new javax.swing.JScrollPane();
-        jTable = new javax.swing.JTable();
-
-        jLabel_chuDe.setFont(new java.awt.Font("Times New Roman", 1, 24));
-        jLabel_chuDe.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-=======
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -122,7 +59,6 @@ public class NhanVien_Panel extends JPanel implements ActionListener {
 
         jLabel_chuDe.setFont(new Font("Times New Roman", 1, 24));
         jLabel_chuDe.setHorizontalAlignment(SwingConstants.CENTER);
->>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
         jLabel_chuDe.setText("QUẢN LÝ NHÂN VIÊN");
 
         jLabel_nguoiDung.setFont(new Font("Times New Roman", 0, 14)); 
@@ -161,15 +97,6 @@ public class NhanVien_Panel extends JPanel implements ActionListener {
         jButton_them.setFont(new Font("Times New Roman", 0, 14)); 
         jButton_them.setText("Thêm");
         jButton_them.addActionListener(this);
-<<<<<<< HEAD
-        
-        jButton_sua.setFont(new java.awt.Font("Times New Roman", 0, 14)); 
-        jButton_sua.setText("Sửa");
-        jButton_sua.addActionListener(this);
-
-        jButton_xoa.setFont(new java.awt.Font("Times New Roman", 0, 14)); 
-        jButton_xoa.setText("Xóa");
-=======
 
         jButton_sua.setFont(new Font("Times New Roman", 0, 14)); 
         jButton_sua.setText("Sửa");
@@ -177,7 +104,6 @@ public class NhanVien_Panel extends JPanel implements ActionListener {
 
         jButton_xoa.setFont(new Font("Times New Roman", 0, 14)); 
         jButton_xoa.setText("Xoá");
->>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
         jButton_xoa.addActionListener(this);
 
         jLabel_nhapMa.setFont(new Font("Times New Roman", 1, 14)); 
@@ -232,28 +158,9 @@ public class NhanVien_Panel extends JPanel implements ActionListener {
                 .addContainerGap())
         );
 
-<<<<<<< HEAD
-        jTable.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        NhanVien_DAO nhanVien_DAO = new NhanVien_DAO();
-        ArrayList<NhanVien> list = nhanVien_DAO.getAllNhanVien();
-        Object[][] data = {};
-        String[] column = {"Mã", "Tên", "Giới tính", "Ngày sinh", "Email", "Số điện thoại", "Địa chỉ", "Chức vụ"};
-        table_model = new DefaultTableModel(data, column);
-        
-        jTable = new JTable(table_model);
-        for(NhanVien nv: list)
-        {
-        	Object[] obj = {nv.getNhanVienID(), nv.getHoTen(), nv.getGioiTinh(), nv.getNgaySinh(), nv.getEmail(), nv.getSoDienThoai(), nv.getDiaChi(), nv.getChucVu()};
-        	table_model.addRow(obj);
-        }
-        jScrollPane.setViewportView(jTable);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-=======
         jTable.setFont(new Font("Times New Roman", 0, 14)); 
 
         GroupLayout layout = new GroupLayout(this);
->>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
        setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -276,197 +183,10 @@ public class NhanVien_Panel extends JPanel implements ActionListener {
         );
 
     }
-	public void emptyForTable(DefaultTableModel model_table)
-	{
-		while(model_table.getRowCount() > 0)
-		{
-			model_table.removeRow(0);
-		}
-	}
 
     // Code sự kiện
 	@Override
 	public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
-		try {
-			ConnectDB.getInstance().connect();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		String button = e.getActionCommand();
-
-		if(button.equals("Tìm kiếm"))
-		{
-			try {
-				ConnectDB.getInstance().connect();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			NhanVien_DAO nhanVien_DAO = new NhanVien_DAO();
-			NhanVien nv = nhanVien_DAO.getNhanVienByNumberPhone(this.jTextField_soDienThoai.getText());
-;
-			if(nv == null)
-			{
-				try {
-					ConnectDB.getInstance().connect();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				if(this.jTextField_nhapMa.getText().length() == 0 && this.jTextField_soDienThoai.getText().length() == 0)
-				{
-					JOptionPane.showMessageDialog(null, "Vui lòng nhập ít nhất 1 trường");
-					return;
-				}
-				nv = nhanVien_DAO.getNhanVienByID(this.jTextField_nhapMa.getText());
-				if(nv == null)
-				{
-					JOptionPane.showMessageDialog(null, "Nhân viên không tồn tại");
-					return;
-				}
-				emptyForTable(table_model);
-				Object[] obj = {nv.getNhanVienID(), nv.getHoTen(), nv.getGioiTinh(), nv.getNgaySinh(), nv.getEmail(), nv.getSoDienThoai(), nv.getDiaChi(), nv.getChucVu()};
-				table_model.addRow(obj);
-				return;
-			}
-			emptyForTable(table_model);
-			Object[] obj = {nv.getNhanVienID(), nv.getHoTen(), nv.getGioiTinh(), nv.getNgaySinh(), nv.getEmail(), nv.getSoDienThoai(), nv.getDiaChi(), nv.getChucVu()};
-			table_model.addRow(obj);
-			return;
-			
-		}
-		if(button.equals("Làm mới"))
-		{
-			refresh();
-		}
-		
-		if(button.equals("Thêm"))
-		{
-			try {
-				ConnectDB.getInstance().connect();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			NhanVien_DAO nhanVien_DAO = new NhanVien_DAO();
-			ThemNhanVien_GUI gd_Them =  new ThemNhanVien_GUI();
-			gd_Them.setVisible(true);
-			
-//			String tenNhanVien = gd_Them.
-//			NhanVien nv = new NhanVien();
-			
-			return;
-			
-		}
-		if(button.equals("Sửa"))
-		{
-			NhanVien nv = new NhanVien();
-			if(jTable.getSelectedRow() != -1)
-			{
-				int row = jTable.getSelectedRow();
-				String manv = jTable.getValueAt(row, 0) + "";
-				try {
-					ConnectDB.getInstance().connect();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				NhanVien_DAO nhanVien_DAO = new NhanVien_DAO();
-				nv = nhanVien_DAO.getNhanVienByID(manv);
-				
-				CapNhatNhanVien_GUI gui_capnhat = new CapNhatNhanVien_GUI();
-				gui_capnhat.setVisible(true);
-				gui_capnhat.SuaThongTin(nv);
-				return;		
-			}
-		}
-		
-		if(button.equals("Xóa"))
-		{
-			if(jTable.getSelectedRow() != -1)
-			{
-				int row = jTable.getSelectedRow();
-				int decided = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn xóa không?");
-				if(decided == 0)
-				{
-					String manv = table_model.getValueAt(row, 0).toString();
-					table_model.removeRow(row);
-					try {
-						ConnectDB.getInstance().connect();
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					NhanVien_DAO nhanVien_DAO = new NhanVien_DAO();
-					if(nhanVien_DAO.removeNhanVien(manv));
-					{
-						JOptionPane.showMessageDialog(null, "Đã xóa");
-						return;
-					}
-				}
-				if(decided == 1)
-				{
-					return;
-				}
-				if(decided == 2)
-				{
-					return;
-				}
-			}
-		}
-		
-	}
-	public void refresh()
-	{
-		try {
-			ConnectDB.getInstance().connect();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		NhanVien_DAO nhanVien_DAO = new NhanVien_DAO();
-		jTextField_nhapMa.setText("");
-		jTextField_soDienThoai.setText("");
-		emptyForTable(table_model);
-		ArrayList<NhanVien> list = nhanVien_DAO.getAllNhanVien();
-		for(NhanVien nv: list)
-        {
-        	Object[] obj = {nv.getNhanVienID(), nv.getHoTen(), nv.getGioiTinh(), nv.getNgaySinh(), nv.getEmail(), nv.getSoDienThoai(), nv.getDiaChi(), nv.getChucVu()};
-        	table_model.addRow(obj);
-        }
-		
-		return;
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-=======
 		Object source = e.getSource();
 		if(source.equals(jButton_them)) {
 			new ThemNhanVien_GUI().setVisible(true);
@@ -483,7 +203,6 @@ public class NhanVien_Panel extends JPanel implements ActionListener {
 		if(source.equals(jButton_xoa)) {
 			
 		}
->>>>>>> f65a2bef5f0f77ba61bd0b80f207524668abca43
 		
 	}
 }
