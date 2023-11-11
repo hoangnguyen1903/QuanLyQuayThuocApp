@@ -4,11 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-
+import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -19,6 +22,10 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+
+import dao.SanPham_DAO;
+import entity.LoaiSanPham;
+import entity.SanPham;
 
 
 public class SanPham_Panel extends JPanel implements ActionListener{
@@ -38,6 +45,9 @@ public class SanPham_Panel extends JPanel implements ActionListener{
     private DefaultTableModel tableModel;
     private JTable jTable;
     private JTextField jTextField_nhapMa;
+    
+    private SanPham_DAO sp_dao = new SanPham_DAO();
+    private ArrayList<SanPham> sanPhamList = new ArrayList<SanPham>();
 
     public SanPham_Panel() {
         khoiTao();
@@ -58,8 +68,9 @@ public class SanPham_Panel extends JPanel implements ActionListener{
         jButton_xem = new JButton();
         jLabel_nguoiDung = new JLabel();
         // Table
-        String[] cols = {"Mã", "Tên", "Ảnh", "Thành phần", "Xuất xứ", "Ngày SX", "Ngày HH", "Cách dùng", "Đơn giá", "Loại", "Số lượng tồn", "Tình trạng"};
+        String[] cols = {"Mã sản phẩm", "Tên sản phẩm", "Ảnh", "Thành phần", "Cách dùng", "Xuất xứ", "Ngày sản xuất", "Ngày hết hạn", "Đơn giá", "Số lượng tồn", "Loại", "Tình trạng"};
         tableModel = new DefaultTableModel(cols, 0);
+        importSanPham();
         jTable = new JTable(tableModel);
         jScrollPane = new JScrollPane(jTable);
 
@@ -214,11 +225,47 @@ public class SanPham_Panel extends JPanel implements ActionListener{
 			
 		}
 		if(source.equals(jButton_sua)) {
-			new CapNhatSanPham_GUI().setVisible(true);
+			capNhatSanPham();
+			return;
 		}
 		if(source.equals(jButton_xem)) {
 			new ChiTietSanPham_GUI().setVisible(true);
 		}
 	}
-
+	
+	public void importSanPham() {
+		try {
+			sanPhamList = sp_dao.getAllSanPham();
+			for (SanPham sanPham : sanPhamList) {
+				tableModel.addRow(sanPham.toString().split(";"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	public void capNhatSanPham() {
+		int row = jTable.getSelectedRow();
+		if(row < 0) {
+			JOptionPane.showMessageDialog(this, "Sản phẩm chưa được chọn!");
+			return;
+		}
+		String sanPhamID = jTable.getValueAt(row, 0).toString();
+		String tenSanPham = jTable.getValueAt(row, 1).toString();
+		String imgPath = jTable.getValueAt(row, 2).toString();
+		String thanhPhan = jTable.getValueAt(row, 3).toString();
+		String cachDung = jTable.getValueAt(row, 4).toString();
+		String xuatXu = jTable.getValueAt(row, 5).toString();
+		Date ngaySanXuat = Date.valueOf(jTable.getValueAt(row, 6).toString());
+		Date ngayHetHan = Date.valueOf(jTable.getValueAt(row, 7).toString());
+		double donGia = Double.parseDouble(jTable.getValueAt(row, 8).toString());
+		int soLuongTon = Integer.parseInt(jTable.getValueAt(row, 9).toString());
+		String tenLoai = jTable.getValueAt(row, 10).toString();
+		LoaiSanPham loaiSP = new LoaiSanPham();
+		loaiSP.setTenLoai(tenLoai);
+		String tinhTrang = jTable.getValueAt(row, 11).toString();
+		
+		SanPham sanPham = new SanPham(sanPhamID, imgPath, tenSanPham, thanhPhan, cachDung, xuatXu, ngaySanXuat, ngayHetHan, donGia, soLuongTon, loaiSP, tinhTrang);
+		new CapNhatSanPham_GUI(sanPham).setVisible(true);
+	}
 }

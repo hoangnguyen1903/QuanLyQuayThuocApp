@@ -17,10 +17,10 @@ public class SanPham_DAO {
 	}
 	
 	public ArrayList<SanPham> getAllSanPham() throws SQLException {
-        ConnectDB.getInstance().connect();
-        Connection con = ConnectDB.getConnection();
         PreparedStatement statement = null;
         ArrayList<SanPham> sanPhamList = new ArrayList<SanPham>();
+        ConnectDB.getInstance().connect();
+        Connection con = ConnectDB.getConnection();
         try {
             String sql = "SELECT sp.SanPhamID, ImgPath, TenSanPham, ThanhPhan, CachDung, XuatXu, NgaySanXuat, NgayHetHan, DonGia, SoLuongTon, TenLoai, TinhTrang, sp.LoaiID  FROM SanPham as sp inner join LoaiSanPham as lsp on sp.LoaiID=lsp.LoaiID";
             statement = con.prepareStatement(sql);
@@ -54,6 +54,7 @@ public class SanPham_DAO {
                 if (con != null) {
                     con.close();
                 }
+            	
             } catch (SQLException e) {
                 e.printStackTrace();
             }

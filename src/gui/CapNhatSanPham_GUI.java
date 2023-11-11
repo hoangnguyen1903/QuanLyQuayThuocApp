@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -24,6 +25,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import com.toedter.calendar.JDateChooser;
 
+import dao.LoaiSanPham_DAO;
+import entity.LoaiSanPham;
+import entity.SanPham;
+
 public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
 
     private JButton jButton_chonAnh;
@@ -31,8 +36,8 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
     private JButton jButton_them;
     private JComboBox<String> jComboBox_loai;
     private JComboBox<String> jComboBox_tinhTrang;
-    private com.toedter.calendar.JDateChooser jDateChooser_ngayHH;
-    private com.toedter.calendar.JDateChooser jDateChooser_ngaySX;
+    private JDateChooser jDateChooser_ngayHH;
+    private JDateChooser jDateChooser_ngaySX;
     private JFileChooser jFileChooser1;
     private JLabel jLabel1;
     private JLabel jLabel10;
@@ -54,13 +59,17 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
     private JPanel jPanel_anh;
     private JSplitPane jSplitPane2;
     private JTextField jTextField_donGia;
-    private JTextField jTextField_loSanXuat;
+    private JTextField jTextField_cachDung;
     private JTextField jTextField_soLuongTon;
     private JTextField jTextField_tenSanPham;
     private JTextField jTextField_thanhPhan;
     private JTextField jTextField_xuatXu;
+    private SanPham sanPham = new SanPham();
+    
+    private LoaiSanPham_DAO loaisp_dao = new LoaiSanPham_DAO();
 
-    public CapNhatSanPham_GUI() {
+    public CapNhatSanPham_GUI(SanPham sanPham) {
+    	this.sanPham = sanPham;
         khoiTao();
         pack();
         setSize(800, 650);
@@ -87,7 +96,7 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
         jLabel6 = new JLabel();
         jLabel7 = new JLabel();
         jLabel8 = new JLabel();
-        jTextField_loSanXuat = new JTextField();
+        jTextField_cachDung = new JTextField();
         jLabel9 = new JLabel();
         jTextField_donGia = new JTextField();
         jLabel10 = new JLabel();
@@ -108,6 +117,7 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("Cập nhật thông tin sản phẩm");
+        importSanPham();
 
         jLabel_chuDe.setFont(new Font("Times New Roman", 1, 24)); 
         jLabel_chuDe.setHorizontalAlignment(SwingConstants.CENTER);
@@ -197,8 +207,15 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
 
         jLabel10.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel10.setText("Loại");
-
-        jComboBox_loai.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        
+        // Loai
+        DefaultComboBoxModel<String> comboboxModel = new DefaultComboBoxModel<>();
+        ArrayList<LoaiSanPham> loaiSPList = loaisp_dao.getAllLoaiSanPham();
+        for (LoaiSanPham loai : loaiSPList) {
+        	System.out.println(loai.getTenLoai());
+        	comboboxModel.addElement(loai.getTenLoai());
+		}
+        jComboBox_loai.setModel(comboboxModel);
 
         jLabel11.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel11.setText("Số lượng tồn");
@@ -206,13 +223,12 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
         jLabel12.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel12.setText("Tình trạng");
 
-        jComboBox_tinhTrang.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox_tinhTrang.setModel(new DefaultComboBoxModel<>(new String[] { "Đang bán", "Ngừng bán" }));
 
         jLabel1.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel1.setText("Mã sản phẩm");
 
         jLabel_maSanPham.setFont(new Font("Times New Roman", 2, 14)); 
-        jLabel_maSanPham.setText("SP0001");
 
         GroupLayout jPanel4Layout = new GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -224,7 +240,7 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel8, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField_loSanXuat, GroupLayout.PREFERRED_SIZE, 286, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextField_cachDung, GroupLayout.PREFERRED_SIZE, 286, GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
@@ -297,7 +313,7 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
                     .addComponent(jLabel7))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField_loSanXuat, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField_cachDung, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -392,7 +408,6 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
             java.util.logging.Logger.getLogger(CapNhatSanPham_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        new CapNhatSanPham_GUI().setVisible(true);
     }
 
 	@Override
@@ -411,5 +426,17 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
 		}
 	}
 
-
+	public void importSanPham() {
+		jLabel_maSanPham.setText(sanPham.getSanPhamID());
+		jTextField_tenSanPham.setText(sanPham.getTenSanPham());
+		jTextField_thanhPhan.setText(sanPham.getThanhPhan());
+		jTextField_cachDung.setText(sanPham.getCachDung());
+		jTextField_xuatXu.setText(sanPham.getXuatXu());
+		jTextField_donGia.setText(sanPham.getDonGia()+"");
+		jTextField_soLuongTon.setText(sanPham.getSoLuongTon()+"");
+		
+		jDateChooser_ngaySX.setDate(sanPham.getNgaySanXuat());
+		jDateChooser_ngayHH.setDate(sanPham.getNgayHetHan());
+		jComboBox_loai.setName(sanPham.getLoaiSanPham().getTenLoai());
+	}
 }

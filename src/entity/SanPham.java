@@ -20,6 +20,25 @@ public class SanPham {
 		
 	}
 
+	public SanPham(String sanPhamID, String imgPath, String tenSanPham, String thanhPhan, String cachDung,
+			String xuatXu, Date ngaySanXuat, Date ngayHetHan, double donGia, int soLuongTon, LoaiSanPham loaiSanPham,
+			String tinhTrang) {
+		this.sanPhamID = sanPhamID;
+		this.imgPath = imgPath;
+		this.tenSanPham = tenSanPham;
+		this.thanhPhan = thanhPhan;
+		this.cachDung = cachDung;
+		this.xuatXu = xuatXu;
+		this.ngaySanXuat = ngaySanXuat;
+		this.ngayHetHan = ngayHetHan;
+		this.donGia = donGia;
+		this.soLuongTon = soLuongTon;
+		this.loaiSanPham = loaiSanPham;
+		this.tinhTrang = tinhTrang;
+	}
+
+
+
 	public String getSanPhamID() {
 		return sanPhamID;
 	}
@@ -118,7 +137,7 @@ public class SanPham {
 
 	@Override
 	public String toString() {
-		return sanPhamID + ";" + imgPath + ";" + tenSanPham
+		return sanPhamID + ";" + tenSanPham + ";" + imgPath
 				+ ";" + thanhPhan + ";" + cachDung + ";" + xuatXu + ";"
 				+ ngaySanXuat + ";" + ngayHetHan + ";" + donGia + ";" + soLuongTon
 				+ ";" + loaiSanPham.getTenLoai() + ";" + tinhTrang;

@@ -62,6 +62,7 @@ public class ThemSanPham_GUI extends JFrame implements ActionListener {
 	    
     public ThemSanPham_GUI() {
         khoiTao();
+        setUndecorated(true);
         pack();
         setSize(800, 650);
         setResizable(false);
