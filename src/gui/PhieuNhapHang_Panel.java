@@ -3,10 +3,14 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,7 +19,13 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import dao.HangNhap_DAO;
+import dao.NhaCungCap_DAO;
+import dao.SanPham_DAO;
+import entity.HangNhap;
+import entity.NhaCungCap;
 import entity.NhanVien;
+import entity.SanPham;
 
 public class PhieuNhapHang_Panel extends JPanel implements ActionListener {
 
@@ -45,6 +55,9 @@ public class PhieuNhapHang_Panel extends JPanel implements ActionListener {
     private JTextField jTextField_tongTien;
     
     private NhanVien nhanVien = new NhanVien();
+    private SanPham_DAO sp_dao = new SanPham_DAO();
+    private NhaCungCap_DAO ncc_dao = new NhaCungCap_DAO();
+    private HangNhap_DAO hn_dao = new HangNhap_DAO();
     
     public PhieuNhapHang_Panel(NhanVien nhanVien) {
     	this.nhanVien = nhanVien;
@@ -60,13 +73,15 @@ public class PhieuNhapHang_Panel extends JPanel implements ActionListener {
         jButton_timKiemNhaCungCap = new JButton();
         jLabel_maNhaCungCap = new JLabel();
         // Table
-        String[] cols_sp = {"Mã", "Tên", "Ảnh", "Thành phần", "Xuất xứ", "Ngày SX", "Ngày HH", "Lô sản xuất", "Đơn giá", "Loại", "Số lượng tồn", "Tình trạng"};
+        String[] cols_sp = {"Mã", "Tên", "Ảnh", "Thành phần", "Cách dùng", "Xuất xứ", "Ngày sản xuất", "Ngày hết hạn", "Đơn giá", "Số lượng tồn", "Loại", "Tình trạng"};
         tableModel_sanPham = new DefaultTableModel(cols_sp, 0);
+        importSanPham();
         jTable_sanPham = new JTable(tableModel_sanPham);
         jScrollPane1 = new JScrollPane(jTable_sanPham);
 
         String[] cols_ncc = {"Mã nhà cung cấp", "Tên nhà cung cấp", "Số điện thoại", "Địa chỉ"};
         tableModel_nhaCungCap = new DefaultTableModel(cols_ncc, 0);
+        importNhaCungCap();
         jTable_nhaCungCap = new JTable(tableModel_nhaCungCap);
         jScrollPane2 = new JScrollPane(jTable_nhaCungCap);
         
@@ -204,6 +219,7 @@ public class PhieuNhapHang_Panel extends JPanel implements ActionListener {
         jLabel_tongTien.setText("Nhập tổng tiền");
 
         jButton_nhapHang.setText("Nhập hàng");
+        jButton_nhapHang.addActionListener(this);
 
         GroupLayout jPanel5Layout = new GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -277,8 +293,126 @@ public class PhieuNhapHang_Panel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if(source.equals(jButton_lamMoi)) {
-			
+			lamMoi();
+			return;
+		}
+		if(source.equals(jButton_timKiemSanPham)) {
+			timKiemSanPham();
+			return;
+		}
+		if(source.equals(jButton_timKiemNhaCungCap) ) {
+			timKiemNhaCungCap();
+			return;
+		}
+		if(source.equals(jButton_nhapHang)) {
+			nhapHang();
 		}
 		
+	}
+	
+	public void importSanPham() {
+		tableModel_sanPham.setRowCount(0);
+		ArrayList<SanPham> sanPhamList = sp_dao.getAllSanPham();
+		for (SanPham sp : sanPhamList) {
+			tableModel_sanPham.addRow(sp.toString().split(";"));
+		}
+	}
+	
+	public void importNhaCungCap() {
+		tableModel_nhaCungCap.setRowCount(0);
+		ArrayList<NhaCungCap> nccList = ncc_dao.getAllNhaCungCap();
+		for (NhaCungCap ncc : nccList) {
+			tableModel_nhaCungCap.addRow(ncc.toString().split(";"));
+		}
+	}
+	
+	public void timKiemSanPham() {
+		String ma = jTextField_maSanPham.getText().trim();
+		if(ma.equals("")) {
+			JOptionPane.showMessageDialog(this, "Mã sản phẩm chưa được nhập!");
+			return;
+		}
+		SanPham sanPham = sp_dao.timKiemSanPhamTheoMa(ma);
+		if(sanPham != null) {
+			tableModel_sanPham.setRowCount(0);
+			tableModel_sanPham.addRow(sanPham.toString().split(";"));
+		} else {
+			JOptionPane.showMessageDialog(this, "Mã sản phẩm không tồn tại!");
+		}
+	}
+	
+	public void timKiemNhaCungCap() {
+		String ma = jTextField_maNhaCungCap.getText().trim();
+		if(ma.equals("")) {
+			JOptionPane.showMessageDialog(this, "Mã nhà cung cấp chưa được nhập!");
+			return;
+		}
+		NhaCungCap ncc = ncc_dao.timKiemNCCTheoMa(ma);
+		if(ncc != null) {
+			tableModel_nhaCungCap.setRowCount(0);
+			tableModel_nhaCungCap.addRow(ncc.toString().split(";"));
+		} else {
+			JOptionPane.showMessageDialog(this, "Mã nhà cung cấp không tồn tại!");
+		}
+	}
+	
+	public void lamMoi() {
+		jTextField_maSanPham.setText("");
+		jTextField_maNhaCungCap.setText("");
+		jTextField_soLuong.setText("");
+		jTextField_tongTien.setText("");
+		
+		importSanPham();
+		importNhaCungCap();
+	}
+	
+	public void nhapHang() {
+		int sanPhamSelected = jTable_sanPham.getSelectedRow();
+		if(sanPhamSelected < 0) {
+			JOptionPane.showMessageDialog(this, "Sản phẩm chưa được chọn!");
+			return;
+		}
+		int nccSelected = jTable_nhaCungCap.getSelectedRow();
+		if(nccSelected < 0) {
+			JOptionPane.showMessageDialog(this, "Nhà cung cấp chưa được chọn!");
+			return;
+		}
+		
+		String soLuong = jTextField_soLuong.getText().trim();
+		if(soLuong.equals("")) {
+			JOptionPane.showMessageDialog(this, "Số lượng chưa được nhập!");
+			return;
+		}
+		int sl = Integer.parseInt(soLuong);
+		if(sl <= 0) {
+			JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn 0!");
+			return;
+		}
+		
+		String tongTien = jTextField_tongTien.getText().trim();
+		if(tongTien.equals("")) {
+			JOptionPane.showMessageDialog(this, "Tổng tiền chưa được nhập!");
+			return;
+		}
+		int tt = Integer.parseInt(tongTien);
+		if(tt <= 0) {
+			JOptionPane.showMessageDialog(this, "Tổng tiền phải lớn hơn 0!");
+			return;
+		}
+		
+		SanPham sanPham = new SanPham();
+		sanPham.setSanPhamID(tableModel_sanPham.getValueAt(sanPhamSelected, 0).toString());
+		NhaCungCap nhaCungCap = new NhaCungCap();
+		nhaCungCap.setNhaCungCapID(tableModel_nhaCungCap.getValueAt(nccSelected, 0).toString());
+		Date ngayLap = Date.valueOf(LocalDate.now());
+		HangNhap hangNhap = new HangNhap(sanPham, nhaCungCap, sl, tt, ngayLap);
+		
+		boolean kq = hn_dao.nhapHang(hangNhap);
+		if(kq) {
+			JOptionPane.showMessageDialog(this, "Nhập hàng thành công!");
+			lamMoi();
+		} else {
+			JOptionPane.showMessageDialog(this, "Nhập hàng thất bại!");
+		}
 	}
 }

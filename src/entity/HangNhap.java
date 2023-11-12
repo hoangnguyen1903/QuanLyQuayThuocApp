@@ -63,8 +63,7 @@ public class HangNhap {
 
 	@Override
 	public String toString() {
-		return "HangNhap [sanPham=" + sanPham + ", nhaCungCap=" + nhaCungCap + ", soLuong=" + soLuong + ", tongTien="
-				+ tongTien + ", ngayNhap=" + ngayNhap + "]";
+		return sanPham.getSanPhamID() + ";" + nhaCungCap.getNhaCungCapID() + ";" + soLuong + ";"
+				+ tongTien + ";" + ngayNhap;
 	}
-	
 }

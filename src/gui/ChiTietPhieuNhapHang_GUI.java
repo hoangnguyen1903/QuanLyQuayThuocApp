@@ -13,6 +13,9 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import dao.HangNhap_DAO;
+import entity.HangNhap;
+
 public class ChiTietPhieuNhapHang_GUI extends JFrame implements ActionListener {
 	
     private JButton jButton_thoat;
@@ -35,8 +38,14 @@ public class ChiTietPhieuNhapHang_GUI extends JFrame implements ActionListener {
     private JLabel jLabel_tenNhaCungCap;
     private JLabel jLabel_tenSanPham;
     private JLabel jLabel_tongTien;
+    
+    private String maSP;
+    private String maNCC;
+    private HangNhap_DAO hn_dao = new HangNhap_DAO();
 
-    public ChiTietPhieuNhapHang_GUI() {
+    public ChiTietPhieuNhapHang_GUI(String maSP, String maNCC) {
+    	this.maSP = maSP;
+    	this.maNCC = maNCC;
         khoiTao();
         pack();
         setResizable(false);
@@ -69,6 +78,7 @@ public class ChiTietPhieuNhapHang_GUI extends JFrame implements ActionListener {
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("Thông tin chi tiết phiếu nhập");
+        importChiTietHangNhap();
 
         jLabel_chuDe.setFont(new Font("Times New Roman", 1, 24)); 
         jLabel_chuDe.setHorizontalAlignment(SwingConstants.CENTER);
@@ -78,25 +88,21 @@ public class ChiTietPhieuNhapHang_GUI extends JFrame implements ActionListener {
         jLabel2.setText("Tên nhà cung cấp");
 
         jLabel_tenNhaCungCap.setFont(new Font("Times New Roman", 2, 14)); 
-        jLabel_tenNhaCungCap.setText("Tên nhà cung cấp");
 
         jLabel4.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel4.setText("Số điện thoại");
 
         jLabel_soDienThoai.setFont(new Font("Times New Roman", 2, 14)); 
-        jLabel_soDienThoai.setText("0398979695");
 
         jLabel6.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel6.setText("Ngày nhập");
 
         jLabel_ngayNhap.setFont(new Font("Times New Roman", 2, 14)); 
-        jLabel_ngayNhap.setText("10-11-2023");
 
         jLabel8.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel8.setText("Mã nhà cung cấp");
 
         jLabel_maNhaCungCap.setFont(new Font("Times New Roman", 2, 14)); 
-        jLabel_maNhaCungCap.setText("HD0001");
 
         jButton_thoat.setFont(new Font("Times New Roman", 1, 14)); 
         jButton_thoat.setText("Thoát");
@@ -105,31 +111,26 @@ public class ChiTietPhieuNhapHang_GUI extends JFrame implements ActionListener {
         jLabel10.setText("Tổng tiền");
 
         jLabel_tongTien.setFont(new Font("Times New Roman", 2, 14)); 
-        jLabel_tongTien.setText("100.000 VND");
 
         jLabel1.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel1.setText("Địa chỉ");
 
         jLabel_diaChi.setFont(new Font("Times New Roman", 2, 14)); 
-        jLabel_diaChi.setText("Địa chỉ");
 
         jLabel5.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel5.setText("Mã sản phẩm");
 
         jLabel_maSanPham.setFont(new Font("Times New Roman", 2, 14)); 
-        jLabel_maSanPham.setText("SP0001");
 
         jLabel9.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel9.setText("Tên sản phẩm");
 
         jLabel_tenSanPham.setFont(new Font("Times New Roman", 2, 14)); 
-        jLabel_tenSanPham.setText("Thuốc ho");
 
         jLabel12.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel12.setText("Số lượng");
 
         jLabel_soLuong.setFont(new Font("Times New Roman", 2, 14)); 
-        jLabel_soLuong.setText("100");
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -150,7 +151,7 @@ public class ChiTietPhieuNhapHang_GUI extends JFrame implements ActionListener {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel_diaChi, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel_diaChi, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -158,10 +159,10 @@ public class ChiTietPhieuNhapHang_GUI extends JFrame implements ActionListener {
                                 .addComponent(jLabel_tenNhaCungCap, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel_soDienThoai, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel_maNhaCungCap, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jLabel_maSanPham, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel_tenSanPham, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel_soLuong, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel_tongTien, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel_maSanPham, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel_tenSanPham, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel_soLuong, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel_tongTien, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -243,7 +244,6 @@ public class ChiTietPhieuNhapHang_GUI extends JFrame implements ActionListener {
         } catch (UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ChiTietPhieuNhapHang_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        new ChiTietPhieuNhapHang_GUI().setVisible(true);
     }
     
     // Code
@@ -254,6 +254,21 @@ public class ChiTietPhieuNhapHang_GUI extends JFrame implements ActionListener {
 		if(source.equals(jButton_thoat)) {
 			dispose();
 		}
-		
+	}
+	
+	public void importChiTietHangNhap() {
+		HangNhap hangNhap = hn_dao.getHangNhap(maNCC, maSP);
+		if(hangNhap != null) {
+			jLabel_maNhaCungCap.setText(hangNhap.getNhaCungCap().getNhaCungCapID());
+			jLabel_tenNhaCungCap.setText(hangNhap.getNhaCungCap().getTenNhaCungCap());
+			jLabel_soDienThoai.setText(hangNhap.getNhaCungCap().getSoDienThoai());
+			jLabel_diaChi.setText(hangNhap.getNhaCungCap().getDiaChi());
+			
+			jLabel_maSanPham.setText(hangNhap.getSanPham().getSanPhamID());
+			jLabel_tenSanPham.setText(hangNhap.getSanPham().getTenSanPham());
+			jLabel_soLuong.setText(hangNhap.getSoLuong()+"");
+			jLabel_tongTien.setText(hangNhap.getTongTien()+" VND");
+			jLabel_ngayNhap.setText(hangNhap.getNgayNhap().toString());
+		}
 	}
 }
