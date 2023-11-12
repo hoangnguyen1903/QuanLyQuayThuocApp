@@ -3,6 +3,7 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -16,6 +17,11 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 
+import dao.ChiTietHoaDon_DAO;
+import dao.HoaDon_DAO;
+import entity.ChiTietHoaDon;
+import entity.HoaDon;
+
 public class ChiTietHoaDon_GUI extends JFrame implements ActionListener {
 	
     private JButton jButton_thoat;
@@ -25,7 +31,7 @@ public class ChiTietHoaDon_GUI extends JFrame implements ActionListener {
     private JLabel jLabel6;
     private JLabel jLabel8;
     private JLabel jLabel_chuDe;
-    private JLabel jLabel_maHonDon;
+    private JLabel jLabel_maHoaDon;
     private JLabel jLabel_maKhachHang;
     private JLabel jLabel_maNhanVien;
     private JLabel jLabel_ngayLap;
@@ -33,8 +39,13 @@ public class ChiTietHoaDon_GUI extends JFrame implements ActionListener {
     private JScrollPane jScrollPane1;
     private JTable jTable_sanPham;
     private DefaultTableModel tableModel;
+    
+    private String ma;
+    private ChiTietHoaDon_DAO cthd_dao = new ChiTietHoaDon_DAO();
+    private HoaDon_DAO hd_dao = new HoaDon_DAO();
 
-    public ChiTietHoaDon_GUI() {
+    public ChiTietHoaDon_GUI(String ma) {
+    	this.ma = ma;
         khoiTao();
         pack();
         setResizable(false);
@@ -50,7 +61,7 @@ public class ChiTietHoaDon_GUI extends JFrame implements ActionListener {
         jLabel6 = new JLabel();
         jLabel_ngayLap = new JLabel();
         jLabel8 = new JLabel();
-        jLabel_maHonDon = new JLabel();
+        jLabel_maHoaDon = new JLabel();
         jButton_thoat = new JButton();
         jButton_thoat.addActionListener(this);
         jLabel10 = new JLabel();
@@ -63,6 +74,7 @@ public class ChiTietHoaDon_GUI extends JFrame implements ActionListener {
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("Thông tin chi tiết hoá đơn");
+        importHoaDon();
 
         jLabel_chuDe.setFont(new Font("Times New Roman", 1, 24)); 
         jLabel_chuDe.setHorizontalAlignment(SwingConstants.CENTER);
@@ -72,25 +84,21 @@ public class ChiTietHoaDon_GUI extends JFrame implements ActionListener {
         jLabel2.setText("Mã nhân viên");
 
         jLabel_maNhanVien.setFont(new Font("Segoe UI", 2, 12)); 
-        jLabel_maNhanVien.setText("NV0001");
 
         jLabel4.setFont(new Font("Segoe UI", 1, 12)); 
         jLabel4.setText("Mã khách hàng");
 
         jLabel_maKhachHang.setFont(new Font("Segoe UI", 2, 12)); 
-        jLabel_maKhachHang.setText("KH0001");
 
         jLabel6.setFont(new Font("Segoe UI", 1, 12)); 
         jLabel6.setText("Ngày lập");
 
         jLabel_ngayLap.setFont(new Font("Segoe UI", 2, 12)); 
-        jLabel_ngayLap.setText("10-11-2023");
 
         jLabel8.setFont(new Font("Segoe UI", 1, 12)); 
         jLabel8.setText("Mã hoá đơn");
 
-        jLabel_maHonDon.setFont(new Font("Segoe UI", 2, 12)); 
-        jLabel_maHonDon.setText("HD0001");
+        jLabel_maHoaDon.setFont(new Font("Segoe UI", 2, 12)); 
 
         jButton_thoat.setFont(new Font("Segoe UI", 1, 12)); 
         jButton_thoat.setText("Thoát");
@@ -99,7 +107,6 @@ public class ChiTietHoaDon_GUI extends JFrame implements ActionListener {
         jLabel10.setText("Tổng tiền");
 
         jLabel_tongTien.setFont(new Font("Segoe UI", 2, 12)); 
-        jLabel_tongTien.setText("100.000 VND");
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -122,7 +129,7 @@ public class ChiTietHoaDon_GUI extends JFrame implements ActionListener {
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel_maNhanVien, GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
                                     .addComponent(jLabel_maKhachHang, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel_maHonDon, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jLabel_maHoaDon, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(130, 130, 130)
                                 .addComponent(jLabel6)
                                 .addGap(18, 18, 18)
@@ -147,7 +154,7 @@ public class ChiTietHoaDon_GUI extends JFrame implements ActionListener {
                     .addComponent(jLabel6)
                     .addComponent(jLabel_ngayLap)
                     .addComponent(jLabel8)
-                    .addComponent(jLabel_maHonDon))
+                    .addComponent(jLabel_maHoaDon))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -186,8 +193,6 @@ public class ChiTietHoaDon_GUI extends JFrame implements ActionListener {
             java.util.logging.Logger.getLogger(ChiTietHoaDon_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        new ChiTietHoaDon_GUI().setVisible(true);
-
     }
 
     // Code
@@ -197,6 +202,19 @@ public class ChiTietHoaDon_GUI extends JFrame implements ActionListener {
 		if(source.equals(jButton_thoat)) {
 			dispose();
 		}
+	}
+	
+	public void importHoaDon() {
+		HoaDon hd = hd_dao.getHoaDonTheoMa(ma);
+		jLabel_maHoaDon.setText(hd.getHoaDonID());
+		jLabel_maNhanVien.setText(hd.getNhanVien().getNhanVienID());
+		jLabel_maKhachHang.setText(hd.getKhachHang().getKhachHangID());
+		jLabel_ngayLap.setText(hd.getNgayLap().toString());
+		jLabel_tongTien.setText(hd.getTongTien()+"");
 		
+		ArrayList<ChiTietHoaDon> cthdList = cthd_dao.getAllCTHDTheoHoaDon(ma);
+		for (ChiTietHoaDon cthd : cthdList) {
+			tableModel.addRow(cthd.toString().split(";"));
+		}
 	}
 }

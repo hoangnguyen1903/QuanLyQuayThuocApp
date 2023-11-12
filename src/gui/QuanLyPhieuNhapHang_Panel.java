@@ -16,6 +16,8 @@ import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
+import entity.NhanVien;
+
 public class QuanLyPhieuNhapHang_Panel extends JPanel implements ActionListener {
 	
     private JButton jButton_lamMoi;
@@ -32,8 +34,11 @@ public class QuanLyPhieuNhapHang_Panel extends JPanel implements ActionListener 
     private JTable jTable;
     private DefaultTableModel tableModel;
     
-    public QuanLyPhieuNhapHang_Panel() {
-        khoiTao();
+    private NhanVien nhanVien = new NhanVien();
+    
+    public QuanLyPhieuNhapHang_Panel(NhanVien nhanVien) {
+    	this.nhanVien = nhanVien;
+    	khoiTao();
     }
     
     private void khoiTao() {
@@ -58,7 +63,7 @@ public class QuanLyPhieuNhapHang_Panel extends JPanel implements ActionListener 
         jLabel_chuDe.setText("QUẢN LÝ PHIẾU NHẬP HÀNG");
 
         jLabel_nguoiDung.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabel_nguoiDung.setText("NV0001_Nguyễn Huy Hoàng");
+        jLabel_nguoiDung.setText(nhanVien.getChucVu() + " : "+ nhanVien.getHoTen()+ "-"+nhanVien.getNhanVienID());
 
         GroupLayout jPanel_northLayout = new GroupLayout(jPanel_north);
         jPanel_north.setLayout(jPanel_northLayout);
@@ -68,7 +73,7 @@ public class QuanLyPhieuNhapHang_Panel extends JPanel implements ActionListener 
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel_chuDe, GroupLayout.PREFERRED_SIZE, 346, GroupLayout.PREFERRED_SIZE)
                 .addGap(173, 173, 173)
-                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 189, GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43))
         );
         jPanel_northLayout.setVerticalGroup(

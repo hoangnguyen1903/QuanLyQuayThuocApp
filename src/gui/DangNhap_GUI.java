@@ -21,6 +21,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import dao.DangNhap_DAO;
+import entity.NhanVien;
 
 public class DangNhap_GUI extends JFrame implements ActionListener{
 	
@@ -48,8 +49,12 @@ public class DangNhap_GUI extends JFrame implements ActionListener{
         jPanel2 = new JPanel();
         jLabel_tenDangNhap = new JLabel();
         jTextField_tenDangNhap = new JTextField();
+        // tendangnhap
+        jTextField_tenDangNhap.setText("huytran123");
         jLabel_matKhau = new JLabel();
         jPasswordField_matKhau = new JPasswordField();
+        // matkhau
+        jPasswordField_matKhau.setText("huytran123");
         jPanel3 = new JPanel();
         jButton_dangNhap = new JButton();
         jButton_quenMatKhau = new JButton();
@@ -192,10 +197,10 @@ public class DangNhap_GUI extends JFrame implements ActionListener{
 			String matKhau = jTextField_tenDangNhap.getText().trim();
 			
 			try {
-				boolean ketQua = new DangNhap_DAO().dangNhap(tenTaiKhoan, matKhau);
-				if(ketQua) {
+				NhanVien nhanVien = new DangNhap_DAO().dangNhap(tenTaiKhoan, matKhau);
+				if(nhanVien != null) {
 					this.dispose();
-					new ManHinh_GUI(tenTaiKhoan).setVisible(true);
+					new ManHinh_GUI(nhanVien).setVisible(true);
 				} else {
 					JOptionPane.showMessageDialog(this, "Tên đăng nhập hoặc mật khẩu không chính xác! Vui lòng nhập lại!");
 				}

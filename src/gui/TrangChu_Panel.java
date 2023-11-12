@@ -30,12 +30,14 @@ public class TrangChu_Panel extends JPanel{
     private JPanel jPanel_left;
     private JPanel jPanel_north;
     private JPanel jPanel_right;
+    private NhanVien nhanVien = new NhanVien();
 
-    public TrangChu_Panel(String tenTaiKhoan) throws SQLException {
-        khoiTao(tenTaiKhoan);
+    public TrangChu_Panel(NhanVien nhanVien) throws SQLException {
+        this.nhanVien = nhanVien;
+    	khoiTao();
     }
 
-    private void khoiTao(String tenTaiKhoan) throws SQLException {
+    private void khoiTao() throws SQLException {
         jPanel_north = new JPanel();
         jLabel_tieuDe = new JLabel();
         jLabel_nguoiDung = new JLabel();
@@ -52,8 +54,8 @@ public class TrangChu_Panel extends JPanel{
         jLabel_tieuDe.setFont(new Font("Times New Roman", 1, 24)); 
         jLabel_tieuDe.setText("HỆ THỐNG QUẢN LÝ CỬA HÀNG QUẦY THUỐC");
         
-        NhanVien nhanVien = new NhanVien_DAO().getNhanVien(tenTaiKhoan);
-        jLabel_nguoiDung.setText(nhanVien.getChucVu() + " : " + nhanVien.getHoTen());
+        jLabel_nguoiDung.setFont(new Font("Times New Roman", 0, 14));
+        jLabel_nguoiDung.setText(nhanVien.getChucVu() + " : "+ nhanVien.getHoTen()+ "-"+nhanVien.getNhanVienID());
         
 
         GroupLayout jPanel_northLayout = new GroupLayout(jPanel_north);

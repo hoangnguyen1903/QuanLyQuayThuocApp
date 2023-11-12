@@ -61,8 +61,8 @@ public class ChiTietHoaDon {
 
 	@Override
 	public String toString() {
-		return "ChiTietHoaDon [sanPham=" + sanPham + ", hoaDon=" + hoaDon + ", soLuong=" + soLuong + ", giaBan="
-				+ giaBan + ", thanhTien=" + thanhTien + "]";
+		return sanPham.getSanPhamID()+ ";" + sanPham.getTenSanPham() + ";" + soLuong + ";"
+				+ giaBan + ";" + thanhTien;
 	}
 	
 }

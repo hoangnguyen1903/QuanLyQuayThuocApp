@@ -3,7 +3,9 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
@@ -18,10 +20,15 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import dao.HoaDon_DAO;
 import dao.KhachHang_DAO;
 import dao.SanPham_DAO;
+import entity.ChiTietHoaDon;
+import entity.HoaDon;
 import entity.KhachHang;
+import entity.NhanVien;
 import entity.SanPham;
+import util.GenerateID;
 
 public class TaoHoaDon_Panel extends JPanel implements ActionListener {
 	
@@ -60,8 +67,14 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
     private JTextField jTextField_tienNhan;
     
     private ArrayList<SanPham> sanPhamList;
+    private NhanVien nhanVien = new NhanVien();
+    private GenerateID generateID = new GenerateID();
+    private HoaDon_DAO hd_dao = new HoaDon_DAO();
+    private KhachHang_DAO kh_dao = new KhachHang_DAO();
+    private SanPham_DAO sp_dao = new SanPham_DAO();
     
-    public TaoHoaDon_Panel() {
+    public TaoHoaDon_Panel(NhanVien nhanVien) {
+    	this.nhanVien = nhanVien;
         khoiTao();
     }
 
@@ -111,7 +124,7 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
         jLabel_chuDe.setText("TẠO HOÁ ĐƠN");
 
         jLabel_nguoiDung.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabel_nguoiDung.setText("NV0001_Nguyễn Huy Hoàng");
+        jLabel_nguoiDung.setText(nhanVien.getChucVu() + " : "+ nhanVien.getHoTen()+ "-"+nhanVien.getNhanVienID());
 
         GroupLayout jPanel3Layout = new GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -121,7 +134,7 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel_chuDe, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE)
                 .addGap(208, 208, 208)
-                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -243,7 +256,7 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
 
         jLabel11.setText("Tiền gửi lại");
 
-        jLabel_tienGuiLai.setText("50.000 VND");
+        jLabel_tienGuiLai.setText("0 VND");
 
         GroupLayout jPanel4Layout = new GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -392,21 +405,20 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
 	}
 	
 	public void timKiemSanPham() {
-		String ma = jTextField_ma.getText().trim();
-		SanPham sanPham = null;
-		for (SanPham sp : sanPhamList) {
-			if(sp.getSanPhamID().equals(ma)) {
-				sanPham = sp;
-				break;
-			}
-		}
-		if(sanPham != null) {
-			tableModel_sanPham.getDataVector().removeAllElements();
-			tableModel_sanPham.addRow(sanPham.toString().split(";"));
-		} else {
-			JOptionPane.showMessageDialog(this, "Mã sản phẩm không tồn tại!");
-		}
+	    String ma = jTextField_ma.getText().trim();
+	    if(ma.equals("")) {
+	    	JOptionPane.showMessageDialog(this, "Bạn chưa nhập mã sản phẩm!");
+	    	return;
+	    }
+	    SanPham sanPham = sp_dao.timKiemSanPhamTheoMa(ma);
+	    if (sanPham != null) {
+	        tableModel_sanPham.setRowCount(0); 
+	        tableModel_sanPham.addRow(sanPham.toString().split(";"));
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Mã sản phẩm không tồn tại!");
+	    }
 	}
+
 	
 	public void lamMoi() {
 		jTextField_ma.setText("");
@@ -418,21 +430,20 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
 	}
 	
 	public void importSanPham() {
-		try {
-			sanPhamList = new SanPham_DAO().getAllSanPham();
-			for (SanPham sanPham : sanPhamList) {
-				tableModel_sanPham.addRow(sanPham.toString().split(";"));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		sanPhamList = new SanPham_DAO().getAllSanPham();
+		for (SanPham sanPham : sanPhamList) {
+			tableModel_sanPham.addRow(sanPham.toString().split(";"));
 		}
 	}
 	
 	public void themVaoGioHang() {
 		int row = jTable_sanPham.getSelectedRow();
-		if(jTextField_soLuong.getText().trim().equals("") || row < 0) {
-			JOptionPane.showMessageDialog(this, "Bạn chưa nhập số lượng hoặc chưa chọn sản phẩm!");
+		if(row < 0) {
+			JOptionPane.showMessageDialog(this, "Bạn chưa chọn sản phẩm!");
+			return;
+		}
+		if(jTextField_soLuong.getText().trim().equals("")) {
+			JOptionPane.showMessageDialog(this, "Bạn chưa nhập số lượng !");
 			return;
 		}
 		
@@ -440,7 +451,7 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
 		String maSanPham = jTable_sanPham.getValueAt(row, 0).toString();
 		int soLuong = Integer.parseInt(jTextField_soLuong.getText().trim());
 		if(jTable_gioHang.getRowCount() > 0) {
-			for(int i = 0; i < jTable_gioHang.getRowCount(); i++) {
+			for(int i = 0; i <= jTable_gioHang.getRowCount()-1; i++) {
 			       String maSP = jTable_gioHang.getValueAt(i, 0).toString();
 			       if(maSP.equals(maSanPham)) {
 			    	   flag = true;
@@ -465,7 +476,7 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
 			jTable_sanPham.clearSelection();
 		}
 		int tongTien=0;
-		for(int i = 0; i < jTable_gioHang.getRowCount(); i++) {
+		for(int i = 0; i <= jTable_gioHang.getRowCount()-1; i++) {
 		       int thanhTien = Integer.parseInt(jTable_gioHang.getValueAt(i, 4).toString());
 		       tongTien+=thanhTien;
 		}
@@ -490,17 +501,13 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
 			JOptionPane.showMessageDialog(this, "Bạn chưa nhập số điện thoại!");
 			return;
 		}
-		try {
-			KhachHang khachHang = new KhachHang_DAO().getKhachHangTheoSDT(soDienThoai);
-			if(!khachHang.toString().split(";")[0].equals("null")) {
-				jLabel_tenKhachHang.setText(khachHang.getHoTen());				
-			} else {				
-				jLabel_tenKhachHang.setText("");
-				JOptionPane.showMessageDialog(this, "Số điện thoại không tồn tại!");
-			}
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
+
+		KhachHang khachHang = new KhachHang_DAO().getKhachHangTheoSDT(soDienThoai);
+		if(!khachHang.toString().split(";")[0].equals("null")) {
+			jLabel_tenKhachHang.setText(khachHang.getHoTen());				
+		} else {				
+			jLabel_tenKhachHang.setText("");
+			JOptionPane.showMessageDialog(this, "Số điện thoại không tồn tại!");
 		}
 	}
 	
@@ -520,6 +527,44 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
 	}
 	
 	public void taoHoaDon() {
+		if(jLabel_tenKhachHang.getText().trim().equals("")) {
+			JOptionPane.showMessageDialog(this, "Khách hàng chưa được chọn!");
+			return;
+		}
+		if(jTable_gioHang.getRowCount() <= 0) {
+			JOptionPane.showMessageDialog(this, "Giỏ hàng không có sản phẩm nào!");
+			return;
+		}
 		
+		String maHD = generateID.sinhMa("HD");
+		KhachHang khachHang = kh_dao.getKhachHangTheoSDT(jTextField_soDienThoai.getText().trim());
+		double tongTien = Double.parseDouble(jLabel_tongTien.getText().split(" ")[0]);
+		Date ngayLap = Date.valueOf(LocalDate.now());
+		
+		ArrayList<ChiTietHoaDon> cthdList = new ArrayList<ChiTietHoaDon>();
+		for (int i = 0; i <= jTable_gioHang.getRowCount()-1; i++) {
+			SanPham sanPham = new SanPham();
+			sanPham.setSanPhamID(jTable_gioHang.getValueAt(i, 0).toString());
+			int soLuong = Integer.parseInt(jTable_gioHang.getValueAt(i, 2).toString());
+			double giaBan = Double.parseDouble(jTable_gioHang.getValueAt(i, 3).toString());
+			double thanhTien = Double.parseDouble(jTable_gioHang.getValueAt(i, 4).toString());
+			HoaDon hoaDon = new HoaDon();
+			hoaDon.setHoaDonID(maHD);
+			ChiTietHoaDon cthd = new ChiTietHoaDon(sanPham, hoaDon, soLuong, giaBan, thanhTien);
+			
+			cthdList.add(cthd);
+		}
+		
+		
+		HoaDon hoaDon = new HoaDon(maHD, nhanVien, khachHang, tongTien, ngayLap);
+		boolean kq = hd_dao.taoHoaDon(hoaDon, cthdList);
+		
+		if(kq) {
+			double tienGuiLai = Double.parseDouble(jLabel_tienGuiLai.getText().trim().split(" ")[0]);
+			double tienNhan = Double.parseDouble(jTextField_tienNhan.getText().trim().split(" ")[0]);
+			new ThongTinHoaDon_GUI(maHD, tienGuiLai, tienNhan).setVisible(true);
+		} else {
+			JOptionPane.showMessageDialog(this, "Tạo hoá đơn thất bại!");
+		}
 	}
 }

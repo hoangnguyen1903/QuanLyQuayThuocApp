@@ -19,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
 
+import entity.NhanVien;
+
 public class ThongKe_Panel extends JPanel implements ActionListener {
 	
     private JButton jButton_xuatFile;
@@ -40,7 +42,10 @@ public class ThongKe_Panel extends JPanel implements ActionListener {
     private JTable jTable_bangThongKe;
     private JYearChooser jYearChooser_theoNam;
 
-    public ThongKe_Panel() {
+    private NhanVien nhanVien = new NhanVien();
+    
+    public ThongKe_Panel(NhanVien nhanVien) {
+    	this.nhanVien = nhanVien;
         khoiTao();
     }
 
@@ -69,7 +74,7 @@ public class ThongKe_Panel extends JPanel implements ActionListener {
         jLabel_chuDe.setText("THỐNG KÊ");
 
         jLabel_nguoiDung.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabel_nguoiDung.setText("NV0001_Nguyễn Huy Hoàng");
+        jLabel_nguoiDung.setText(nhanVien.getChucVu() + " : "+ nhanVien.getHoTen()+ "-"+nhanVien.getNhanVienID());
 
         GroupLayout jPanel3Layout = new GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -79,7 +84,7 @@ public class ThongKe_Panel extends JPanel implements ActionListener {
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel_chuDe, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE)
                 .addGap(226, 226, 226)
-                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 189, GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)

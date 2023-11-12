@@ -16,6 +16,8 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import entity.NhanVien;
+
 public class KhachHang_Panel extends JPanel implements ActionListener{
 	
     private JButton jButton7;
@@ -36,7 +38,10 @@ public class KhachHang_Panel extends JPanel implements ActionListener{
     private JTextField jTextField_ma;
     private JTextField jTextField_soDienThoai;
 
-    public KhachHang_Panel() {
+    private NhanVien nhanVien = new NhanVien();
+    
+    public KhachHang_Panel(NhanVien nhanVien) {
+    	this.nhanVien = nhanVien;
         khoiTao();
     }
 
@@ -71,7 +76,7 @@ public class KhachHang_Panel extends JPanel implements ActionListener{
         jLabel_chuDe.setText("QUẢN LÝ KHÁCH HÀNG");
 
         jLabel_nguoiDung.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabel_nguoiDung.setText("NV0001_Nguyễn Huy Hoàng");
+        jLabel_nguoiDung.setText(nhanVien.getChucVu() + " : "+ nhanVien.getHoTen()+ "-"+nhanVien.getNhanVienID());
 
         GroupLayout jPanel3Layout = new GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -81,7 +86,7 @@ public class KhachHang_Panel extends JPanel implements ActionListener{
                 .addContainerGap(403, Short.MAX_VALUE)
                 .addComponent(jLabel_chuDe, GroupLayout.PREFERRED_SIZE, 302, GroupLayout.PREFERRED_SIZE)
                 .addGap(215, 215, 215)
-                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)

@@ -62,8 +62,8 @@ public class HoaDon {
 
 	@Override
 	public String toString() {
-		return "HoaDon [hoaDonID=" + hoaDonID + ", nhanVien=" + nhanVien + ", khachHang=" + khachHang + ", tongTien="
-				+ tongTien + ", ngayLap=" + ngayLap + "]";
+		return hoaDonID + ";" + nhanVien.getNhanVienID() + ";" + khachHang.getKhachHangID() + ";"
+				+ tongTien + ";" + ngayLap;
 	}
 	
 }

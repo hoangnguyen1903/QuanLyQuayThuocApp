@@ -15,6 +15,8 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import entity.NhanVien;
+
 public class NhaCungCap_Panel extends JPanel implements ActionListener {
 	
     private JButton jButton_lamMoi;
@@ -34,7 +36,10 @@ public class NhaCungCap_Panel extends JPanel implements ActionListener {
     private JTextField jTextField_nhapMa;
     private JTextField jTextField_soDienThoai;
     
-    public NhaCungCap_Panel() {
+    private NhanVien nhanVien = new NhanVien();
+    
+    public NhaCungCap_Panel(NhanVien nhanVien) {
+    	this.nhanVien = nhanVien;
         khoiTao();
     }
 
@@ -60,6 +65,7 @@ public class NhaCungCap_Panel extends JPanel implements ActionListener {
         jLabel_chuDe.setFont(new Font("Times New Roman", 1, 24)); 
         jLabel_chuDe.setHorizontalAlignment(SwingConstants.CENTER);
         jLabel_chuDe.setText("QUẢN LÝ NHÀ CUNG CẤP");
+        jLabel_nguoiDung.setText(nhanVien.getChucVu() + " : "+ nhanVien.getHoTen()+ "-"+nhanVien.getNhanVienID());
 
         GroupLayout jPanel_northLayout = new GroupLayout(jPanel_north);
         jPanel_north.setLayout(jPanel_northLayout);
@@ -152,7 +158,6 @@ public class NhaCungCap_Panel extends JPanel implements ActionListener {
         jTable.setFont(new Font("Times New Roman", 0, 14)); 
 
         jLabel_nguoiDung.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabel_nguoiDung.setText("NV0001_Nguyễn Huy Hoàng");
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);

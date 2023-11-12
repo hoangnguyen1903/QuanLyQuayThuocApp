@@ -9,6 +9,8 @@ import java.sql.SQLException;
 
 import javax.swing.UnsupportedLookAndFeelException;
 
+import entity.NhanVien;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -37,7 +39,7 @@ public class ManHinh_GUI extends JFrame{
     private CardLayout cardLayout;
     private JPanel cardPanel;
     
-	public ManHinh_GUI(String tenTaiKhoan) throws SQLException {
+	public ManHinh_GUI(NhanVien nhanVien) throws SQLException {
 //		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Quản Lý Quầy Thuốc");
@@ -48,16 +50,16 @@ public class ManHinh_GUI extends JFrame{
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
-        cardPanel.add(new TrangChu_Panel(tenTaiKhoan), "TrangChu");
-        cardPanel.add(new SanPham_Panel(), "SanPham");
-        cardPanel.add(new KhachHang_Panel(), "KhachHang");
-        cardPanel.add(new TaoHoaDon_Panel(), "TaoHoaDon");
-        cardPanel.add(new QuanLyHoaDon_Panel(), "QuanLyHoaDon");
-        cardPanel.add(new NhanVien_Panel(), "NhanVien");
-        cardPanel.add(new PhieuNhapHang_Panel(), "PhieuNhapHang");
-        cardPanel.add(new QuanLyPhieuNhapHang_Panel(), "QuanLyPhieuNhapHang");
-        cardPanel.add(new NhaCungCap_Panel(), "NhaCungCap");
-        cardPanel.add(new ThongKe_Panel(), "ThongKe");
+        cardPanel.add(new TrangChu_Panel(nhanVien), "TrangChu");
+        cardPanel.add(new SanPham_Panel(nhanVien), "SanPham");
+        cardPanel.add(new KhachHang_Panel(nhanVien), "KhachHang");
+        cardPanel.add(new TaoHoaDon_Panel(nhanVien), "TaoHoaDon");
+        cardPanel.add(new QuanLyHoaDon_Panel(nhanVien), "QuanLyHoaDon");
+        cardPanel.add(new NhanVien_Panel(nhanVien), "NhanVien");
+        cardPanel.add(new PhieuNhapHang_Panel(nhanVien), "PhieuNhapHang");
+        cardPanel.add(new QuanLyPhieuNhapHang_Panel(nhanVien), "QuanLyPhieuNhapHang");
+        cardPanel.add(new NhaCungCap_Panel(nhanVien), "NhaCungCap");
+        cardPanel.add(new ThongKe_Panel(nhanVien), "ThongKe");
 
         setJMenuBar(jMenuBar);
         setContentPane(cardPanel);
@@ -250,12 +252,6 @@ public class ManHinh_GUI extends JFrame{
         } catch (UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TrangChu_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        try {
-			new ManHinh_GUI("huytran123").setVisible(true);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
     }
 

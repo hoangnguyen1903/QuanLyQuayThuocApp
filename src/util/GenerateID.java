@@ -3,10 +3,6 @@ package util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- *
- * @author HUY
- */
 public class GenerateID {
     private static String lastDate = "";
     private static int counter;
@@ -19,7 +15,7 @@ public class GenerateID {
        Date datenow = new Date();
        SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyHHmmss");
        String formattedDate = dateFormat.format(datenow);
-       String maPhatSinhCTKM = formattedDate;
-       return ten + maPhatSinhCTKM;
+       String maPhatSinh = formattedDate;
+       return ten + maPhatSinh;
     }
 }

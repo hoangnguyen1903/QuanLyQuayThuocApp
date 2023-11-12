@@ -25,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 
 import dao.SanPham_DAO;
 import entity.LoaiSanPham;
+import entity.NhanVien;
 import entity.SanPham;
 
 
@@ -48,8 +49,10 @@ public class SanPham_Panel extends JPanel implements ActionListener{
     
     private SanPham_DAO sp_dao = new SanPham_DAO();
     private ArrayList<SanPham> sanPhamList = new ArrayList<SanPham>();
+    private NhanVien nhanVien = new NhanVien();
 
-    public SanPham_Panel() {
+    public SanPham_Panel(NhanVien nhanVien) {
+    	this.nhanVien = nhanVien;
         khoiTao();
     }
 
@@ -77,6 +80,8 @@ public class SanPham_Panel extends JPanel implements ActionListener{
         jLabel_chuDe.setFont(new Font("Times New Roman", 1, 24)); 
         jLabel_chuDe.setHorizontalAlignment(SwingConstants.CENTER);
         jLabel_chuDe.setText("QUẢN LÝ SẢN PHẨM");
+        
+        jLabel_nguoiDung.setText(nhanVien.getChucVu() + " : "+ nhanVien.getHoTen()+ "-"+nhanVien.getNhanVienID());
 
         GroupLayout jPanel_northLayout = new GroupLayout(jPanel_north);
         jPanel_north.setLayout(jPanel_northLayout);
@@ -177,7 +182,6 @@ public class SanPham_Panel extends JPanel implements ActionListener{
         jTable.setFont(new Font("Times New Roman", 0, 14));  
 
         jLabel_nguoiDung.setFont(new Font("Times New Roman", 0, 14));  
-        jLabel_nguoiDung.setText("NV0001_Nguyễn Huy Hoàng");
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
@@ -186,7 +190,7 @@ public class SanPham_Panel extends JPanel implements ActionListener{
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel_north, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
             .addComponent(jPanel_center, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
