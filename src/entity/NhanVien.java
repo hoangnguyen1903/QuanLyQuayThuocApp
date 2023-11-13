@@ -19,6 +19,22 @@ public class NhanVien {
 		
 	}
 
+	public NhanVien(String nhanVienID, String hoTen, String gioiTinh, Date ngaySinh, String email, String soDienThoai,
+			String diaChi, String chucVu, String tenTaiKhoan, String matKhau) {
+		this.nhanVienID = nhanVienID;
+		this.hoTen = hoTen;
+		this.gioiTinh = gioiTinh;
+		this.ngaySinh = ngaySinh;
+		this.email = email;
+		this.soDienThoai = soDienThoai;
+		this.diaChi = diaChi;
+		this.chucVu = chucVu;
+		this.tenTaiKhoan = tenTaiKhoan;
+		this.matKhau = matKhau;
+	}
+
+
+
 	public String getNhanVienID() {
 		return nhanVienID;
 	}
@@ -101,9 +117,9 @@ public class NhanVien {
 
 	@Override
 	public String toString() {
-		return "NhanVien [nhanVienID=" + nhanVienID + ", hoTen=" + hoTen + ", gioiTinh=" + gioiTinh + ", ngaySinh="
-				+ ngaySinh + ", email=" + email + ", soDienThoai=" + soDienThoai + ", diaChi=" + diaChi + ", chucVu="
-				+ chucVu + ", tenTaiKhoan=" + tenTaiKhoan + ", matKhau=" + matKhau + "]";
+		return nhanVienID + ";" + hoTen + ";" + gioiTinh + ";"
+				+ ngaySinh + ";" + email + ";" + soDienThoai + ";" + diaChi + ";"
+				+ chucVu + ";" + tenTaiKhoan + ";" + matKhau;
 	}
 	
 }

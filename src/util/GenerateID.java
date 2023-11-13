@@ -15,7 +15,7 @@ public class GenerateID {
        Date datenow = new Date();
        SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyHHmmss");
        String formattedDate = dateFormat.format(datenow);
-       String maPhatSinhCTKM = formattedDate;
-       return ten + maPhatSinhCTKM;
+       String maPhatSinh = formattedDate;
+       return ten + maPhatSinh;
     }
 }

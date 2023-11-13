@@ -3,11 +3,13 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle;
@@ -15,6 +17,11 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
+
+import dao.ChiTietHoaDon_DAO;
+import dao.HoaDon_DAO;
+import entity.ChiTietHoaDon;
+import entity.HoaDon;
 
 public class ThongTinHoaDon_GUI extends JFrame implements ActionListener {
 
@@ -39,7 +46,16 @@ public class ThongTinHoaDon_GUI extends JFrame implements ActionListener {
     private JTable jTable_sanPham;
     private DefaultTableModel tableModel;
     
-    public ThongTinHoaDon_GUI() {
+    private String maHD;
+    private double tienTraLai;
+    private double tienNhan;
+    private HoaDon_DAO hd_dao = new HoaDon_DAO();
+    private ChiTietHoaDon_DAO cthd_dao = new ChiTietHoaDon_DAO();
+    
+    public ThongTinHoaDon_GUI(String maHD, double tienTraLai, double tienNhan) {
+    	this.maHD = maHD;
+    	this.tienTraLai = tienTraLai;
+    	this.tienNhan = tienNhan;
         khoiTao();
         pack();
         setResizable(false);
@@ -71,7 +87,9 @@ public class ThongTinHoaDon_GUI extends JFrame implements ActionListener {
         jLabel_tienTraLai = new JLabel();
         jLabel16 = new JLabel();
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setTitle("Thông tin hoá đơn");
+        importHoaDon();
 
         jLabel_chuDe.setFont(new Font("Times New Roman", 1, 24)); 
         jLabel_chuDe.setHorizontalAlignment(SwingConstants.CENTER);
@@ -80,39 +98,32 @@ public class ThongTinHoaDon_GUI extends JFrame implements ActionListener {
         jLabel4.setText("Tên khách hàng");
 
         jLabel_tenKhachHang.setFont(new Font("Segoe UI", 2, 12)); 
-        jLabel_tenKhachHang.setText("Trần Gia Huy");
 
         jLabel6.setText("Ngày lập");
 
         jLabel_ngayLap.setFont(new Font("Segoe UI", 2, 12)); 
-        jLabel_ngayLap.setText("10-11-2023");
 
         jLabel8.setText("Mã hoá đơn");
 
         jLabel_maHoaDon.setFont(new Font("Segoe UI", 2, 12)); 
-        jLabel_maHoaDon.setText("HD0001");
 
         jButton_xuatHoaDon.setText("Xuất hoá đơn");
 
         jLabel10.setText("Số điện thoại");
 
         jLabel_soDienThoai.setFont(new Font("Segoe UI", 2, 12)); 
-        jLabel_soDienThoai.setText("0397969493");
 
         jLabel2.setText("Tổng tiền");
 
         jLabel_tongTien.setFont(new Font("Segoe UI", 2, 12)); 
-        jLabel_tongTien.setText("100.000 VND");
 
         jLabel12.setText("Tiền nhận");
 
         jLabel_tienNhan.setFont(new Font("Segoe UI", 2, 12)); 
-        jLabel_tienNhan.setText("150.000 VND");
 
         jLabel14.setText("Tiền trả lại");
 
         jLabel_tienTraLai.setFont(new Font("Segoe UI", 2, 12)); 
-        jLabel_tienTraLai.setText("50.000 VND");
 
         jLabel16.setFont(new Font("Times New Roman", 1, 12)); 
         jLabel16.setText("CẢM ƠN QUÝ KHÁCH ĐÃ MUA SẢN PHẨM TẠI CỬA HÀNG ! HẸN GẶP QUÝ KHÁCH LẦN SAU !");
@@ -224,8 +235,6 @@ public class ThongTinHoaDon_GUI extends JFrame implements ActionListener {
         } catch (UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ThongTinHoaDon_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-
-        new ThongTinHoaDon_GUI().setVisible(true);
     }
 
 	@Override
@@ -235,5 +244,28 @@ public class ThongTinHoaDon_GUI extends JFrame implements ActionListener {
 			
 		}
 		
+	}
+	
+	public void importHoaDon() {
+		HoaDon hoaDon = hd_dao.getHoaDonTheoMa(maHD);
+		if(hoaDon == null) {
+			JOptionPane.showMessageDialog(this, "Hoá đơn không tồn tại!");
+			return;
+		}
+		
+		jLabel_maHoaDon.setText(hoaDon.getHoaDonID());
+		jLabel_tenKhachHang.setText(hoaDon.getKhachHang().getHoTen());
+		jLabel_soDienThoai.setText(hoaDon.getKhachHang().getSoDienThoai());
+		jLabel_ngayLap.setText(hoaDon.getNgayLap().toString());
+		jLabel_tongTien.setText(hoaDon.getTongTien()+"");
+		jLabel_tienNhan.setText(tienNhan+"");
+		jLabel_tienTraLai.setText(tienTraLai+"");
+		
+		ArrayList<ChiTietHoaDon> cthdList = cthd_dao.getAllCTHDTheoHoaDon(maHD);
+		
+		for (ChiTietHoaDon cthd : cthdList) {
+			String[] data = {cthd.getSanPham().getSanPhamID(), cthd.getSanPham().getTenSanPham(), cthd.getSoLuong()+"", cthd.getGiaBan()+"", cthd.getThanhTien()+""};
+			tableModel.addRow(data);
+		}
 	}
 }

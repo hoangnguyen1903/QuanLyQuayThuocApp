@@ -3,10 +3,13 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -16,6 +19,10 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
+
+import dao.HoaDon_DAO;
+import entity.HoaDon;
+import entity.NhanVien;
 
 public class QuanLyHoaDon_Panel extends JPanel implements ActionListener {
 	   
@@ -35,7 +42,11 @@ public class QuanLyHoaDon_Panel extends JPanel implements ActionListener {
     private DefaultTableModel tableModel;
     private JTextField jTextField_ma;
 
-    public QuanLyHoaDon_Panel() {
+    private NhanVien nhanVien = new NhanVien();
+    private HoaDon_DAO hd_dao = new HoaDon_DAO();
+    
+    public QuanLyHoaDon_Panel(NhanVien nhanVien) {
+    	this.nhanVien = nhanVien;
         khoiTao();
     }
 
@@ -55,6 +66,7 @@ public class QuanLyHoaDon_Panel extends JPanel implements ActionListener {
         // Table
         String[] cols = {"Mã hoá đơn", "Mã nhân viên", "Mã khách hàng", "Tổng tiền", "Ngày lập"};
         tableModel = new DefaultTableModel(cols, 0);
+        importHoaDon();
         jTable = new JTable(tableModel);
         jScrollPane = new JScrollPane(jTable);
 
@@ -63,7 +75,7 @@ public class QuanLyHoaDon_Panel extends JPanel implements ActionListener {
         jLabel_chuDe.setText("QUẢN LÝ HOÁ ĐƠN");
 
         jLabel_nguoiDung.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabel_nguoiDung.setText("NV0001_Nguyễn Huy Hoàng");
+        jLabel_nguoiDung.setText(nhanVien.getChucVu() + " : "+ nhanVien.getHoTen()+ "-"+nhanVien.getNhanVienID());
 
         GroupLayout jPanel_northLayout = new GroupLayout(jPanel_north);
         jPanel_north.setLayout(jPanel_northLayout);
@@ -73,7 +85,7 @@ public class QuanLyHoaDon_Panel extends JPanel implements ActionListener {
                 .addContainerGap(391, Short.MAX_VALUE)
                 .addComponent(jLabel_chuDe, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE)
                 .addGap(208, 208, 208)
-                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE))
         );
         jPanel_northLayout.setVerticalGroup(
             jPanel_northLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -86,7 +98,6 @@ public class QuanLyHoaDon_Panel extends JPanel implements ActionListener {
         );
 
         jTextField_ma.setFont(new Font("Times New Roman", 0, 14)); 
-        jTextField_ma.addActionListener(this);
 
         jButton_timKiem.setFont(new Font("Times New Roman", 0, 14)); 
         jButton_timKiem.setText("Tìm kiếm");
@@ -98,6 +109,7 @@ public class QuanLyHoaDon_Panel extends JPanel implements ActionListener {
 
         jButton_xoa.setFont(new Font("Times New Roman", 0, 14));
         jButton_xoa.setText("Xoá");
+        jButton_xoa.addActionListener(this);
 
         jLabel_nhapMa.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel_nhapMa.setText("Nhập mã:");
@@ -185,16 +197,94 @@ public class QuanLyHoaDon_Panel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if(source.equals(jButton_lamMoi)) {
-			
+			lamMoi();
 		}
 		if(source.equals(jButton_timKiem)) {
-			
+			timKiemHoaDon();
+			return;
 		}
 		if(source.equals(jButton_xem)) {
-			new ChiTietHoaDon_GUI().setVisible(true);
+			xemChiTietHoaDon();
+			return;
 		}
 		if(source.equals(jButton_xoa)) {
-			
+			xoaHoaDon();
 		}
 	}
+	
+	public void importHoaDon() {
+		tableModel.setRowCount(0);
+		ArrayList<HoaDon> hoaDonList = hd_dao.getAllHoaDon();
+		for (HoaDon hoaDon : hoaDonList) {
+			tableModel.addRow(hoaDon.toString().split(";"));
+		}
+	}
+	
+	public void timKiemHoaDon() {
+	    String ma = jTextField_ma.getText().trim();
+	    java.util.Date ngayLapUtil = jDateChooser_ngayLap.getDate();
+
+	    if (ma.equals("") && ngayLapUtil == null) {
+	        JOptionPane.showMessageDialog(this, "Mã hoá đơn hoặc ngày lập chưa được nhập!");
+	        return;
+	    }
+
+	    ArrayList<HoaDon> hdList = new ArrayList<HoaDon>();
+
+	    if (ma.length() > 0 && ngayLapUtil == null) {
+	    	hdList = hd_dao.timKiemHoaDonTheoDieuKien(ma, null);
+	    } else if (ma.length() <= 0 && ngayLapUtil != null) {
+	        java.sql.Date ngayLapSql = new java.sql.Date(ngayLapUtil.getTime());
+	        hdList = hd_dao.timKiemHoaDonTheoDieuKien("", ngayLapSql);
+	    } else {
+	        java.sql.Date ngayLapSql = new java.sql.Date(ngayLapUtil.getTime());
+	        hdList = hd_dao.timKiemHoaDonTheoDieuKien(ma, ngayLapSql);
+	    }
+
+	    if (hdList != null) {
+	        tableModel.setRowCount(0);
+	        for (HoaDon hd : hdList) {
+	        	tableModel.addRow(hd.toString().split(";"));
+			}
+	        jTextField_ma.setText("");
+	        jDateChooser_ngayLap.setDate(null);
+	    }
+	}
+	
+	public void lamMoi() {
+		jTextField_ma.setText("");
+		jDateChooser_ngayLap.setDate(null);
+		importHoaDon();
+	}
+	
+	public void xoaHoaDon() {
+		int row = jTable.getSelectedRow();
+		if(row < 0) {
+			JOptionPane.showMessageDialog(this, "Hoá đơn chưa được chọn!");
+			return;
+		}
+		int thongBao = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xoá không ?","Xoá", JOptionPane.YES_NO_OPTION);
+		
+		if(thongBao == JOptionPane.YES_OPTION) {
+			String ma = jTable.getValueAt(row, 0).toString();
+			boolean kq = hd_dao.xoaHoaDon(ma);
+			if(kq) {				
+				tableModel.removeRow(row);
+			} else {
+				JOptionPane.showMessageDialog(this, "Xoá hoá đơn thất bại!");
+			}
+		}
+	}
+	
+	public void xemChiTietHoaDon() {
+		int row = jTable.getSelectedRow();
+		if(row < 0) {
+			JOptionPane.showMessageDialog(this, "Hoá đơn chưa được chọn!");
+			return;
+		}
+		String ma = jTable.getValueAt(row, 0).toString();
+		System.out.println(ma);
+		new ChiTietHoaDon_GUI(ma).setVisible(true);
+	}
+	
 }

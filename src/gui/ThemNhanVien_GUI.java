@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -13,6 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -23,9 +25,13 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import com.toedter.calendar.JDateChooser;
 
+import dao.NhanVien_DAO;
+import entity.NhanVien;
+import util.GenerateID;
+
 public class ThemNhanVien_GUI extends JFrame implements ActionListener {
 
-    private ButtonGroup buttonGroup1;
+    private ButtonGroup buttonGroup;
     private JButton jButton_huyBo;
     private JButton jButton_them;
     private JComboBox<String> jComboBox_chucVu;
@@ -48,6 +54,9 @@ public class ThemNhanVien_GUI extends JFrame implements ActionListener {
     private JTextField jTextField_email;
     private JTextField jTextField_soDienThoai;
     private JTextField jTextField_tenNhanVien;
+    
+    private GenerateID generateID = new GenerateID();
+    private NhanVien_DAO nv_dao = new NhanVien_DAO();
 
     public ThemNhanVien_GUI() {
         khoiTao();
@@ -59,7 +68,7 @@ public class ThemNhanVien_GUI extends JFrame implements ActionListener {
     private void khoiTao() {
 
         jFileChooser1 = new JFileChooser();
-        buttonGroup1 = new ButtonGroup();
+        buttonGroup = new ButtonGroup();
         jPanel1 = new JPanel();
         jLabel_chuDe = new JLabel();
         jPanel4 = new JPanel();
@@ -77,7 +86,10 @@ public class ThemNhanVien_GUI extends JFrame implements ActionListener {
         jComboBox_chucVu = new JComboBox<>();
         jDateChooser_ngaySinh = new com.toedter.calendar.JDateChooser();
         jRadioButton_nam = new JRadioButton();
+        jRadioButton_nam.setSelected(true);
         jRadioButton_nu = new JRadioButton();
+        buttonGroup.add(jRadioButton_nam);
+        buttonGroup.add(jRadioButton_nu);
         jPanel3 = new JPanel();
         jButton_them = new JButton();
         jButton_them.addActionListener(this);
@@ -131,8 +143,9 @@ public class ThemNhanVien_GUI extends JFrame implements ActionListener {
         jLabel12.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel12.setText("Chức vụ");
 
-        jComboBox_chucVu.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
+        jComboBox_chucVu.setModel(new DefaultComboBoxModel<>(new String[] { "Nhân viên", "Quản lý"}));
+        jComboBox_chucVu.setSelectedItem("Nhân viên");
+        
         jRadioButton_nam.setText("Nam");
 
         jRadioButton_nu.setText("Nữ");
@@ -289,7 +302,6 @@ public class ThemNhanVien_GUI extends JFrame implements ActionListener {
         } catch (UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ThemNhanVien_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        new ThemNhanVien_GUI().setVisible(true);
 
     }
 
@@ -301,8 +313,62 @@ public class ThemNhanVien_GUI extends JFrame implements ActionListener {
 		}
 		
 		if(source.equals(jButton_them)) {
-			
+			themNhanVien();
 		}
 		
 	}
+	
+	public void themNhanVien() {
+		String nhanVienID = generateID.sinhMa("NV");
+		String tenNV = jTextField_tenNhanVien.getText().trim();
+		if(tenNV.equals("")) {
+			JOptionPane.showMessageDialog(this, "Tên nhân viên không được rỗng!");
+			return;
+		}
+		if(jDateChooser_ngaySinh.getDate() == null) {
+			JOptionPane.showMessageDialog(this, "Ngày sinh không được rỗng!");
+			return;
+		}
+		Date ngaySinh = new Date(jDateChooser_ngaySinh.getDate().getTime());
+		String email = jTextField_email.getText().trim();
+		if(email.equals("")) {
+			JOptionPane.showMessageDialog(this, "Email không được rỗng!");
+			return;
+		}
+		String sdt = jTextField_soDienThoai.getText().trim();
+		if(sdt.equals("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không được rỗng!");
+			return;
+		}
+		String diaChi = jTextField_diaChi.getText().trim();
+		if(diaChi.equals("")) {
+			JOptionPane.showMessageDialog(this, "diaChi không được rỗng!");
+			return;
+		}
+		String chucVu = jComboBox_chucVu.getSelectedItem().toString();
+		String gioiTinh = "Nam";
+		if(jRadioButton_nu.isSelected()) {
+			gioiTinh = "Nữ";
+		}
+		String tenTaiKhoan = nhanVienID;
+		String matKhau = sdt;
+		
+		NhanVien nhanVien = new NhanVien(nhanVienID, tenNV, gioiTinh, ngaySinh, email, sdt, diaChi, chucVu, tenTaiKhoan, matKhau);
+		
+		boolean kq = nv_dao.themNhanVien(nhanVien);
+		if(kq) {
+			JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
+			jTextField_tenNhanVien.setText("");
+			jRadioButton_nam.setSelected(true);
+			jDateChooser_ngaySinh.setDate(null);
+			jTextField_email.setText("");
+			jTextField_soDienThoai.setText("");
+			jTextField_diaChi.setText("");
+			jComboBox_chucVu.setSelectedItem("Nhân viên");
+			
+		} else {
+			JOptionPane.showMessageDialog(this, "Thêm nhân viên thất bại!");
+		}
+	}
+		
 }

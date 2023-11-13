@@ -3,10 +3,12 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,13 +17,15 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import dao.NhanVien_DAO;
+import entity.NhanVien;
+
 public class NhanVien_Panel extends JPanel implements ActionListener {
 
     private JButton jButton_lamMoi;
     private JButton jButton_sua;
     private JButton jButton_them;
     private JButton jButton_timKiem;
-    private JButton jButton_xoa;
     private JLabel jLabel_chuDe;
     private JLabel jLabel_nguoiDung;
     private JLabel jLabel_nhapMa;
@@ -34,7 +38,11 @@ public class NhanVien_Panel extends JPanel implements ActionListener {
     private JTextField jTextField_nhapMa;
     private JTextField jTextField_soDienThoai;
     
-    public NhanVien_Panel() {
+    private NhanVien nhanVien = new NhanVien();
+    private NhanVien_DAO nv_dao = new NhanVien_DAO();
+    
+    public NhanVien_Panel(NhanVien nhanVien) {
+    	this.nhanVien = nhanVien;
         khoiTao();
     }
 
@@ -48,12 +56,12 @@ public class NhanVien_Panel extends JPanel implements ActionListener {
         jButton_lamMoi = new JButton();
         jButton_them = new JButton();
         jButton_sua = new JButton();
-        jButton_xoa = new JButton();
         jLabel_nhapMa = new JLabel();
         jLabel_soDienThoai = new JLabel();
         jTextField_soDienThoai = new JTextField();
-        String[] cols = {"Mã", "Tên", "Giới tính", "Ngày sinh", "Email", "Số điện thoại", "Địa chỉ", "Chức vụ", "Tên tài khoản", "Mật khẩu"};
+        String[] cols = {"Mã", "Họ Tên", "Giới tính", "Ngày sinh", "Email", "Số điện thoại", "Địa chỉ", "Chức vụ", "Tên tài khoản", "Mật khẩu"};
         tableModel = new DefaultTableModel(cols, 0);
+        importNhanVien();
         jTable = new JTable(tableModel);
         jScrollPane = new JScrollPane(jTable);
 
@@ -62,7 +70,7 @@ public class NhanVien_Panel extends JPanel implements ActionListener {
         jLabel_chuDe.setText("QUẢN LÝ NHÂN VIÊN");
 
         jLabel_nguoiDung.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabel_nguoiDung.setText("NV0001_Nguyễn Huy Hoàng");
+        jLabel_nguoiDung.setText(nhanVien.getChucVu() + " : "+ nhanVien.getHoTen()+ "-"+nhanVien.getNhanVienID());
 
         GroupLayout jPanel_northLayout = new GroupLayout(jPanel_north);
         jPanel_north.setLayout(jPanel_northLayout);
@@ -72,7 +80,7 @@ public class NhanVien_Panel extends JPanel implements ActionListener {
                 .addContainerGap(389, Short.MAX_VALUE)
                 .addComponent(jLabel_chuDe, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE)
                 .addGap(226, 226, 226)
-                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 189, GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE))
         );
         jPanel_northLayout.setVerticalGroup(
             jPanel_northLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -101,10 +109,6 @@ public class NhanVien_Panel extends JPanel implements ActionListener {
         jButton_sua.setFont(new Font("Times New Roman", 0, 14)); 
         jButton_sua.setText("Sửa");
         jButton_sua.addActionListener(this);
-
-        jButton_xoa.setFont(new Font("Times New Roman", 0, 14)); 
-        jButton_xoa.setText("Xoá");
-        jButton_xoa.addActionListener(this);
 
         jLabel_nhapMa.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel_nhapMa.setText("Nhập mã:");
@@ -135,8 +139,6 @@ public class NhanVien_Panel extends JPanel implements ActionListener {
                 .addComponent(jButton_them)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton_sua)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton_xoa)
                 .addGap(74, 74, 74))
         );
         jPanel_centerLayout.setVerticalGroup(
@@ -149,8 +151,7 @@ public class NhanVien_Panel extends JPanel implements ActionListener {
                     .addComponent(jButton_timKiem)
                     .addComponent(jButton_lamMoi)
                     .addComponent(jButton_them)
-                    .addComponent(jButton_sua)
-                    .addComponent(jButton_xoa))
+                    .addComponent(jButton_sua))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel_centerLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_soDienThoai)
@@ -189,20 +190,72 @@ public class NhanVien_Panel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if(source.equals(jButton_them)) {
-			new ThemNhanVien_GUI().setVisible(true);
+			themNhanVien();
 		}
 		if(source.equals(jButton_lamMoi)) {
-			
+			lamMoi();
+			return;
 		}
 		if(source.equals(jButton_sua)) {
-			new CapNhatNhanVien_GUI().setVisible(true);
+			capNhatNhanVien();
+			return;
 		}
 		if(source.equals(jButton_timKiem)) {
-			
-		}
-		if(source.equals(jButton_xoa)) {
-			
+			timKiemNhanVien();
 		}
 		
+	}
+	
+	public void importNhanVien() {
+		tableModel.setRowCount(0);
+		ArrayList<NhanVien> nhanVienList = nv_dao.getAllNhanVien();
+		for (NhanVien nv : nhanVienList) {
+			tableModel.addRow(nv.toString().split(";"));
+		}
+	}
+	
+	public void lamMoi() {
+		jTextField_nhapMa.setText("");
+		jTextField_soDienThoai.setText("");
+		importNhanVien();
+	}
+	
+	public void timKiemNhanVien() {
+		String ma = jTextField_nhapMa.getText().trim();
+		String soDienThoai = jTextField_soDienThoai.getText().trim();
+		if(ma.equals("") && soDienThoai.equals("")) {
+			JOptionPane.showMessageDialog(this, "Mã nhân viên hoặc số điện thoại chưa nhập!");
+			return;
+		}
+		
+		NhanVien nhanVien = null;
+		if(ma.length() > 0 && soDienThoai.equals("")) {
+			nhanVien = nv_dao.timKiemNhanVienTheoMa(ma);
+		} else if(ma.equals("") && soDienThoai.length() > 0) {
+			nhanVien = nv_dao.timKiemNhanVienTheoSDT(soDienThoai);
+		} else {
+			nhanVien = nv_dao.timKiemNhanVienTheoDieuKien(ma, soDienThoai);
+		}
+		
+		if(nhanVien != null) {
+			tableModel.setRowCount(0);
+			tableModel.addRow(nhanVien.toString().split(";"));
+		} else {
+			JOptionPane.showMessageDialog(this, "Nhân viên không tồn tại!");
+		}
+	}
+	
+	public void themNhanVien() {
+		new ThemNhanVien_GUI().setVisible(true);
+	}
+	
+	public void capNhatNhanVien() {
+		int row = jTable.getSelectedRow();
+		if(row < 0) {
+			JOptionPane.showMessageDialog(this, "Nhân viên chưa được chọn!");
+			return;
+		}
+		String maNV = jTable.getValueAt(row, 0).toString();
+		new CapNhatNhanVien_GUI(maNV).setVisible(true);
 	}
 }

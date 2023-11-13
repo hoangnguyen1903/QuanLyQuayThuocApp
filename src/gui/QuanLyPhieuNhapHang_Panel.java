@@ -3,10 +3,13 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,6 +18,10 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
+
+import dao.HangNhap_DAO;
+import entity.HangNhap;
+import entity.NhanVien;
 
 public class QuanLyPhieuNhapHang_Panel extends JPanel implements ActionListener {
 	
@@ -32,8 +39,12 @@ public class QuanLyPhieuNhapHang_Panel extends JPanel implements ActionListener 
     private JTable jTable;
     private DefaultTableModel tableModel;
     
-    public QuanLyPhieuNhapHang_Panel() {
-        khoiTao();
+    private NhanVien nhanVien = new NhanVien();
+    private HangNhap_DAO hn_dao = new HangNhap_DAO();
+    
+    public QuanLyPhieuNhapHang_Panel(NhanVien nhanVien) {
+    	this.nhanVien = nhanVien;
+    	khoiTao();
     }
     
     private void khoiTao() {
@@ -48,8 +59,9 @@ public class QuanLyPhieuNhapHang_Panel extends JPanel implements ActionListener 
         jDateChooser_ngayNhap = new com.toedter.calendar.JDateChooser();
         jButton_xemChiTiet = new JButton();
         // Table
-        String[] cols = {"Mã nhà cung cấp", "Mã sản phẩm", "Số lượng", "Tổng tiền", "Ngày nhập"};
+        String[] cols = {"Mã sản phẩm", "Mã nhà cung cấp", "Số lượng", "Tổng tiền", "Ngày nhập"};
         tableModel = new DefaultTableModel(cols, 0);
+        importHangNhap();
         jTable = new JTable(tableModel);
         jScrollPane = new JScrollPane(jTable);
         
@@ -58,7 +70,7 @@ public class QuanLyPhieuNhapHang_Panel extends JPanel implements ActionListener 
         jLabel_chuDe.setText("QUẢN LÝ PHIẾU NHẬP HÀNG");
 
         jLabel_nguoiDung.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabel_nguoiDung.setText("NV0001_Nguyễn Huy Hoàng");
+        jLabel_nguoiDung.setText(nhanVien.getChucVu() + " : "+ nhanVien.getHoTen()+ "-"+nhanVien.getNhanVienID());
 
         GroupLayout jPanel_northLayout = new GroupLayout(jPanel_north);
         jPanel_north.setLayout(jPanel_northLayout);
@@ -68,7 +80,7 @@ public class QuanLyPhieuNhapHang_Panel extends JPanel implements ActionListener 
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel_chuDe, GroupLayout.PREFERRED_SIZE, 346, GroupLayout.PREFERRED_SIZE)
                 .addGap(173, 173, 173)
-                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 189, GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel_nguoiDung, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43))
         );
         jPanel_northLayout.setVerticalGroup(
@@ -166,19 +178,84 @@ public class QuanLyPhieuNhapHang_Panel extends JPanel implements ActionListener 
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if(source.equals(jButton_lamMoi)) {
-			
+			lamMoi();
+			return;
 		}
 		if(source.equals(jButton_timKiem)) {
-			
+			timKiemPhieuNhapHang();
+			return;
 		}
 		if(source.equals(jButton_xemChiTiet)) {
-			new ChiTietPhieuNhapHang_GUI().setVisible(true);
+			xemChiTietPhieuNhapHang();
+			return;
 		}
 		if(source.equals(jButton_xoa)) {
-			
+			xoaPhieuNhapHang();
 		}
 		
 	}
 
+    public void importHangNhap() {
+    	tableModel.setRowCount(0);
+    	ArrayList<HangNhap> hangNhapList = hn_dao.getAllHangNhap();
+    	for (HangNhap hn : hangNhapList) {
+			tableModel.addRow(hn.toString().split(";"));
+		}
+    }
     
+    public void lamMoi() {
+    	jDateChooser_ngayNhap.setDate(null);
+    	importHangNhap();
+    }
+    
+    public void timKiemPhieuNhapHang() {
+    	java.util.Date ngayNhap = jDateChooser_ngayNhap.getDate(); 
+    	if(ngayNhap == null) {
+    		JOptionPane.showMessageDialog(this, "Ngày chưa được chọn!");
+    		return;
+    	}
+    	java.sql.Date ngayNhapSQL = new java.sql.Date(ngayNhap.getTime());
+    	ArrayList<HangNhap> hangNhapList = hn_dao.timKiemHangNhapTheoNgay(ngayNhapSQL);
+    	if(hangNhapList != null) {
+    		tableModel.setRowCount(0);
+    		for (HangNhap hn : hangNhapList) {
+				tableModel.addRow(hn.toString().split(";"));
+			}
+    	} else {
+    		JOptionPane.showMessageDialog(this, "Tìm kiếm thất bại!");
+    	}
+    }
+    
+    public void xoaPhieuNhapHang() {
+    	int row = jTable.getSelectedRow();
+    	if(row < 0) {
+    		JOptionPane.showMessageDialog(this, "Phiếu nhập hàng chưa được chọn!");
+    		return;
+    	}
+    	
+    	int thongBao = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xoá không ?", "Xoá", JOptionPane.YES_NO_OPTION);
+    	
+    	if(thongBao == JOptionPane.YES_OPTION) {
+    		String maSP = jTable.getValueAt(row, 0).toString();
+    		String maNCC = jTable.getValueAt(row, 1).toString();
+    	
+	    	boolean kq = hn_dao.xoaHangNhap(maNCC, maSP);
+	    	if(kq) {
+	    		tableModel.removeRow(row);
+	    	} else {
+	    		JOptionPane.showMessageDialog(this, "Xoá phiếu nhập hàng thất bại!");
+	    	}
+    	}
+    }
+    
+    public void xemChiTietPhieuNhapHang() {
+    	int row = jTable.getSelectedRow();
+    	if(row < 0) {
+    		JOptionPane.showMessageDialog(this, "Phiếu nhập hàng chưa được chọn!");
+    		return;
+    	}
+    	String maSP = jTable.getValueAt(row, 0).toString();
+    	String maNCC = jTable.getValueAt(row, 1).toString();
+    	new ChiTietPhieuNhapHang_GUI(maSP, maNCC).setVisible(true);
+    }
 }

@@ -11,12 +11,17 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import dao.NhaCungCap_DAO;
+import entity.NhaCungCap;
+import util.GenerateID;
 
 public class ThemNhaCungCap_GUI extends JFrame implements ActionListener {
 
@@ -35,6 +40,9 @@ public class ThemNhaCungCap_GUI extends JFrame implements ActionListener {
     private JTextField jTextField_soDienThoai;
     private JTextField jTextField_tenNhaCungCap;
 
+    private NhaCungCap_DAO ncc_dao = new NhaCungCap_DAO();
+    private GenerateID generateID = new GenerateID();
+    
     public ThemNhaCungCap_GUI() {
         khoiTao();
         pack();
@@ -215,7 +223,39 @@ public class ThemNhaCungCap_GUI extends JFrame implements ActionListener {
 		}
 		
 		if(source.equals(jButton_them)) {
-			
+			themNCC();
+		}
+		
+	}
+	
+	public void themNCC() {
+		String nhaCungCapID = generateID.sinhMa("NCC");
+		String tenNhaCungCap = jTextField_tenNhaCungCap.getText().trim();
+		if(tenNhaCungCap.equals("")) {
+			JOptionPane.showMessageDialog(this, "Tên nhà cung cấp chưa được nhập!");
+			return;
+		}
+		String soDienThoai = jTextField_soDienThoai.getText().trim();
+		if(soDienThoai.equals("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại chưa được nhập!");
+			return;
+		}
+		String diaChi = jTextField_diaChi.getText().trim();
+		if(diaChi.equals("")) {
+			JOptionPane.showMessageDialog(this, "Địa chỉ chưa được nhập!");
+			return;
+		}
+		
+		NhaCungCap ncc = new NhaCungCap(nhaCungCapID, tenNhaCungCap, soDienThoai, diaChi);
+		
+		boolean kq = ncc_dao.themNhaCungCap(ncc);
+		if(kq) {
+			JOptionPane.showMessageDialog(this, "Thêm nhà cung cấp thành công!");
+			jTextField_tenNhaCungCap.setText("");
+			jTextField_soDienThoai.setText("");
+			jTextField_diaChi.setText("");
+		} else {
+			JOptionPane.showMessageDialog(this, "Thêm nhà cung cấp thất bại!");
 		}
 		
 	}

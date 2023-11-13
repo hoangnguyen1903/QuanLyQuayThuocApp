@@ -17,10 +17,15 @@ public class SanPham_DAO {
 		
 	}
 	
-	public ArrayList<SanPham> getAllSanPham() throws SQLException {
+	public ArrayList<SanPham> getAllSanPham() {
+		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         PreparedStatement statement = null;
         ArrayList<SanPham> sanPhamList = new ArrayList<SanPham>();
-        ConnectDB.getInstance().connect();
         Connection con = ConnectDB.getConnection();
         try {
             String sql = "SELECT sp.SanPhamID, ImgPath, TenSanPham, ThanhPhan, CachDung, XuatXu, NgaySanXuat, NgayHetHan, DonGia, SoLuongTon, TenLoai, TinhTrang, sp.LoaiID  FROM SanPham as sp inner join LoaiSanPham as lsp on sp.LoaiID=lsp.LoaiID";
@@ -227,5 +232,46 @@ public class SanPham_DAO {
 			return null;
 		}
 		return listSP;
+	}
+	public SanPham timKiemSanPhamTheoMa(String ma) {
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement statement = null;
+		try {
+			String sql = "SELECT sp.*, lsp.TenLoai  FROM SanPham as sp inner join LoaiSanPham as lsp on sp.LoaiID=lsp.LoaiID where SanPhamID=?";
+			statement = con.prepareStatement(sql);
+			statement.setString(1, ma);
+			
+			ResultSet rs = statement.executeQuery();
+			SanPham sanPham = null; 
+			if(rs.next()) {
+				sanPham = new SanPham();
+            	sanPham.setSanPhamID(rs.getString("SanPhamID"));
+            	sanPham.setImgPath(rs.getString("ImgPath"));
+            	sanPham.setTenSanPham(rs.getString("TenSanPham"));
+            	sanPham.setThanhPhan(rs.getString("ThanhPhan"));
+            	sanPham.setCachDung(rs.getString("CachDung"));
+            	sanPham.setXuatXu(rs.getString("XuatXu"));
+            	sanPham.setNgaySanXuat(rs.getDate("NgaySanXuat"));
+            	sanPham.setNgayHetHan(rs.getDate("NgayHetHan"));
+            	sanPham.setDonGia(rs.getDouble("DonGia"));
+            	sanPham.setSoLuongTon(rs.getInt("SoLuongTon"));
+            	LoaiSanPham loai = new LoaiSanPham(rs.getString("LoaiID"), rs.getString("TenLoai"));
+            	sanPham.setLoaiSanPham(loai);
+            	sanPham.setTinhTrang(rs.getString("TinhTrang"));
+			}
+			return sanPham;
+		} catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            	
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 	}
 }

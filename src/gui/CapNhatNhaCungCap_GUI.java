@@ -9,12 +9,16 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import dao.NhaCungCap_DAO;
+import entity.NhaCungCap;
 
 public class CapNhatNhaCungCap_GUI extends JFrame implements ActionListener {
 	
@@ -33,7 +37,11 @@ public class CapNhatNhaCungCap_GUI extends JFrame implements ActionListener {
     private JTextField jTextField_soDienThoai;
     private JTextField jTextField_tenNhaCungCap;
 
-    public CapNhatNhaCungCap_GUI() {
+    private String maNCC;
+    private NhaCungCap_DAO ncc_dao = new NhaCungCap_DAO();
+    
+    public CapNhatNhaCungCap_GUI(String maNCC) {
+    	this.maNCC = maNCC;
         khoiTao();
         pack();
         setResizable(false);
@@ -64,6 +72,7 @@ public class CapNhatNhaCungCap_GUI extends JFrame implements ActionListener {
         jLabel_chuDe.setFont(new Font("Times New Roman", 1, 24)); 
         jLabel_chuDe.setHorizontalAlignment(SwingConstants.CENTER);
         jLabel_chuDe.setText("THÔNG TIN NHÀ CUNG CẤP");
+        importNhaCungCap();
 
         GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -94,7 +103,6 @@ public class CapNhatNhaCungCap_GUI extends JFrame implements ActionListener {
         jLabel11.setText("Địa chỉ");
 
         jLabel_maNhaCungCap.setFont(new Font("Times New Roman", 2, 14)); 
-        jLabel_maNhaCungCap.setText("NCC0001");
 
         jLabel1.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel1.setText("Mã nhà cung cấp");
@@ -216,7 +224,6 @@ public class CapNhatNhaCungCap_GUI extends JFrame implements ActionListener {
             java.util.logging.Logger.getLogger(CapNhatNhaCungCap_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
       
-        new CapNhatNhaCungCap_GUI().setVisible(true);
     }
 
     // Code
@@ -228,7 +235,45 @@ public class CapNhatNhaCungCap_GUI extends JFrame implements ActionListener {
 		}
 		
 		if(source.equals(jButton_sua)) {
-			
+			capNhatNCC();
+		}
+	}
+	
+	public void importNhaCungCap() {
+		NhaCungCap ncc = ncc_dao.timKiemNCCTheoMa(maNCC);
+		if(ncc != null) {
+			jLabel_maNhaCungCap.setText(ncc.getNhaCungCapID());
+			jTextField_tenNhaCungCap.setText(ncc.getTenNhaCungCap());
+			jTextField_soDienThoai.setText(ncc.getSoDienThoai());
+			jTextField_diaChi.setText(ncc.getDiaChi());
+		}
+	}
+	
+	public void capNhatNCC() {
+		String tenNhaCungCap = jTextField_tenNhaCungCap.getText().trim();
+		if(tenNhaCungCap.equals("")) {
+			JOptionPane.showMessageDialog(this, "Tên nhà cung cấp chưa được nhập!");
+			return;
+		}
+		String soDienThoai = jTextField_soDienThoai.getText().trim();
+		if(soDienThoai.equals("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại chưa được nhập!");
+			return;
+		}
+		String diaChi = jTextField_diaChi.getText().trim();
+		if(diaChi.equals("")) {
+			JOptionPane.showMessageDialog(this, "Địa chỉ chưa được nhập!");
+			return;
+		}
+		
+		NhaCungCap ncc = new NhaCungCap(maNCC, tenNhaCungCap, soDienThoai, diaChi);
+		
+		boolean kq = ncc_dao.capNhatNhaCungCap(ncc);
+		if(kq) {
+			JOptionPane.showMessageDialog(this, "Cập nhật nhà cung cấp thành công!");
+			importNhaCungCap();
+		} else {
+			JOptionPane.showMessageDialog(this, "Cập nhật nhà cung cấp thất bại!");
 		}
 	}
 }
