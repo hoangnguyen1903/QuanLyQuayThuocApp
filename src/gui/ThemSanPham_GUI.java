@@ -1,33 +1,42 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.HeadlessException;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.table.DefaultTableModel;
+
 import com.toedter.calendar.JDateChooser;
 
+import dao.LoaiSanPham_DAO;
+import dao.SanPham_DAO;
+import entity.LoaiSanPham;
+import entity.SanPham;
+
 public class ThemSanPham_GUI extends JFrame implements ActionListener {
-	
+	private static String filePrefix = "src//img//";
 	private JButton jButton_chonAnh;
     private JButton jButton_huyBo;
     private JButton jButton_them;
@@ -46,6 +55,7 @@ public class ThemSanPham_GUI extends JFrame implements ActionListener {
     private JLabel jLabel7;
     private JLabel jLabel8;
     private JLabel jLabel9;
+    private JLabel jLabel_anh;
     private JLabel jLabel_chuDe;
     private JPanel jPanel1;
     private JPanel jPanel2;
@@ -59,7 +69,8 @@ public class ThemSanPham_GUI extends JFrame implements ActionListener {
     private JTextField jTextField_tenSanPham;
     private JTextField jTextField_thanhPhan;
     private JTextField jTextField_xuatXu;
-	    
+    private LoaiSanPham_DAO loaiSanPham_DAO = new LoaiSanPham_DAO();
+	private SanPham_DAO sanPham_DAO = new SanPham_DAO();
     public ThemSanPham_GUI() {
         khoiTao();
         setUndecorated(true);
@@ -70,7 +81,7 @@ public class ThemSanPham_GUI extends JFrame implements ActionListener {
     }
 
     private void khoiTao() {
-    	jFileChooser1 = new JFileChooser();
+    	jFileChooser1 = new JFileChooser("src//img");
         jPanel1 = new JPanel();
         jLabel_chuDe = new JLabel();
         jSplitPane2 = new JSplitPane();
@@ -89,6 +100,8 @@ public class ThemSanPham_GUI extends JFrame implements ActionListener {
         jLabel8 = new JLabel();
         jTextField_cachDung = new JTextField();
         jLabel9 = new JLabel();
+        jLabel_anh = new JLabel();
+        jLabel_anh.setPreferredSize(new Dimension(200, 200));
         jTextField_donGia = new JTextField();
         jLabel10 = new JLabel();
         jComboBox_loai = new JComboBox<>();
@@ -98,6 +111,8 @@ public class ThemSanPham_GUI extends JFrame implements ActionListener {
         jComboBox_tinhTrang = new JComboBox<>();
         jDateChooser_ngaySX = new JDateChooser();
         jDateChooser_ngayHH = new JDateChooser();
+        jDateChooser_ngayHH.setLocale(new Locale("vi", "VN"));
+        jDateChooser_ngaySX.setLocale(new Locale("vi", "VN"));
         jPanel3 = new JPanel();
         jButton_them = new JButton();
         jButton_huyBo = new JButton();
@@ -196,16 +211,26 @@ public class ThemSanPham_GUI extends JFrame implements ActionListener {
         jLabel10.setFont(new Font("Times New Roman", 1, 14));  
         jLabel10.setText("Loại");
 
-        jComboBox_loai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
+        	
+        ArrayList<LoaiSanPham> loaiSP = loaiSanPham_DAO.getAllLoaiSanPham();
+        for (LoaiSanPham loaiSanPham : loaiSP) {
+			jComboBox_loai.addItem(loaiSanPham.getTenLoai());
+		}
+        
         jLabel11.setFont(new Font("Times New Roman", 1, 14));  
         jLabel11.setText("Số lượng tồn");
 
         jLabel12.setFont(new Font("Times New Roman", 1, 14));  
         jLabel12.setText("Tình trạng");
 
-        jComboBox_tinhTrang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
+        jComboBox_tinhTrang.addItem("Đang bán");
+        jComboBox_tinhTrang.addItem("Ngưng bán");
+        
+        jLabel_anh.setIcon(ResizeImageIcon("src//img//labelAnh.png"));
+        jPanel_anh.setPreferredSize(new Dimension(200, 200));
+        jPanel_anh.setLayout(new BorderLayout());
+        jPanel_anh.add(jLabel_anh, BorderLayout.CENTER);
+        
         GroupLayout jPanel4Layout = new GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -373,6 +398,7 @@ public class ThemSanPham_GUI extends JFrame implements ActionListener {
         } catch (UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CapNhatSanPham_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        
 
         new ThemSanPham_GUI().setVisible(true);
     }
@@ -385,10 +411,95 @@ public class ThemSanPham_GUI extends JFrame implements ActionListener {
 			dispose();
 		}
 		if(source.equals(jButton_them)) {
-			
+			if (checkInput()) {
+				String ma = util.GenerateID.sinhMa("SP");
+				String cachDung = jTextField_cachDung.getText();
+				String xuatXu = jTextField_xuatXu.getText();
+				java.sql.Date ngaySX = new java.sql.Date(jDateChooser_ngaySX.getDate().getTime());
+		        java.sql.Date ngayHH = new java.sql.Date(jDateChooser_ngayHH.getDate().getTime());
+				double donGia = Float.valueOf(jTextField_donGia.getText());
+				int  slton = Integer.valueOf(jTextField_soLuongTon.getText());
+				String tinhTrang = jComboBox_tinhTrang.getSelectedItem().toString();
+				String imgPath = "";
+				if (jFileChooser1.getSelectedFile() != null) {
+					imgPath = filePrefix + jFileChooser1.getSelectedFile().getName();
+				}
+				String thanhPhan = jTextField_thanhPhan.getText();
+				String ten = jTextField_tenSanPham.getText();
+				LoaiSanPham lsp = loaiSanPham_DAO.getLoaiSPTheoTenLoai(jComboBox_loai.getSelectedItem().toString());
+				
+				SanPham sp = new SanPham(ma, imgPath, ten, thanhPhan, cachDung, xuatXu, ngaySX, ngayHH, donGia, slton, lsp, tinhTrang);
+				if (sanPham_DAO.insert(sp)) {
+					JOptionPane.showMessageDialog(this, "Thêm sản phẩm mới thành công");
+					refresh();	
+				}
+				else JOptionPane.showMessageDialog(this, "Thêm sản phẩm mới thất bại");
+				dispose();
+			}
 		}
 		if(source.equals(jButton_chonAnh)) {
-			
+			btn_ChonAnhActionPerformed();
 		}
+	}
+	
+	public void refresh() {
+		jTextField_cachDung.setText("");
+		jTextField_xuatXu.setText("");
+		jDateChooser_ngaySX.setDate(null);
+		jDateChooser_ngayHH.setDate(null);
+		jTextField_donGia.setText("");
+		jTextField_soLuongTon.setText("");
+		jTextField_tenSanPham.setText("");
+		jTextField_thanhPhan.setText("");
+		jComboBox_loai.setSelectedIndex(0);
+		jComboBox_tinhTrang.setSelectedIndex(0);
+	}
+	
+	private void btn_ChonAnhActionPerformed() {                                            
+        int kq = jFileChooser1.showOpenDialog(null);
+        File selectedFile = null;
+        if (kq == JFileChooser.APPROVE_OPTION) {
+            if (jFileChooser1.getSelectedFile() != null) {
+            	selectedFile = jFileChooser1.getSelectedFile();
+            }
+            String fileChose = filePrefix + selectedFile.getName();
+            jLabel_anh.setIcon(ResizeImageIcon(fileChose));
+        } else if (kq == JFileChooser.CANCEL_OPTION) {
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Lỗi chọn ảnh");
+        }
+    }                                           
+    private ImageIcon ResizeImageIcon(String ImagePath) {
+        ImageIcon myIcon = new ImageIcon(ImagePath);
+        Image img = myIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(img);
+        return image;
+    }
+    
+    public boolean checkInput() {
+		try {
+			String tenSP = jTextField_tenSanPham.getText();
+			String cachDung = jTextField_cachDung.getText();
+			String donGia = jTextField_donGia.getText();
+			String slt = jTextField_soLuongTon.getText();
+			String thanhPhan = jTextField_thanhPhan.getText();
+			String xuatXu = jTextField_xuatXu.getText();
+			Date date1 = (Date) jDateChooser_ngayHH.getDate();
+			Date date2 = (Date) jDateChooser_ngaySX.getDate();
+			if (tenSP.isBlank() || cachDung.isBlank() || donGia.isBlank() || slt.isBlank() || thanhPhan.isBlank() || xuatXu.isBlank()) {
+				JOptionPane.showMessageDialog(this, "Tất cả thông tin không được rỗng");
+				return false;
+			}
+			else if (date1 == null || date2 == null) {
+				JOptionPane.showMessageDialog(this, "Phải chọn ngày sản xuất và ngày hết hạn");
+				return false;
+			}
+		} catch (HeadlessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 }

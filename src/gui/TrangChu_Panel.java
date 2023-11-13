@@ -132,7 +132,7 @@ public class TrangChu_Panel extends JPanel{
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jLabel4.setIcon(new ImageIcon(getClass().getResource("/img/anh-quay-thuoc.jpg")));  
+        jLabel4.setIcon(new ImageIcon(getClass().getResource("/img/anh-quay-thuoc.png")));  
         jLabel4.setHorizontalTextPosition(SwingConstants.RIGHT);
         jLabel4.setIconTextGap(0);
 

@@ -5,11 +5,13 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
@@ -23,6 +25,7 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import dao.LoaiSanPham_DAO;
 import dao.SanPham_DAO;
 import entity.LoaiSanPham;
 import entity.SanPham;
@@ -47,6 +50,7 @@ public class SanPham_Panel extends JPanel implements ActionListener{
     private JTextField jTextField_nhapMa;
     
     private SanPham_DAO sp_dao = new SanPham_DAO();
+    private LoaiSanPham_DAO loaiSP_dao = new LoaiSanPham_DAO();
     private ArrayList<SanPham> sanPhamList = new ArrayList<SanPham>();
 
     public SanPham_Panel() {
@@ -63,16 +67,32 @@ public class SanPham_Panel extends JPanel implements ActionListener{
         jButton_them = new JButton();
         jButton_sua = new JButton();
         jComboBox_loaiSanPham = new JComboBox<>();
+        
+        LoaiSanPham_DAO loaiSP_Dao = new LoaiSanPham_DAO();
+        
+        
+        
         jLabel_nhapMa = new JLabel();
         jLabel_loaiSanPham = new JLabel();
         jButton_xem = new JButton();
         jLabel_nguoiDung = new JLabel();
         // Table
-        String[] cols = {"Mã sản phẩm", "Tên sản phẩm", "Ảnh", "Thành phần", "Cách dùng", "Xuất xứ", "Ngày sản xuất", "Ngày hết hạn", "Đơn giá", "Số lượng tồn", "Loại", "Tình trạng"};
-        tableModel = new DefaultTableModel(cols, 0);
-        importSanPham();
-        jTable = new JTable(tableModel);
+//        String[] cols = {"Mã sản phẩm", "Tên sản phẩm", "Ảnh", "Thành phần", "Cách dùng", "Xuất xứ", "Ngày sản xuất", "Ngày hết hạn", "Đơn giá", "Số lượng tồn", "Loại", "Tình trạng"};
+        tableModel = new DefaultTableModel();
+//        tableModel.setColumnIdentifiers(cols);
+        jTable = new JTable();
+        jTable.setModel(new javax.swing.table.DefaultTableModel(
+                new Object [][] {
+
+                },
+                new String [] {
+                		"Mã sản phẩm", "Tên sản phẩm", "Ảnh", "Thành phần", "Cách dùng", "Xuất xứ", "Ngày sản xuất", "Ngày hết hạn", "Đơn giá", "Số lượng tồn", "Loại", "Tình trạng"
+                }
+            ));
+        tableModel = (DefaultTableModel) jTable.getModel();
+        jTable.setModel(tableModel);
         jScrollPane = new JScrollPane(jTable);
+        
 
         jLabel_chuDe.setFont(new Font("Times New Roman", 1, 24)); 
         jLabel_chuDe.setHorizontalAlignment(SwingConstants.CENTER);
@@ -114,8 +134,11 @@ public class SanPham_Panel extends JPanel implements ActionListener{
         jButton_sua.addActionListener(this);
 
         jComboBox_loaiSanPham.setFont(new Font("Times New Roman", 0, 14));  
-        jComboBox_loaiSanPham.setModel(new DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
+        ArrayList<LoaiSanPham> listLoaiSP = loaiSP_Dao.getAllLoaiSanPham();
+        for (LoaiSanPham loaiSanPham : listLoaiSP) {
+			jComboBox_loaiSanPham.addItem(loaiSanPham.getTenLoai());
+		}
+        
         jLabel_nhapMa.setFont(new Font("Times New Roman", 1, 14));  
         jLabel_nhapMa.setText("Nhập mã:");
 
@@ -208,6 +231,9 @@ public class SanPham_Panel extends JPanel implements ActionListener{
                 .addComponent(jScrollPane, GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
                 .addContainerGap())
         );
+        importSanPham();
+        
+        refresh();
         
     }
 
@@ -217,19 +243,39 @@ public class SanPham_Panel extends JPanel implements ActionListener{
 		Object source = e.getSource();
 		if(source.equals(jButton_them)) {
 			new ThemSanPham_GUI().setVisible(true);
+			refresh();
 		}
 		if(source.equals(jButton_lamMoi)) {
-			
+	        jTextField_nhapMa.setText("");
+	        refresh();
 		}
 		if(source.equals(jButton_timKiem)) {
-			
+			String id = jTextField_nhapMa.getText();
+			String comboLoai = jComboBox_loaiSanPham.getSelectedItem() == null ? "null" : jComboBox_loaiSanPham.getSelectedItem().toString();
+			LoaiSanPham lsp = loaiSP_dao.getLoaiSPTheoTenLoai(comboLoai);
+			SanPham sp = sp_dao.findOne(id);
+	        if (id.isBlank() && !comboLoai.equals("null"))  {
+	        	ArrayList<SanPham> listSPTheoLoai = sp_dao.getSPTheoLoaiID(lsp.getLoaiID());
+	        	deleteAllRows(tableModel);
+	        	for (SanPham sanPham : listSPTheoLoai) {
+					tableModel.addRow(sanPham.toString().split(";"));
+				}
+	        }
+	        else if (sp == null && !id.isBlank()){
+				 JOptionPane.showMessageDialog(this, "Sản phẩm không tồn tại!");
+	        }
+	        else if (!id.isBlank() && comboLoai.equals("null")) {
+	        	deleteAllRows(tableModel);
+				tableModel.addRow(sp.toString().split(";"));
+	        }
+	        
 		}
 		if(source.equals(jButton_sua)) {
 			capNhatSanPham();
-			return;
+			refresh();
 		}
 		if(source.equals(jButton_xem)) {
-			new ChiTietSanPham_GUI().setVisible(true);
+			xemSanPham();
 		}
 	}
 	
@@ -262,10 +308,48 @@ public class SanPham_Panel extends JPanel implements ActionListener{
 		int soLuongTon = Integer.parseInt(jTable.getValueAt(row, 9).toString());
 		String tenLoai = jTable.getValueAt(row, 10).toString();
 		LoaiSanPham loaiSP = new LoaiSanPham();
-		loaiSP.setTenLoai(tenLoai);
+		loaiSP = loaiSP_dao.getLoaiSPTheoTenLoai(tenLoai);
 		String tinhTrang = jTable.getValueAt(row, 11).toString();
-		
 		SanPham sanPham = new SanPham(sanPhamID, imgPath, tenSanPham, thanhPhan, cachDung, xuatXu, ngaySanXuat, ngayHetHan, donGia, soLuongTon, loaiSP, tinhTrang);
 		new CapNhatSanPham_GUI(sanPham).setVisible(true);
+		refresh();
 	}
+	
+	public void xemSanPham() {
+		int row = jTable.getSelectedRow();
+		if(row < 0) {
+			JOptionPane.showMessageDialog(this, "Sản phẩm chưa được chọn!");
+			return;
+		}
+		String sanPhamID = jTable.getValueAt(row, 0).toString();
+		String tenSanPham = jTable.getValueAt(row, 1).toString();
+		String imgPath = jTable.getValueAt(row, 2).toString();
+		String thanhPhan = jTable.getValueAt(row, 3).toString();
+		String cachDung = jTable.getValueAt(row, 4).toString();
+		String xuatXu = jTable.getValueAt(row, 5).toString();
+		Date ngaySanXuat = Date.valueOf(jTable.getValueAt(row, 6).toString());
+		Date ngayHetHan = Date.valueOf(jTable.getValueAt(row, 7).toString());
+		double donGia = Double.parseDouble(jTable.getValueAt(row, 8).toString());
+		int soLuongTon = Integer.parseInt(jTable.getValueAt(row, 9).toString());
+		String tenLoai = jTable.getValueAt(row, 10).toString();
+		LoaiSanPham loaiSP = new LoaiSanPham();
+		loaiSP = loaiSP_dao.getLoaiSPTheoTenLoai(tenLoai);
+		String tinhTrang = jTable.getValueAt(row, 11).toString();
+		SanPham sanPham = new SanPham(sanPhamID, imgPath, tenSanPham, thanhPhan, cachDung, xuatXu, ngaySanXuat, ngayHetHan, donGia, soLuongTon, loaiSP, tinhTrang);
+		new ChiTietSanPham_GUI(sanPham).setVisible(true);
+	}
+	
+	public void refresh() {
+		deleteAllRows(tableModel);
+        jComboBox_loaiSanPham.setSelectedIndex(-1);
+        importSanPham();
+    }
+	
+	public static void deleteAllRows(DefaultTableModel model) {
+        while (model.getRowCount() > 0) {
+            model.removeRow(0); // Xoá hàng đầu tiên (index 0) cho đến khi không còn hàng nào
+        }
+    }
+	
+	
 }

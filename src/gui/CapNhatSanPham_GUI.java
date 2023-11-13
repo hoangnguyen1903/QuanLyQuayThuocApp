@@ -1,20 +1,29 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.HeadlessException;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
@@ -26,14 +35,15 @@ import javax.swing.UnsupportedLookAndFeelException;
 import com.toedter.calendar.JDateChooser;
 
 import dao.LoaiSanPham_DAO;
+import dao.SanPham_DAO;
 import entity.LoaiSanPham;
 import entity.SanPham;
 
 public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
-
+	private static String filePrefix = "src//img//";
     private JButton jButton_chonAnh;
     private JButton jButton_huyBo;
-    private JButton jButton_them;
+    private JButton jButton_sua;
     private JComboBox<String> jComboBox_loai;
     private JComboBox<String> jComboBox_tinhTrang;
     private JDateChooser jDateChooser_ngayHH;
@@ -44,6 +54,7 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
     private JLabel jLabel11;
     private JLabel jLabel12;
     private JLabel jLabel3;
+    private JLabel jLabel_anh;
     private JLabel jLabel4;
     private JLabel jLabel5;
     private JLabel jLabel6;
@@ -67,6 +78,7 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
     private SanPham sanPham = new SanPham();
     
     private LoaiSanPham_DAO loaisp_dao = new LoaiSanPham_DAO();
+    private SanPham_DAO sp_dao = new SanPham_DAO();
 
     public CapNhatSanPham_GUI(SanPham sanPham) {
     	this.sanPham = sanPham;
@@ -78,7 +90,7 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
     }
 
     private void khoiTao() {
-        jFileChooser1 = new JFileChooser();
+    	jFileChooser1 = new JFileChooser("src//img");
         jPanel1 = new JPanel();
         jLabel_chuDe = new JLabel();
         jSplitPane2 = new JSplitPane();
@@ -107,11 +119,13 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
         jComboBox_tinhTrang = new JComboBox<>();
         jDateChooser_ngaySX = new JDateChooser();
         jDateChooser_ngayHH = new JDateChooser();
+        jDateChooser_ngayHH.setLocale(new Locale("vi", "VN"));
+        jDateChooser_ngaySX.setLocale(new Locale("vi", "VN"));
         jLabel1 = new JLabel();
         jLabel_maSanPham = new JLabel();
         jPanel3 = new JPanel();
-        jButton_them = new JButton();
-        jButton_them.addActionListener(this);
+        jButton_sua = new JButton();
+        jButton_sua.addActionListener(this);
         jButton_huyBo = new JButton();
         jButton_huyBo.addActionListener(this);
 
@@ -183,6 +197,9 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
         );
 
         jSplitPane2.setLeftComponent(jPanel2);
+        
+        jLabel_anh = new JLabel();
+        jLabel_anh.setPreferredSize(new Dimension(200, 200));
 
         jLabel3.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel3.setText("Tên sản phẩm");
@@ -212,10 +229,10 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
         DefaultComboBoxModel<String> comboboxModel = new DefaultComboBoxModel<>();
         ArrayList<LoaiSanPham> loaiSPList = loaisp_dao.getAllLoaiSanPham();
         for (LoaiSanPham loai : loaiSPList) {
-        	System.out.println(loai.getTenLoai());
         	comboboxModel.addElement(loai.getTenLoai());
 		}
         jComboBox_loai.setModel(comboboxModel);
+        jComboBox_loai.setSelectedItem(sanPham.getLoaiSanPham().getTenLoai());
 
         jLabel11.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel11.setText("Số lượng tồn");
@@ -224,7 +241,13 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
         jLabel12.setText("Tình trạng");
 
         jComboBox_tinhTrang.setModel(new DefaultComboBoxModel<>(new String[] { "Đang bán", "Ngừng bán" }));
-
+        jComboBox_tinhTrang.setSelectedItem(sanPham.getTinhTrang());
+        
+        jLabel_anh.setIcon(ResizeImageIcon(sanPham.getImgPath()));
+        jPanel_anh.setPreferredSize(new Dimension(200, 200));
+        jPanel_anh.setLayout(new BorderLayout());
+        jPanel_anh.add(jLabel_anh, BorderLayout.CENTER);
+        
         jLabel1.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel1.setText("Mã sản phẩm");
 
@@ -337,8 +360,8 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
         jSplitPane2.setRightComponent(jPanel4);
         jSplitPane2.getLeftComponent().setMinimumSize(new Dimension(300, 0));
 
-        jButton_them.setFont(new Font("Times New Roman", 1, 14)); 
-        jButton_them.setText("Sửa");
+        jButton_sua.setFont(new Font("Times New Roman", 1, 14)); 
+        jButton_sua.setText("Sửa");
 
         jButton_huyBo.setFont(new Font("Times New Roman", 1, 14)); 
         jButton_huyBo.setText("Huỷ bỏ");
@@ -349,7 +372,7 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
             jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(254, 254, 254)
-                .addComponent(jButton_them, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton_sua, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
                 .addGap(82, 82, 82)
                 .addComponent(jButton_huyBo, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -359,7 +382,7 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton_them)
+                    .addComponent(jButton_sua)
                     .addComponent(jButton_huyBo))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
@@ -418,11 +441,43 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
 		}
 		
 		if(source.equals(jButton_chonAnh)) {
-			
+			btn_ChonAnhActionPerformed();
 		}
 		
-		if(source.equals(jButton_them)) {
-			
+		if(source.equals(jButton_sua)) {
+			try {
+				if (checkInput()) {
+					SanPham sp = new SanPham();
+					String loaiSP = jComboBox_loai.getSelectedItem().toString();
+					sp = sp_dao.findOne(jLabel_maSanPham.getText());
+					sp.setLoaiSanPham(sp_dao.getLoaiSanPham(loaiSP));
+					sp.setCachDung(jTextField_cachDung.getText());
+					sp.setDonGia(Double.parseDouble(jTextField_donGia.getText()));
+					if (jFileChooser1.getSelectedFile() != null) {
+						sp.setImgPath(filePrefix+jFileChooser1.getSelectedFile().getName());
+					}
+					java.sql.Date ngaySX = new java.sql.Date(jDateChooser_ngaySX.getDate().getTime());
+			        java.sql.Date ngayHH = new java.sql.Date(jDateChooser_ngayHH.getDate().getTime());
+					sp.setNgayHetHan(ngayHH);
+					sp.setNgaySanXuat(ngaySX);
+					sp.setSoLuongTon(Integer.valueOf(jTextField_soLuongTon.getText()));
+					sp.setXuatXu(jTextField_xuatXu.getText());
+					sp.setTinhTrang(jComboBox_tinhTrang.getSelectedItem().toString());
+					sp.setTenSanPham(jTextField_tenSanPham.getText());
+					sp.setThanhPhan(jTextField_thanhPhan.getText());
+					int n = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn sửa thông tin sản phẩm này?");
+					if (n == JOptionPane.YES_OPTION) {
+						if (sp_dao.update(sp)) {
+							JOptionPane.showMessageDialog(this, "Cập nhật thông tin sản phẩm thành công!");
+							dispose();
+						}
+					}
+				}
+				
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -438,5 +493,53 @@ public class CapNhatSanPham_GUI extends JFrame implements ActionListener {
 		jDateChooser_ngaySX.setDate(sanPham.getNgaySanXuat());
 		jDateChooser_ngayHH.setDate(sanPham.getNgayHetHan());
 		jComboBox_loai.setName(sanPham.getLoaiSanPham().getTenLoai());
+	}
+	
+	private void btn_ChonAnhActionPerformed() {                                            
+        int kq = jFileChooser1.showOpenDialog(null);
+        File selectedFile = null;
+        if (kq == JFileChooser.APPROVE_OPTION) {
+            if (jFileChooser1.getSelectedFile() != null) {
+            	selectedFile = jFileChooser1.getSelectedFile();
+            }
+            String fileChose = filePrefix + selectedFile.getName();
+            jLabel_anh.setIcon(ResizeImageIcon(fileChose));
+        } else if (kq == JFileChooser.CANCEL_OPTION) {
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Lỗi chọn ảnh");
+        }
+    }                                                                   
+    private ImageIcon ResizeImageIcon(String ImagePath) {
+        ImageIcon myIcon = new ImageIcon(ImagePath);
+        Image img = myIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(img);
+        return image;
+    }
+    
+    public boolean checkInput() {
+		try {
+			String tenSP = jTextField_tenSanPham.getText();
+			String cachDung = jTextField_cachDung.getText();
+			String donGia = jTextField_donGia.getText();
+			String slt = jTextField_soLuongTon.getText();
+			String thanhPhan = jTextField_thanhPhan.getText();
+			String xuatXu = jTextField_xuatXu.getText();
+			Date date1 = (Date) jDateChooser_ngayHH.getDate();
+			Date date2 = (Date) jDateChooser_ngaySX.getDate();
+			if (tenSP.isBlank() || cachDung.isBlank() || donGia.isBlank() || slt.isBlank() || thanhPhan.isBlank() || xuatXu.isBlank()) {
+				JOptionPane.showMessageDialog(this, "Tất cả thông tin không được rỗng");
+				return false;
+			}
+			else if (date1 == null || date2 == null) {
+				JOptionPane.showMessageDialog(this, "Phải chọn ngày sản xuất và ngày hết hạn");
+				return false;
+			}
+		} catch (HeadlessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 }

@@ -1,16 +1,22 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.LayoutStyle;
@@ -18,11 +24,14 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import entity.SanPham;
+
 public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
-	
+	private static String filePrefix = "src//img//";
+	private JFileChooser jFileChooser1;
     private JButton jButton_thoat;
     private JLabel jLabelText_donGia;
-    private JLabel jLabelText_loSanXuat;
+    private JLabel jLabelText_cachDung;
     private JLabel jLabelText_loai;
     private JLabel jLabelText_maSanPham;
     private JLabel jLabelText_ngayHetHan;
@@ -32,10 +41,11 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
     private JLabel jLabelText_thanhPhan;
     private JLabel jLabelText_tinhTrang;
     private JLabel jLabelText_xuatXu;
+    private JLabel jLabel_picture;
     private JLabel jLabel_anh;
     private JLabel jLabel_chuDe;
     private JLabel jLabel_donGia;
-    private JLabel jLabel_loSanXuat;
+    private JLabel jLabel_cachDung;
     private JLabel jLabel_loai;
     private JLabel jLabel_maSanPham;
     private JLabel jLabel_ngayHetHan;
@@ -51,21 +61,27 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
     private JPanel jPanel_right;
     private JPanel jPanel_south;
     private JSplitPane jSplitPane;
+    private JFileChooser jFileChooser;
+    private static SanPham sp = new SanPham();
 
-    public ChiTietSanPham_GUI() {
+    public ChiTietSanPham_GUI(SanPham sp) {
+    	this.sp = sp;
         khoiTao();
         pack();
         setResizable(false);
         setLocationRelativeTo(null);
     }
+    
+    
 
     private void khoiTao() {
+    	jFileChooser1 = new JFileChooser("src//img");
         jPanel_north = new JPanel();
         jLabel_chuDe = new JLabel();
         jSplitPane = new JSplitPane();
         jPanel_left = new JPanel();
         jPanel_anh = new JPanel();
-        jLabel_anh = new JLabel();
+        jLabel_picture = new JLabel();
         jPanel_right = new JPanel();
         jLabel_maSanPham = new JLabel();
         jLabel_tenSanPham = new JLabel();
@@ -73,7 +89,7 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
         jLabel_xuatXu = new JLabel();
         jLabel_ngaySanXuat = new JLabel();
         jLabel_ngayHetHan = new JLabel();
-        jLabel_loSanXuat = new JLabel();
+        jLabel_cachDung = new JLabel();
         jLabel_donGia = new JLabel();
         jLabel_loai = new JLabel();
         jLabel_soLuongTon = new JLabel();
@@ -84,13 +100,15 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
         jLabelText_xuatXu = new JLabel();
         jLabelText_ngaySanXuat = new JLabel();
         jLabelText_ngayHetHan = new JLabel();
-        jLabelText_loSanXuat = new JLabel();
+        jLabelText_cachDung = new JLabel();
         jLabelText_donGia = new JLabel();
         jLabelText_loai = new JLabel();
         jLabelText_soLuongTon = new JLabel();
         jLabelText_tinhTrang = new JLabel();
         jPanel_south = new JPanel();
         jButton_thoat = new JButton();
+        jLabel_anh = new JLabel();
+        jLabel_anh.setPreferredSize(new Dimension(200, 200));
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("Thông tin chi tiết sản phẩm");
@@ -133,9 +151,9 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
             .addGap(0, 198, Short.MAX_VALUE)
         );
 
-        jLabel_anh.setFont(new Font("Times New Roman", 1, 14)); 
-        jLabel_anh.setHorizontalAlignment(SwingConstants.CENTER);
-        jLabel_anh.setText("Ảnh");
+        jLabel_picture.setFont(new Font("Times New Roman", 1, 14)); 
+        jLabel_picture.setHorizontalAlignment(SwingConstants.CENTER);
+        jLabel_picture.setText("Ảnh");
 
         GroupLayout jPanel_leftLayout = new GroupLayout(jPanel_left);
         jPanel_left.setLayout(jPanel_leftLayout);
@@ -147,7 +165,7 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
                 .addGap(50, 50, 50))
             .addGroup(GroupLayout.Alignment.TRAILING, jPanel_leftLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel_anh, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel_picture, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
                 .addGap(125, 125, 125))
         );
         jPanel_leftLayout.setVerticalGroup(
@@ -156,7 +174,7 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
                 .addGap(76, 76, 76)
                 .addComponent(jPanel_anh, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
-                .addComponent(jLabel_anh, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel_picture, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(76, Short.MAX_VALUE))
         );
 
@@ -180,8 +198,8 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
         jLabel_ngayHetHan.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel_ngayHetHan.setText("Ngày hết hạn");
 
-        jLabel_loSanXuat.setFont(new Font("Times New Roman", 1, 14)); 
-        jLabel_loSanXuat.setText("Lô sản xuất");
+        jLabel_cachDung.setFont(new Font("Times New Roman", 1, 14)); 
+        jLabel_cachDung.setText("Cách dùng");
 
         jLabel_donGia.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel_donGia.setText("Đơn giá");
@@ -196,38 +214,59 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
         jLabel_tinhTrang.setText("Tình trạng");
 
         jLabelText_maSanPham.setFont(new Font("Times New Roman", 2, 14)); 
-        jLabelText_maSanPham.setText("SP001");
+        jLabelText_maSanPham.setText(sp.getSanPhamID());
 
         jLabelText_tenSanPham.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabelText_tenSanPham.setText("Thuốc Ho");
+        jLabelText_tenSanPham.setText(sp.getTenSanPham());
 
         jLabelText_thanhPhan.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabelText_thanhPhan.setText("thành phần");
+        jLabelText_thanhPhan.setText(sp.getThanhPhan());
 
         jLabelText_xuatXu.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabelText_xuatXu.setText("xuất xứ");
+        jLabelText_xuatXu.setText(sp.getXuatXu());
 
         jLabelText_ngaySanXuat.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabelText_ngaySanXuat.setText("ngày sản xuất");
+        jLabelText_ngaySanXuat.setText(sp.getNgaySanXuat().toString());
 
         jLabelText_ngayHetHan.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabelText_ngayHetHan.setText("ngày hết hạn");
+        jLabelText_ngayHetHan.setText(sp.getNgayHetHan().toString());
 
-        jLabelText_loSanXuat.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabelText_loSanXuat.setText("lô sản xuất");
+        jLabelText_cachDung.setFont(new Font("Times New Roman", 0, 14)); 
+        jLabelText_cachDung.setText(sp.getCachDung());
 
         jLabelText_donGia.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabelText_donGia.setText("giá");
+        jLabelText_donGia.setText(sp.getDonGia()+"");
 
         jLabelText_loai.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabelText_loai.setText("loại");
+        jLabelText_loai.setText(sp.getLoaiSanPham().getTenLoai());
 
         jLabelText_soLuongTon.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabelText_soLuongTon.setText("số lượng tồn");
+        jLabelText_soLuongTon.setText(sp.getSoLuongTon()+"");
 
         jLabelText_tinhTrang.setFont(new Font("Times New Roman", 0, 14)); 
-        jLabelText_tinhTrang.setText("tình trạng");
+        jLabelText_tinhTrang.setText(sp.getTinhTrang());
+        
+        
+        
+        jLabel_anh.setIcon(ResizeImageIcon("src//img//labelAnh.png"));
+        jPanel_anh.setPreferredSize(new Dimension(200, 200));
+        jPanel_anh.setLayout(new BorderLayout());
+        jPanel_anh.add(jLabel_anh, BorderLayout.CENTER);
+        
+        jLabel_anh.setIcon(ResizeImageIcon(sp.getImgPath()));
 
+        ImageIcon imageIcon;
+        if (sp.getImgPath() != null) {
+            imageIcon = new ImageIcon(new ImageIcon(sp.getImgPath()).getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+        } else {
+            ImageIcon anhMacDinh = new ImageIcon("src//img//labelAnh.png");
+            imageIcon = new ImageIcon(anhMacDinh.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+        }
+        jLabel_anh.setIcon(imageIcon);
+        
+        jPanel_anh.setLayout(new BorderLayout());
+        jPanel_anh.add(jLabel_anh, BorderLayout.CENTER);
+        
         GroupLayout jPanel_rightLayout = new GroupLayout(jPanel_right);
         jPanel_right.setLayout(jPanel_rightLayout);
         jPanel_rightLayout.setHorizontalGroup(
@@ -238,7 +277,7 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
                     .addComponent(jLabel_soLuongTon, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel_loai, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel_donGia, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel_loSanXuat, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel_cachDung, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel_ngayHetHan, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel_ngaySanXuat, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel_rightLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -255,7 +294,7 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
                     .addComponent(jLabelText_xuatXu, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelText_ngaySanXuat, GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
                     .addComponent(jLabelText_ngayHetHan, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelText_loSanXuat, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelText_cachDung, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelText_donGia, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelText_loai, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelText_soLuongTon, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -291,8 +330,8 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
                     .addComponent(jLabelText_ngayHetHan))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel_rightLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel_loSanXuat)
-                    .addComponent(jLabelText_loSanXuat))
+                    .addComponent(jLabel_cachDung)
+                    .addComponent(jLabelText_cachDung))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel_rightLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_donGia)
@@ -376,7 +415,7 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
             java.util.logging.Logger.getLogger(ChiTietSanPham_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
-        new ChiTietSanPham_GUI().setVisible(true);
+        new ChiTietSanPham_GUI(sp).setVisible(true);
     }
     
     // Code sự kiện
@@ -388,4 +427,11 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
 		}
 		
 	}
+	                                      
+    private ImageIcon ResizeImageIcon(String ImagePath) {
+        ImageIcon myIcon = new ImageIcon(ImagePath);
+        Image img = myIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(img);
+        return image;
+    }
 }

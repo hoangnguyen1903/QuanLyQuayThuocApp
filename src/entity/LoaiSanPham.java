@@ -12,6 +12,9 @@ public class LoaiSanPham {
 		this.loaiID = loaiID;
 		this.tenLoai = tenLoai;
 	}
+	public LoaiSanPham(String tenLoai) {
+		this.tenLoai = tenLoai;
+	}
 
 	public String getLoaiID() {
 		return loaiID;

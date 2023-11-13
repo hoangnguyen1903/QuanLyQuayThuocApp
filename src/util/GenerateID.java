@@ -3,10 +3,6 @@ package util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- *
- * @author HUY
- */
 public class GenerateID {
     private static String lastDate = "";
     private static int counter;
