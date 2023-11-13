@@ -4,11 +4,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 
+import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -18,6 +21,9 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.toedter.calendar.JDateChooser;
+
+import dao.KhachHang_DAO;
+import entity.KhachHang;
 
 public class CapNhatKhachHang_GUI extends JFrame implements ActionListener {
 	
@@ -38,20 +44,24 @@ public class CapNhatKhachHang_GUI extends JFrame implements ActionListener {
     private JPanel jPanel4;
     private JRadioButton jRadioButton_nam;
     private JRadioButton jRadioButton_nu;
+    private ButtonGroup buttonGroup;
     private JTextField jTextField_diaChi;
     private JTextField jTextField_email;
     private JTextField jTextField_soDienThoai;
     private JTextField jTextField_tenKhachHang;
 
-    public CapNhatKhachHang_GUI() {
-        initComponents();
+    private String maKH;
+    private KhachHang_DAO kh_dao = new KhachHang_DAO();
+    
+    public CapNhatKhachHang_GUI(String maKH) {
+    	this.maKH = maKH;
+        khoiTao();
         pack();
         setResizable(false);
         setLocationRelativeTo(null);
     }
 
-    private void initComponents() {
-
+    private void khoiTao() {
         jPanel1 = new JPanel();
         jLabel_chuDe = new JLabel();
         jPanel4 = new JPanel();
@@ -67,7 +77,11 @@ public class CapNhatKhachHang_GUI extends JFrame implements ActionListener {
         jTextField_diaChi = new JTextField();
         jDateChooser_ngaySinh = new com.toedter.calendar.JDateChooser();
         jRadioButton_nam = new JRadioButton();
+        jRadioButton_nam.setSelected(true);
         jRadioButton_nu = new JRadioButton();
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(jRadioButton_nam);
+        buttonGroup.add(jRadioButton_nu);
         jLabel_maKhachHang = new JLabel();
         jLabel1 = new JLabel();
         jPanel3 = new JPanel();
@@ -78,6 +92,7 @@ public class CapNhatKhachHang_GUI extends JFrame implements ActionListener {
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("Cập nhật thông tin khách hàng");
+        importKhachHang();
 
         jLabel_chuDe.setFont(new Font("Times New Roman", 1, 24)); 
         jLabel_chuDe.setHorizontalAlignment(SwingConstants.CENTER);
@@ -125,7 +140,6 @@ public class CapNhatKhachHang_GUI extends JFrame implements ActionListener {
         jRadioButton_nu.setText("Nữ");
 
         jLabel_maKhachHang.setFont(new Font("Times New Roman", 2, 14)); 
-        jLabel_maKhachHang.setText("KH0001");
 
         jLabel1.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel1.setText("Mã khách hàng");
@@ -255,7 +269,7 @@ public class CapNhatKhachHang_GUI extends JFrame implements ActionListener {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel4, GroupLayout.PREFERRED_SIZE, 286, GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel4, GroupLayout.PREFERRED_SIZE, 350, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18))
@@ -280,8 +294,6 @@ public class CapNhatKhachHang_GUI extends JFrame implements ActionListener {
             java.util.logging.Logger.getLogger(CapNhatKhachHang_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        new CapNhatKhachHang_GUI().setVisible(true);
-
     }
     
     
@@ -294,7 +306,66 @@ public class CapNhatKhachHang_GUI extends JFrame implements ActionListener {
 		}
 		
 		if(source.equals(jButton_sua)) {
-			
+			capNhatKhachHang();
+		}
+	}
+	
+	public void importKhachHang() {
+		KhachHang kh = kh_dao.getKhachHangTheoMa(maKH);
+		if(kh != null) {
+			jLabel_maKhachHang.setText(kh.getKhachHangID());
+			jTextField_tenKhachHang.setText(kh.getHoTen());
+			if(kh.getGioiTinh().equals("Nam")) {
+				jRadioButton_nam.setSelected(true);
+			} else {
+				jRadioButton_nu.setSelected(true);
+			}
+			jDateChooser_ngaySinh.setDate(kh.getNgaySinh());
+			jTextField_email.setText(kh.getEmail());
+			jTextField_soDienThoai.setText(kh.getSoDienThoai());
+			jTextField_diaChi.setText(kh.getDiaChi());
+		}
+	}
+	
+	public void capNhatKhachHang() {
+		String tenKH = jTextField_tenKhachHang.getText().trim();
+		if(tenKH.equals("")) {
+			JOptionPane.showMessageDialog(this, "Tên khách hàng không được rỗng!");
+			return;
+		}
+		String gioiTinh = "Nam";
+		if(jRadioButton_nu.isSelected()) {
+			gioiTinh = "Nữ";
+		}
+		if(jDateChooser_ngaySinh.getDate() == null) {
+			JOptionPane.showMessageDialog(this, "Ngày sinh không được rỗng!");
+			return;
+		}
+		Date ngaySinh = new Date(jDateChooser_ngaySinh.getDate().getTime());
+		String email = jTextField_email.getText().trim();
+		if(email.equals("")) {
+			JOptionPane.showMessageDialog(this, "Email không được rỗng!");
+			return;
+		}
+		String sdt = jTextField_soDienThoai.getText().trim();
+		if(sdt.equals("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không được rỗng!");
+			return;
+		}
+		String diaChi = jTextField_diaChi.getText().trim();
+		if(diaChi.equals("")) {
+			JOptionPane.showMessageDialog(this, "Địa chỉ không được rỗng!");
+			return;
+		}
+		
+		KhachHang kh = new KhachHang(maKH, tenKH, gioiTinh, ngaySinh, sdt, email, diaChi);
+		
+		boolean kq = kh_dao.capNhatKhachHang(kh);
+		if(kq) {
+			JOptionPane.showMessageDialog(this, "Cập nhật khách hàng thành công!");
+			importKhachHang();
+		} else {
+			JOptionPane.showMessageDialog(this, "Cập nhật khách hàng thất bại!");
 		}
 	}
 }

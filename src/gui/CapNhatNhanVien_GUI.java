@@ -340,23 +340,43 @@ public class CapNhatNhanVien_GUI extends JFrame implements ActionListener {
 	}
 	
 	public void capNhatNhanVien() {
-		String hoTen = jTextField_tenNhanVien.getText().trim();
+		String tenNV = jTextField_tenNhanVien.getText().trim();
+		if(tenNV.equals("")) {
+			JOptionPane.showMessageDialog(this, "Tên nhân viên không được rỗng!");
+			return;
+		}
+		if(jDateChooser_ngaySinh.getDate() == null) {
+			JOptionPane.showMessageDialog(this, "Ngày sinh không được rỗng!");
+			return;
+		}
+		Date ngaySinh = new Date(jDateChooser_ngaySinh.getDate().getTime());
+		String email = jTextField_email.getText().trim();
+		if(email.equals("")) {
+			JOptionPane.showMessageDialog(this, "Email không được rỗng!");
+			return;
+		}
+		String sdt = jTextField_soDienThoai.getText().trim();
+		if(sdt.equals("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không được rỗng!");
+			return;
+		}
+		String diaChi = jTextField_diaChi.getText().trim();
+		if(diaChi.equals("")) {
+			JOptionPane.showMessageDialog(this, "diaChi không được rỗng!");
+			return;
+		}
+		String chucVu = jComboBox_chucVu.getSelectedItem().toString();
 		String gioiTinh = "Nam";
 		if(jRadioButton_nu.isSelected()) {
 			gioiTinh = "Nữ";
 		}
-		Date ngaySinh = new Date(jDateChooser_ngaySinh.getDate().getTime());
-		String email = jTextField_email.getText().trim();
-		String soDienThoai = jTextField_email.getText().trim();
-		String diaChi = jTextField_diaChi.getText().trim();
-		String chucVu = jComboBox_chucVu.getSelectedItem().toString();
 		
 		NhanVien nhanVien = new NhanVien();
-		nhanVien.setHoTen(hoTen);
+		nhanVien.setHoTen(tenNV);
 		nhanVien.setGioiTinh(gioiTinh);
 		nhanVien.setNgaySinh(ngaySinh);
 		nhanVien.setEmail(email);
-		nhanVien.setSoDienThoai(soDienThoai);
+		nhanVien.setSoDienThoai(sdt);
 		nhanVien.setDiaChi(diaChi);
 		nhanVien.setChucVu(chucVu);
 		nhanVien.setNhanVienID(maNV);

@@ -50,11 +50,11 @@ public class DangNhap_GUI extends JFrame implements ActionListener{
         jLabel_tenDangNhap = new JLabel();
         jTextField_tenDangNhap = new JTextField();
         // tendangnhap
-        jTextField_tenDangNhap.setText("huytran123");
+        jTextField_tenDangNhap.setText("NV28102302");
         jLabel_matKhau = new JLabel();
         jPasswordField_matKhau = new JPasswordField();
         // matkhau
-        jPasswordField_matKhau.setText("huytran123");
+        jPasswordField_matKhau.setText("0102030405");
         jPanel3 = new JPanel();
         jButton_dangNhap = new JButton();
         jButton_quenMatKhau = new JButton();
@@ -194,19 +194,15 @@ public class DangNhap_GUI extends JFrame implements ActionListener{
 		Object source = e.getSource();
 		if(source.equals(jButton_dangNhap)) {
 			String tenTaiKhoan = jTextField_tenDangNhap.getText().trim();
-			String matKhau = jTextField_tenDangNhap.getText().trim();
+			String matKhau = jPasswordField_matKhau.getText().trim();
 			
-			try {
-				NhanVien nhanVien = new DangNhap_DAO().dangNhap(tenTaiKhoan, matKhau);
-				if(nhanVien != null) {
-					this.dispose();
-					new ManHinh_GUI(nhanVien).setVisible(true);
-				} else {
-					JOptionPane.showMessageDialog(this, "Tên đăng nhập hoặc mật khẩu không chính xác! Vui lòng nhập lại!");
-				}
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}	
+			NhanVien nhanVien = new DangNhap_DAO().dangNhap(tenTaiKhoan, matKhau);
+			if(nhanVien != null) {
+				this.dispose();
+				new ManHinh_GUI(nhanVien).setVisible(true);
+			} else {
+				JOptionPane.showMessageDialog(this, "Tên đăng nhập hoặc mật khẩu không chính xác! Vui lòng nhập lại!");
+			}
 		}
 		
 		if(source.equals(jButton_quenMatKhau)) {

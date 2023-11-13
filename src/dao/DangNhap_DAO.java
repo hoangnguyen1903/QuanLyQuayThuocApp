@@ -15,8 +15,13 @@ public class DangNhap_DAO {
 
     }
 
-    public NhanVien dangNhap(String tenTaiKhoan, String matKhau) throws SQLException {
-        ConnectDB.getInstance().connect();
+    public NhanVien dangNhap(String tenTaiKhoan, String matKhau) {
+        try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         Connection con = ConnectDB.getConnection();
         PreparedStatement statement = null;
         try {
@@ -27,7 +32,7 @@ public class DangNhap_DAO {
             
             ResultSet rs = statement.executeQuery();
             
-            
+            NhanVien nhanVien = null;
             if (rs.next()) {
                 String nhanVienID = rs.getString("NhanVienID");
                 String hoTen = rs.getString("HoTen");
@@ -40,10 +45,10 @@ public class DangNhap_DAO {
                 String tenTK = rs.getString("TenTaiKhoan");
                 String mk = rs.getString("MatKhau");
                 
-                NhanVien nhanVien = new NhanVien(nhanVienID, hoTen, gioiTinh, ngaySinh, email, soDienThoai, diaChi, chucVu, tenTK, mk);
-                return nhanVien;
+                nhanVien = new NhanVien(nhanVienID, hoTen, gioiTinh, ngaySinh, email, soDienThoai, diaChi, chucVu, tenTK, mk);
             }
-            return null; 
+
+            return nhanVien;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

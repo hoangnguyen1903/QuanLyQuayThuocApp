@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
@@ -11,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -21,9 +23,13 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import com.toedter.calendar.JDateChooser;
 
+import dao.KhachHang_DAO;
+import entity.KhachHang;
+import util.GenerateID;
+
 public class ThemKhachHang_GUI extends JFrame implements ActionListener {
 
-    private ButtonGroup buttonGroup1;
+    private ButtonGroup buttonGroup;
     private JButton jButton_huyBo;
     private JButton jButton_them;
     private JDateChooser jDateChooser_ngaySinh;
@@ -44,6 +50,9 @@ public class ThemKhachHang_GUI extends JFrame implements ActionListener {
     private JTextField jTextField_email;
     private JTextField jTextField_soDienThoai;
     private JTextField jTextField_tenKhachHang;
+    
+    private KhachHang_DAO kh_dao = new KhachHang_DAO();
+    private GenerateID generateID = new GenerateID();
 
     public ThemKhachHang_GUI() {
         khoiTao();
@@ -54,7 +63,7 @@ public class ThemKhachHang_GUI extends JFrame implements ActionListener {
 
     private void khoiTao() {
         jFileChooser1 = new JFileChooser();
-        buttonGroup1 = new ButtonGroup();
+        buttonGroup = new ButtonGroup();
         jPanel1 = new JPanel();
         jLabel_chuDe = new JLabel();
         jPanel4 = new JPanel();
@@ -68,14 +77,17 @@ public class ThemKhachHang_GUI extends JFrame implements ActionListener {
         jTextField_soDienThoai = new JTextField();
         jLabel11 = new JLabel();
         jTextField_diaChi = new JTextField();
-        jDateChooser_ngaySinh = new com.toedter.calendar.JDateChooser();
+        jDateChooser_ngaySinh = new JDateChooser();
         jRadioButton_nam = new JRadioButton();
+        jRadioButton_nam.setSelected(true);
         jRadioButton_nu = new JRadioButton();
         jPanel3 = new JPanel();
         jButton_them = new JButton();
         jButton_them.addActionListener(this);
         jButton_huyBo = new JButton();
         jButton_huyBo.addActionListener(this);
+        buttonGroup.add(jRadioButton_nam);
+        buttonGroup.add(jRadioButton_nu);
 
         setTitle("Thêm khách hàng");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -278,8 +290,56 @@ public class ThemKhachHang_GUI extends JFrame implements ActionListener {
 		}
 		
 		if(source.equals(jButton_them)) {
-			
+			themKhachHang();
 		}
 		
+	}
+	
+	public void themKhachHang() {
+		String tenKH = jTextField_tenKhachHang.getText().trim();
+		if(tenKH.equals("")) {
+			JOptionPane.showMessageDialog(this, "Tên khách hàng không được rỗng!");
+			return;
+		}
+		String gioiTinh = "Nam";
+		if(jRadioButton_nu.isSelected()) {
+			gioiTinh = "Nữ";
+		}
+		if(jDateChooser_ngaySinh.getDate() == null) {
+			JOptionPane.showMessageDialog(this, "Ngày sinh không được rỗng!");
+			return;
+		}
+		Date ngaySinh = new Date(jDateChooser_ngaySinh.getDate().getTime());
+		String email = jTextField_email.getText().trim();
+		if(email.equals("")) {
+			JOptionPane.showMessageDialog(this, "Email không được rỗng!");
+			return;
+		}
+		String sdt = jTextField_soDienThoai.getText().trim();
+		if(sdt.equals("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không được rỗng!");
+			return;
+		}
+		String diaChi = jTextField_diaChi.getText().trim();
+		if(diaChi.equals("")) {
+			JOptionPane.showMessageDialog(this, "Địa chỉ không được rỗng!");
+			return;
+		}
+		String khachHangID = generateID.sinhMa("KH");
+		
+		KhachHang kh = new KhachHang(khachHangID, tenKH, gioiTinh, ngaySinh, khachHangID, email, diaChi);
+		
+		boolean kq = kh_dao.themKhachHang(kh);
+		if(kq) {
+			JOptionPane.showMessageDialog(this, "Thêm khách hàng thành công!");
+			jTextField_tenKhachHang.setText("");
+			jRadioButton_nam.setSelected(true);
+			jDateChooser_ngaySinh.setDate(null);
+			jTextField_email.setText("");
+			jTextField_soDienThoai.setText("");
+			jTextField_diaChi.setText("");
+		} else {
+			JOptionPane.showMessageDialog(this, "Thêm khách hàng thất bại!");
+		}
 	}
 }

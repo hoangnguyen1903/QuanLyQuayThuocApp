@@ -84,8 +84,8 @@ public class KhachHang {
 
 	@Override
 	public String toString() {
-		return "KhachHang [khachHangID=" + khachHangID + ", hoTen=" + hoTen + ", gioiTinh=" + gioiTinh + ", ngaySinh="
-				+ ngaySinh + ", soDienThoai=" + soDienThoai + ", email=" + email + ", diaChi=" + diaChi + "]";
+		return khachHangID + ";" + hoTen + ";" + gioiTinh + ";"
+				+ ngaySinh + ";" + soDienThoai + ";" + email + ";" + diaChi;
 	}
 	
 	

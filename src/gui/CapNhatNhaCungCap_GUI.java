@@ -251,8 +251,20 @@ public class CapNhatNhaCungCap_GUI extends JFrame implements ActionListener {
 	
 	public void capNhatNCC() {
 		String tenNhaCungCap = jTextField_tenNhaCungCap.getText().trim();
+		if(tenNhaCungCap.equals("")) {
+			JOptionPane.showMessageDialog(this, "Tên nhà cung cấp chưa được nhập!");
+			return;
+		}
 		String soDienThoai = jTextField_soDienThoai.getText().trim();
+		if(soDienThoai.equals("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại chưa được nhập!");
+			return;
+		}
 		String diaChi = jTextField_diaChi.getText().trim();
+		if(diaChi.equals("")) {
+			JOptionPane.showMessageDialog(this, "Địa chỉ chưa được nhập!");
+			return;
+		}
 		
 		NhaCungCap ncc = new NhaCungCap(maNCC, tenNhaCungCap, soDienThoai, diaChi);
 		

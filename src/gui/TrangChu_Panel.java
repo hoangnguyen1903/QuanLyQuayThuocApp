@@ -32,12 +32,12 @@ public class TrangChu_Panel extends JPanel{
     private JPanel jPanel_right;
     private NhanVien nhanVien = new NhanVien();
 
-    public TrangChu_Panel(NhanVien nhanVien) throws SQLException {
+    public TrangChu_Panel(NhanVien nhanVien) {
         this.nhanVien = nhanVien;
     	khoiTao();
     }
 
-    private void khoiTao() throws SQLException {
+    private void khoiTao() {
         jPanel_north = new JPanel();
         jLabel_tieuDe = new JLabel();
         jLabel_nguoiDung = new JLabel();
@@ -164,8 +164,6 @@ public class TrangChu_Panel extends JPanel{
         this.setLayout(new BorderLayout());
         this.add(jPanel_north, BorderLayout.NORTH);
         this.add(jPanel_center, BorderLayout.CENTER);
-
-
     }
 
 }

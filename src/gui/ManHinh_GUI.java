@@ -39,9 +39,8 @@ public class ManHinh_GUI extends JFrame{
     private CardLayout cardLayout;
     private JPanel cardPanel;
     
-	public ManHinh_GUI(NhanVien nhanVien) throws SQLException {
-//		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+	public ManHinh_GUI(NhanVien nhanVien) {
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setTitle("Quản Lý Quầy Thuốc");
         setPreferredSize(new java.awt.Dimension(1070, 600));
         setResizable(false);

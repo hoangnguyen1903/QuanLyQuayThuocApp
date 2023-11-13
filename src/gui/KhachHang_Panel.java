@@ -4,10 +4,12 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -16,6 +18,8 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import dao.KhachHang_DAO;
+import entity.KhachHang;
 import entity.NhanVien;
 
 public class KhachHang_Panel extends JPanel implements ActionListener{
@@ -25,7 +29,6 @@ public class KhachHang_Panel extends JPanel implements ActionListener{
     private JButton jButton_sua;
     private JButton jButton_them;
     private JButton jButton_timKiem;
-    private JButton jButton_xoa;
     private JLabel jLabel1;
     private JLabel jLabel2;
     private JLabel jLabel_chuDe;
@@ -39,6 +42,7 @@ public class KhachHang_Panel extends JPanel implements ActionListener{
     private JTextField jTextField_soDienThoai;
 
     private NhanVien nhanVien = new NhanVien();
+    private KhachHang_DAO kh_dao = new KhachHang_DAO();
     
     public KhachHang_Panel(NhanVien nhanVien) {
     	this.nhanVien = nhanVien;
@@ -54,20 +58,16 @@ public class KhachHang_Panel extends JPanel implements ActionListener{
         jButton_timKiem = new JButton();
         jButton_timKiem.addActionListener(this);
         jButton_lamMoi = new JButton();
-        jButton_lamMoi.addActionListener(this);
         jButton_them = new JButton();
-        jButton_them.addActionListener(this);
         jButton_sua = new JButton();
-        jButton_sua.addActionListener(this);
-        jButton_xoa = new JButton();
-        jButton_xoa.addActionListener(this);
         jLabel1 = new JLabel();
         jLabel2 = new JLabel();
         jTextField_soDienThoai = new JTextField();
         jButton7 = new JButton();
         // Table
-        String[] cols = {"Mã", "Tên", "Giới tính", "Ngày sinh", "Số điện thoại", "Email", "Địa chỉ"};
+        String[] cols = {"Mã", "Họ tên", "Giới tính", "Ngày sinh", "Số điện thoại", "Email", "Địa chỉ"};
         tableModel = new DefaultTableModel(cols, 0);
+        importKhachHang();
         jTable = new JTable(tableModel);
         jScrollPane1 = new JScrollPane(jTable);
 
@@ -108,12 +108,11 @@ public class KhachHang_Panel extends JPanel implements ActionListener{
 
         jButton_them.setFont(new Font("Times New Roman", 0, 14)); 
         jButton_them.setText("Thêm");
+        jButton_them.addActionListener(this);
 
         jButton_sua.setFont(new Font("Times New Roman", 0, 14)); 
         jButton_sua.setText("Sửa");
-
-        jButton_xoa.setFont(new Font("Times New Roman", 0, 14)); 
-        jButton_xoa.setText("Xoá");
+        jButton_sua.addActionListener(this);
 
         jLabel1.setFont(new Font("Times New Roman", 1, 14));
         jLabel1.setText("Nhập mã:");
@@ -144,8 +143,6 @@ public class KhachHang_Panel extends JPanel implements ActionListener{
                 .addComponent(jButton_them)
                 .addGap(18, 18, 18)
                 .addComponent(jButton_sua)
-                .addGap(18, 18, 18)
-                .addComponent(jButton_xoa)
                 .addContainerGap(52, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -158,8 +155,7 @@ public class KhachHang_Panel extends JPanel implements ActionListener{
                     .addComponent(jButton_timKiem)
                     .addComponent(jButton_lamMoi)
                     .addComponent(jButton_them)
-                    .addComponent(jButton_sua)
-                    .addComponent(jButton_xoa))
+                    .addComponent(jButton_sua))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -198,20 +194,75 @@ public class KhachHang_Panel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if(source.equals(jButton_them)) {
-			new ThemKhachHang_GUI().setVisible(true);
-		}
-		if(source.equals(jButton_xoa)) {
-			
+			themKhachHang();
+			return;
 		}
 		
 		if(source.equals(jButton_sua)) {
-			new CapNhatKhachHang_GUI().setVisible(true);
+			capNhatKhachHang();
+			return;
 		}
 		if(source.equals(jButton_lamMoi)) {
-			
+			lamMoi();
+			return;
 		}
 		if(source.equals(jButton_timKiem)) {
-			
+			timKiemKhachHang();
 		}
+	}
+	
+	public void importKhachHang() {
+		tableModel.setRowCount(0);
+		ArrayList<KhachHang> khList = kh_dao.getAllKhachHang();
+		for (KhachHang kh : khList) {
+			tableModel.addRow(kh.toString().split(";"));
+		}
+	}
+	
+	public void lamMoi() {
+		jTextField_ma.setText("");
+		jTextField_soDienThoai.setText("");
+		importKhachHang();
+	}
+	
+	public void timKiemKhachHang() {
+		String ma = jTextField_ma.getText().trim();
+		String sdt = jTextField_soDienThoai.getText().trim();
+		
+		if(ma.equals("") && sdt.equals("")) {
+			JOptionPane.showMessageDialog(this, "Mã khách hàng hoặc số điện thoại chưa được nhập!");
+			return;
+		}
+		
+		KhachHang kh = null;
+		if(ma.length() > 0 && sdt.equals("")) {
+			kh = kh_dao.getKhachHangTheoMa(ma);
+		} else if(ma.equals("") && sdt.length() > 0) {
+			kh = kh_dao.getKhachHangTheoSDT(sdt);
+		} else {
+			kh = kh_dao.getKhachHangTheoDieuKien(sdt, ma);
+		}
+		
+		if(kh != null) {
+			tableModel.setRowCount(0);
+			tableModel.addRow(kh.toString().split(";"));
+		} else {
+			JOptionPane.showMessageDialog(this, "Khách hàng không tồn tại!");
+		}
+	}
+	
+	public void themKhachHang() {
+		new ThemKhachHang_GUI().setVisible(true);
+	}
+	
+	public void capNhatKhachHang() {
+		int row = jTable.getSelectedRow();
+		if(row < 0) {
+			JOptionPane.showMessageDialog(this, "Khách hàng chưa được chọn");
+			return;
+		}
+		
+		String maKH = jTable.getValueAt(row, 0).toString();
+		new CapNhatKhachHang_GUI(maKH).setVisible(true);
 	}
 }

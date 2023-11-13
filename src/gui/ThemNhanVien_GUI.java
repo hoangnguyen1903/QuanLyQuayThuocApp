@@ -302,7 +302,6 @@ public class ThemNhanVien_GUI extends JFrame implements ActionListener {
         } catch (UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ThemNhanVien_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        new ThemNhanVien_GUI().setVisible(true);
 
     }
 
@@ -322,17 +321,37 @@ public class ThemNhanVien_GUI extends JFrame implements ActionListener {
 	public void themNhanVien() {
 		String nhanVienID = generateID.sinhMa("NV");
 		String tenNV = jTextField_tenNhanVien.getText().trim();
+		if(tenNV.equals("")) {
+			JOptionPane.showMessageDialog(this, "Tên nhân viên không được rỗng!");
+			return;
+		}
+		if(jDateChooser_ngaySinh.getDate() == null) {
+			JOptionPane.showMessageDialog(this, "Ngày sinh không được rỗng!");
+			return;
+		}
 		Date ngaySinh = new Date(jDateChooser_ngaySinh.getDate().getTime());
 		String email = jTextField_email.getText().trim();
+		if(email.equals("")) {
+			JOptionPane.showMessageDialog(this, "Email không được rỗng!");
+			return;
+		}
 		String sdt = jTextField_soDienThoai.getText().trim();
+		if(sdt.equals("")) {
+			JOptionPane.showMessageDialog(this, "Số điện thoại không được rỗng!");
+			return;
+		}
 		String diaChi = jTextField_diaChi.getText().trim();
+		if(diaChi.equals("")) {
+			JOptionPane.showMessageDialog(this, "diaChi không được rỗng!");
+			return;
+		}
 		String chucVu = jComboBox_chucVu.getSelectedItem().toString();
 		String gioiTinh = "Nam";
-		String tenTaiKhoan = nhanVienID;
-		String matKhau = sdt;
 		if(jRadioButton_nu.isSelected()) {
 			gioiTinh = "Nữ";
 		}
+		String tenTaiKhoan = nhanVienID;
+		String matKhau = sdt;
 		
 		NhanVien nhanVien = new NhanVien(nhanVienID, tenNV, gioiTinh, ngaySinh, email, sdt, diaChi, chucVu, tenTaiKhoan, matKhau);
 		
