@@ -9,6 +9,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -16,6 +17,9 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import dao.NhanVien_DAO;
+import entity.NhanVien;
 
 public class ThayDoiMatKhau_GUI extends JFrame implements ActionListener {
 	
@@ -30,8 +34,11 @@ public class ThayDoiMatKhau_GUI extends JFrame implements ActionListener {
     private JPasswordField jPasswordField_matKhauHienTai;
     private JPasswordField jPasswordField_matKhauMoi;
     private JTextField jTextField_tenDangNhap;
+    private NhanVien_DAO nv_Dao = new NhanVien_DAO();
+    private static NhanVien nhanVien = new NhanVien();
     
-    public ThayDoiMatKhau_GUI() {
+    public ThayDoiMatKhau_GUI(NhanVien nhanVien) {
+    	this.nhanVien = nhanVien;
         khoiTao();
         pack();
         setResizable(false);
@@ -121,6 +128,7 @@ public class ThayDoiMatKhau_GUI extends JFrame implements ActionListener {
         jButton_thayDoi.setFont(new Font("Times New Roman", 1, 14));
         jButton_thayDoi.setText("Thay đổi");
         jButton_thayDoi.setHorizontalTextPosition(SwingConstants.CENTER);
+        jButton_thayDoi.addActionListener(this);
 
         GroupLayout jPanel3Layout = new GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -180,13 +188,33 @@ public class ThayDoiMatKhau_GUI extends JFrame implements ActionListener {
             java.util.logging.Logger.getLogger(ThayDoiMatKhau_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        new ThayDoiMatKhau_GUI().setVisible(true);
+        try {
+			new ThayDoiMatKhau_GUI(nhanVien).setVisible(true);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Object source = e.getSource();
-		
+		if (source.equals(jButton_thayDoi)) {
+			String account = jTextField_tenDangNhap.getText();
+			String oldPassword = jPasswordField_matKhauHienTai.getText();
+			String newPassword = jPasswordField_matKhauMoi.getText();
+			if (nhanVien.getMatKhau().equals(oldPassword) && nhanVien.getTenTaiKhoan().equals(account)) {
+				if (nv_Dao.lamMoiMatKhau(new NhanVien(account, newPassword))) {
+					JOptionPane.showMessageDialog(null, "Thay đổi mật khẩu thành công");
+					dispose();
+				}
+				
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Tài khoản hoặc mật khẩu không chính xác!");
+				dispose();
+			}
+		}
 	}
 }

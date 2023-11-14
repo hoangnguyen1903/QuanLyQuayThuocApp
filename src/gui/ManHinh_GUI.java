@@ -38,8 +38,10 @@ public class ManHinh_GUI extends JFrame{
     private JMenu jMenu_troGiup; 
     private CardLayout cardLayout;
     private JPanel cardPanel;
+    private NhanVien nhanVien = new NhanVien();
     
 	public ManHinh_GUI(NhanVien nhanVien) {
+		this.nhanVien = nhanVien;
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setTitle("Quản Lý Quầy Thuốc");
         setPreferredSize(new java.awt.Dimension(1070, 600));
@@ -168,7 +170,7 @@ public class ManHinh_GUI extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ThayDoiMatKhau_GUI().setVisible(true);
+				new ThayDoiMatKhau_GUI(nhanVien).setVisible(true);
 			}
 		});
         jMenuItem_dangXuat = new JMenuItem();

@@ -33,7 +33,13 @@ public class NhanVien {
 		this.matKhau = matKhau;
 	}
 
+	
 
+	public NhanVien(String tenTaiKhoan, String matKhau) {
+		super();
+		this.tenTaiKhoan = tenTaiKhoan;
+		this.matKhau = matKhau;
+	}
 
 	public String getNhanVienID() {
 		return nhanVienID;

@@ -336,4 +336,62 @@ public class NhanVien_DAO {
 			}
 		}
     }
+    
+    public Boolean checkNV(String email, String tenTK) throws SQLException {
+        ConnectDB.getInstance().connect();;
+        Connection con = ConnectDB.getConnection();
+        PreparedStatement statement = null;
+        try {
+            String sql = "SELECT * FROM NhanVien WHERE Email = ? AND TenTaiKhoan = ?";
+            statement = con.prepareStatement(sql);
+            statement.setString(1, email);
+            statement.setString(2, tenTK);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+               return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                statement.close();
+            } catch (Exception e2) {
+                // TODO: handle exception
+                e2.printStackTrace();
+            }
+        }
+        return false;
+      
+    }
+    
+    public boolean lamMoiMatKhau(NhanVien nv) {
+
+        try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        Connection con = ConnectDB.getConnection();
+        PreparedStatement statement = null;
+        int n = 0;
+        try {
+            statement = con.prepareStatement("update NhanVien set MatKhau = ? where TenTaiKhoan= ?");
+            statement.setString(1, nv.getMatKhau());
+            statement.setString(2, nv.getTenTaiKhoan());
+            n = statement.executeUpdate();
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        } finally {
+            try {
+                statement.close();
+            } catch (Exception e2) {
+                // TODO: handle exception
+                e2.printStackTrace();
+            }
+        }
+        return n > 0;
+    }
 }

@@ -1,19 +1,27 @@
 package gui;
 
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import dao.NhanVien_DAO;
+import entity.NhanVien;
+import util.MD5Encode;
+import util.email;
 
 public class LamMoi_GUI extends JFrame implements ActionListener {
 	
@@ -27,6 +35,7 @@ public class LamMoi_GUI extends JFrame implements ActionListener {
     private JPanel jPanel3;
     private JTextField jTextField_email;
     private JTextField jTextField_tenDangNhap;
+    private NhanVien_DAO nv_dao = new NhanVien_DAO();
 
     public LamMoi_GUI() {
         khoiTao();
@@ -177,13 +186,41 @@ public class LamMoi_GUI extends JFrame implements ActionListener {
          new LamMoi_GUI().setVisible(true);
     }
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if(source.equals(jButton_dangNhap)) {
 			this.dispose();
 			new DangNhap_GUI().setVisible(true);
 		}
-		
+		else if (source.equals(jButton_lamMoi)) {
+	            // TODO add your handling code here:
+	            try {
+					String mail = jTextField_email.getText().trim();
+					String tenDN = jTextField_tenDangNhap.getText().trim();
+					System.out.println(mail);
+					System.out.println(tenDN);
+					if (nv_dao.checkNV(mail, tenDN) == false) {
+					    JOptionPane.showMessageDialog(null, "Tài khoản và email không trùng khớp");
+					} else {
+					    double number = Math.random();
+					    int interger = (int) (number * 1000000);
+					    String text = interger + "";
+					    NhanVien nv = new NhanVien(tenDN, text);
+					    if (nv_dao.lamMoiMatKhau(nv) == true) {
+					        email.sendMess(mail, text);
+					        JOptionPane.showMessageDialog(null, "Đã làm mới mật khẩu");
+					    } else {
+					        JOptionPane.showMessageDialog(null, "lỗi!");
+					    }
+
+					}
+				} catch (HeadlessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}
 	}
-}
