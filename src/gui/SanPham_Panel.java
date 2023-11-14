@@ -299,6 +299,14 @@ public class SanPham_Panel extends JPanel implements ActionListener{
 	        else if (sp == null && !id.isBlank()){
 				 JOptionPane.showMessageDialog(this, "Sản phẩm không tồn tại!");
 	        }
+	        else if (!id.isBlank() && !comboLoai.equals("null")) {
+	        	SanPham sp1 = sp_dao.timKiemSPTheoMaVaLoai(id, lsp.getLoaiID(), lsp);
+	        	if (sp1 != null) {
+	        		deleteAllRows(tableModel);
+					tableModel.addRow(sp1.toString().split(";"));
+	        	}
+	        	else JOptionPane.showMessageDialog(this, "Sản phẩm không tồn tại!");
+	        }
 	        else if (!id.isBlank() && comboLoai.equals("null")) {
 	        	deleteAllRows(tableModel);
 				tableModel.addRow(sp.toString().split(";"));

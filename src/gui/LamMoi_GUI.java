@@ -197,8 +197,6 @@ public class LamMoi_GUI extends JFrame implements ActionListener {
 	            try {
 					String mail = jTextField_email.getText().trim();
 					String tenDN = jTextField_tenDangNhap.getText().trim();
-					System.out.println(mail);
-					System.out.println(tenDN);
 					if (nv_dao.checkNV(mail, tenDN) == false) {
 					    JOptionPane.showMessageDialog(null, "Tài khoản và email không trùng khớp");
 					} else {

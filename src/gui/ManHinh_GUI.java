@@ -2,11 +2,13 @@ package gui;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.sql.SQLException;
 
 import javax.swing.UnsupportedLookAndFeelException;
@@ -167,6 +169,19 @@ public class ManHinh_GUI extends JFrame{
 		});
         
         jMenu_troGiup = new JMenu();
+        jMenu_troGiup.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+		            System.out.println("Start..");
+		            File file = new java.io.File("src/HTMLFile/HELPPAGE/main.html").getAbsoluteFile();
+		            Desktop.getDesktop().open(file);
+		            System.out.println("End..");
+		        } catch (Exception e1) {
+		            e1.printStackTrace();
+		        }
+			}
+		});
         
         jMenu_taiKhoan = new JMenu();
         

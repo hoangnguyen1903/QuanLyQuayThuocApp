@@ -280,4 +280,44 @@ public class SanPham_DAO {
             }
         }
 	}
+	
+	public SanPham timKiemSPTheoMaVaLoai(String ma, String loaiSP, LoaiSanPham lsp) {
+		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement statement = null;
+		SanPham sanPham = null; 
+		ResultSet rs = null;
+		try {
+			String sql = "SELECT * FROM SanPham WHERE SanPhamID = ? AND LoaiID = ?";
+			statement = con.prepareStatement(sql);
+			statement.setString(1, ma);
+			statement.setString(2, loaiSP);
+			rs = statement.executeQuery();
+			if(rs.next()) {
+				sanPham = new SanPham();
+            	sanPham.setSanPhamID(rs.getString("SanPhamID"));
+            	sanPham.setImgPath(rs.getString("ImgPath"));
+            	sanPham.setTenSanPham(rs.getString("TenSanPham"));
+            	sanPham.setThanhPhan(rs.getString("ThanhPhan"));
+            	sanPham.setCachDung(rs.getString("CachDung"));
+            	sanPham.setXuatXu(rs.getString("XuatXu"));
+            	sanPham.setNgaySanXuat(rs.getDate("NgaySanXuat"));
+            	sanPham.setNgayHetHan(rs.getDate("NgayHetHan"));
+            	sanPham.setDonGia(rs.getDouble("DonGia"));
+            	sanPham.setSoLuongTon(rs.getInt("SoLuongTon"));
+            	sanPham.setLoaiSanPham(lsp);
+            	sanPham.setTinhTrang(rs.getString("TinhTrang"));
+            	
+            	return sanPham;
+			}
+		} catch (Exception e) {
+            e.printStackTrace();
+        } 
+		return null;
+	}
 }

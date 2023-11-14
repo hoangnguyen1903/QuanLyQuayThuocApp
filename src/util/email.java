@@ -19,8 +19,8 @@ public class email {
 
     public static void sendMess(String to, String text) {
         try {
-            final String from = "tieutuong257@gmail.com";
-            final String pass = "zmyg uwdt fise aeky";
+            final String from = "tranhuy12072003@gmail.com";
+            final String pass = "uzus ytph ourd ubdk";
 
 //            final String to = "conguyetnaduongvulan@gmail.com";
 
@@ -52,11 +52,11 @@ public class email {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
 
             // Email subject
-            message.setSubject("Mật khẩu mới");
+            message.setSubject("KHÔI PHỤC MẬT KHẨU CHO HỆ THỐNG QUẢN LÝ QUẦY THUỐC");
 
             // Email content
-            message.setText("Mật khẩu mới của bạn: "+text);
-
+            message.setText("Xin chào quý khách, cảm ơn quý khách đã sử dụng dịch vụ của hệ thống quầy thuốc tây của chúng tôi!");
+            message.setText("Mật khẩu mới của quý khách là: " + text);
             // Send the email
             Transport.send(message);
         } catch (MessagingException ex) {
