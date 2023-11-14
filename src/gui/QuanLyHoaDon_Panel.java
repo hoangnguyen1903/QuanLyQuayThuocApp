@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -63,6 +64,7 @@ public class QuanLyHoaDon_Panel extends JPanel implements ActionListener {
         jLabel_ngayLap = new JLabel();
         jButton_xem = new JButton();
         jDateChooser_ngayLap = new JDateChooser();
+        jDateChooser_ngayLap.setLocale(new Locale("vi", "VN"));
         // Table
         String[] cols = {"Mã hoá đơn", "Mã nhân viên", "Mã khách hàng", "Tổng tiền", "Ngày lập"};
         tableModel = new DefaultTableModel(cols, 0);

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -56,7 +57,8 @@ public class QuanLyPhieuNhapHang_Panel extends JPanel implements ActionListener 
         jButton_lamMoi = new JButton();
         jButton_xoa = new JButton();
         jLabel_ngayNhap = new JLabel();
-        jDateChooser_ngayNhap = new com.toedter.calendar.JDateChooser();
+        jDateChooser_ngayNhap = new JDateChooser();
+        jDateChooser_ngayNhap.setLocale(new Locale("vi", "VN"));
         jButton_xemChiTiet = new JButton();
         // Table
         String[] cols = {"Mã sản phẩm", "Mã nhà cung cấp", "Số lượng", "Tổng tiền", "Ngày nhập"};

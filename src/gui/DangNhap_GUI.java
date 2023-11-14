@@ -50,11 +50,11 @@ public class DangNhap_GUI extends JFrame implements ActionListener{
         jLabel_tenDangNhap = new JLabel();
         jTextField_tenDangNhap = new JTextField();
         // tendangnhap
-        jTextField_tenDangNhap.setText("huytran123");
+        jTextField_tenDangNhap.setText("0123456789");
         jLabel_matKhau = new JLabel();
         jPasswordField_matKhau = new JPasswordField();
         // matkhau
-        jPasswordField_matKhau.setText("1111");
+        jPasswordField_matKhau.setText("123456");
         jPanel3 = new JPanel();
         jButton_dangNhap = new JButton();
         jButton_quenMatKhau = new JButton();
@@ -165,8 +165,6 @@ public class DangNhap_GUI extends JFrame implements ActionListener{
                 .addComponent(jPanel3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-
-        pack();
     }
 
     public static void main(String args[]) {

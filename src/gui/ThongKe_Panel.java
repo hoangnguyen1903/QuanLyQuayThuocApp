@@ -3,6 +3,9 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -19,7 +22,11 @@ import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
 
+import dao.ThongKe_DAO;
 import entity.NhanVien;
+import entity.ThongKeDoanhThu;
+import entity.ThongKeNhanVien;
+import entity.ThongKeSanPham;
 
 public class ThongKe_Panel extends JPanel implements ActionListener {
 
@@ -46,6 +53,7 @@ public class ThongKe_Panel extends JPanel implements ActionListener {
     private JYearChooser jYearChooser_theoNam;
 
     private NhanVien nhanVien = new NhanVien();
+    private ThongKe_DAO tk_dao = new ThongKe_DAO();
     
     public ThongKe_Panel(NhanVien nhanVien) {
     	this.nhanVien = nhanVien;
@@ -59,6 +67,7 @@ public class ThongKe_Panel extends JPanel implements ActionListener {
         jPanel1 = new JPanel();
         jLabel1 = new JLabel();
         jMonthChooser_theoThang = new JMonthChooser();
+        jMonthChooser_theoThang.setLocale(new Locale("vi", "VN"));
         jLabel2 = new JLabel();
         jYearChooser_theoNam = new JYearChooser();
         jButton_xuatFile = new JButton();
@@ -124,7 +133,12 @@ public class ThongKe_Panel extends JPanel implements ActionListener {
         jLabel5.setText("Thống kê theo");
 
         jComboBox_thongKeTheo.setModel(new DefaultComboBoxModel<>(new String[] { "Tháng", "Năm" }));
+        jComboBox_thongKeTheo.setSelectedItem("Tháng");
         jComboBox_thongKeTheo.addActionListener(this);
+        
+        jMonthChooser_theoThang.setMonth(LocalDate.now().getMonthValue());
+        jYearChooser_theoNam.setYear(LocalDate.now().getYear());
+        importSanPham();
 
         jButton_nhanVien.setText("Thống kê doanh thu của nhân viên bán nhiều nhất ");
         jButton_nhanVien.addActionListener(this);
@@ -243,14 +257,73 @@ public class ThongKe_Panel extends JPanel implements ActionListener {
 		Object source = e.getSource();
 		if(source.equals(jButton_sanPham)) {
 			jTable_bangThongKe.setModel(tableModel_sanPham);
+			importSanPham();
 			return;
 		}
 		if(source.equals(jButton_nhanVien)) {
 			jTable_bangThongKe.setModel(tableModel_nhanVien);
+			importNhanVien();
 			return;
 		}
 		if(source.equals(jButton_doanhThu)) {
 			jTable_bangThongKe.setModel(tableModel_doanhThu);
+			importDoanhThu();
+		}
+	}
+	
+	public void importSanPham() {
+		ArrayList<ThongKeSanPham> thongKeSPList = null;
+		if(jComboBox_thongKeTheo.getSelectedItem().equals("Tháng")) {
+			int thang = jMonthChooser_theoThang.getMonth();
+			System.out.println(thang+"");
+			thongKeSPList = tk_dao.getAllSanPhamBanChayNhatTheoThang(thang);
+		} else if(jComboBox_thongKeTheo.getSelectedItem().equals("Năm")) {
+			int nam = jYearChooser_theoNam.getYear();
+			System.out.println(nam+"");
+			thongKeSPList = tk_dao.getAllSanPhamBanChayNhatTheoNam(nam);
+		}
+		
+		if(thongKeSPList != null) {
+			tableModel_sanPham.setRowCount(0);
+			for (ThongKeSanPham tksp : thongKeSPList) {
+				tableModel_sanPham.addRow(tksp.toString().split(";"));
+			}
+		}
+	}
+	
+	public void importNhanVien() {
+		ArrayList<ThongKeNhanVien> thongKeNVList = null;
+		if(jComboBox_thongKeTheo.getSelectedItem().equals("Tháng")) {
+			int thang = jMonthChooser_theoThang.getMonth();
+			thongKeNVList = tk_dao.getAllDoanhThuNhanVienTheoThang(thang);
+		} else if(jComboBox_thongKeTheo.getSelectedItem().equals("Năm")) {
+			int nam = jYearChooser_theoNam.getYear();
+			thongKeNVList = tk_dao.getAllDoanhThuNhanVienTheoNam(nam);
+		}
+		
+		if(thongKeNVList != null) {
+			tableModel_nhanVien.setRowCount(0);
+			for (ThongKeNhanVien tknv : thongKeNVList) {
+				tableModel_nhanVien.addRow(tknv.toString().split(";"));
+			}
+		}
+	}
+	
+	public void importDoanhThu() {
+		ArrayList<ThongKeDoanhThu> thongKeDTList = null;
+		if(jComboBox_thongKeTheo.getSelectedItem().equals("Tháng")) {
+			int thang = jMonthChooser_theoThang.getMonth();
+			thongKeDTList = tk_dao.getDoanhThuTheoThang(thang);
+		} else if(jComboBox_thongKeTheo.getSelectedItem().equals("Năm")) {
+			int nam = jYearChooser_theoNam.getYear();
+			thongKeDTList = tk_dao.getDoanhThuTheoNam(nam);
+		}
+		
+		if(thongKeDTList != null) {
+			tableModel_doanhThu.setRowCount(0);
+			for (ThongKeDoanhThu tkdt : thongKeDTList) {
+				tableModel_doanhThu.addRow(tkdt.toString().split(";"));
+			}
 		}
 	}
 }

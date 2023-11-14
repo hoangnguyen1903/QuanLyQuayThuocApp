@@ -350,8 +350,8 @@ public class ThemNhanVien_GUI extends JFrame implements ActionListener {
 		if(jRadioButton_nu.isSelected()) {
 			gioiTinh = "Nữ";
 		}
-		String tenTaiKhoan = nhanVienID;
-		String matKhau = sdt;
+		String tenTaiKhoan = sdt;
+		String matKhau = "123456";
 		
 		NhanVien nhanVien = new NhanVien(nhanVienID, tenNV, gioiTinh, ngaySinh, email, sdt, diaChi, chucVu, tenTaiKhoan, matKhau);
 		
