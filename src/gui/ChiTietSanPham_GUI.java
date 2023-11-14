@@ -71,9 +71,7 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
         setResizable(false);
         setLocationRelativeTo(null);
     }
-    
-    
-
+   
     private void khoiTao() {
     	jFileChooser1 = new JFileChooser("src//img");
         jPanel_north = new JPanel();
@@ -233,6 +231,7 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
 
         jLabelText_cachDung.setFont(new Font("Times New Roman", 0, 14)); 
         jLabelText_cachDung.setText(sp.getCachDung());
+        jLabelText_cachDung.setMaximumSize(new Dimension(300, 20));
 
         jLabelText_donGia.setFont(new Font("Times New Roman", 0, 14)); 
         jLabelText_donGia.setText(sp.getDonGia()+"");
@@ -245,8 +244,6 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
 
         jLabelText_tinhTrang.setFont(new Font("Times New Roman", 0, 14)); 
         jLabelText_tinhTrang.setText(sp.getTinhTrang());
-        
-        
         
         jLabel_anh.setIcon(ResizeImageIcon("src//img//labelAnh.png"));
         jPanel_anh.setPreferredSize(new Dimension(200, 200));
@@ -290,11 +287,11 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
                 .addGroup(jPanel_rightLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabelText_maSanPham, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelText_tenSanPham, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelText_thanhPhan, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelText_thanhPhan, GroupLayout.PREFERRED_SIZE, 250, Short.MAX_VALUE)
                     .addComponent(jLabelText_xuatXu, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelText_ngaySanXuat, GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
                     .addComponent(jLabelText_ngayHetHan, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelText_cachDung, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelText_cachDung, GroupLayout.PREFERRED_SIZE, 250, Short.MAX_VALUE)
                     .addComponent(jLabelText_donGia, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelText_loai, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelText_soLuongTon, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -379,7 +376,7 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addComponent(jPanel_north, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jSplitPane, GroupLayout.DEFAULT_SIZE, 753, Short.MAX_VALUE)
+            .addComponent(jSplitPane, GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
             .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel_south, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -390,7 +387,7 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel_north, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSplitPane, GroupLayout.PREFERRED_SIZE, 413, GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSplitPane, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel_south, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -415,7 +412,6 @@ public class ChiTietSanPham_GUI extends JFrame implements ActionListener {
             java.util.logging.Logger.getLogger(ChiTietSanPham_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
-        new ChiTietSanPham_GUI(sp).setVisible(true);
     }
     
     // Code sự kiện

@@ -73,7 +73,6 @@ public class ThemSanPham_GUI extends JFrame implements ActionListener {
 	private SanPham_DAO sanPham_DAO = new SanPham_DAO();
     public ThemSanPham_GUI() {
         khoiTao();
-        setUndecorated(true);
         pack();
         setSize(800, 650);
         setResizable(false);
@@ -399,8 +398,6 @@ public class ThemSanPham_GUI extends JFrame implements ActionListener {
             java.util.logging.Logger.getLogger(CapNhatSanPham_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
-
-        new ThemSanPham_GUI().setVisible(true);
     }
     
     // Code sự kiện
