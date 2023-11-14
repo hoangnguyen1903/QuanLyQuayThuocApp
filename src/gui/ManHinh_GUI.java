@@ -183,7 +183,8 @@ public class ManHinh_GUI extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				dispose();
+				new DangNhap_GUI().setVisible(true);
 			}
 		});
         
