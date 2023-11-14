@@ -1,11 +1,13 @@
 package gui;
 
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -115,7 +117,28 @@ public class NhanVien_Panel extends JPanel implements ActionListener {
 
         jLabel_soDienThoai.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel_soDienThoai.setText("Nhập số điện thoại:");
-
+        
+        //        Thêm icon
+        ImageIcon img_btnTimKiem = new ImageIcon("src//img//icon//buttonTimKiem.png");
+        Image scaled_btnTimKiem = img_btnTimKiem.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnTimKiem = new ImageIcon(scaled_btnTimKiem);
+        jButton_timKiem.setIcon(img_btnTimKiem);
+        
+        ImageIcon img_btnLamMoi = new ImageIcon("src//img//icon//buttonLamMoi.png");
+        Image scaled_btnLamMoi = img_btnLamMoi.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnLamMoi = new ImageIcon(scaled_btnLamMoi);
+        jButton_lamMoi.setIcon(img_btnLamMoi);
+        
+        ImageIcon img_btnThem = new ImageIcon("src//img//icon//buttonThem.png");
+        Image scaled_btnThem = img_btnThem.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnThem = new ImageIcon(scaled_btnThem);
+        jButton_them.setIcon(img_btnThem);
+        
+        ImageIcon img_btnCapNhat = new ImageIcon("src//img//icon//buttonCapNhat.png");
+        Image scaled_btnCapNhat = img_btnCapNhat.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnCapNhat = new ImageIcon(scaled_btnCapNhat);
+        jButton_sua.setIcon(img_btnCapNhat);
+        
         GroupLayout jPanel_centerLayout = new GroupLayout(jPanel_center);
         jPanel_center.setLayout(jPanel_centerLayout);
         jPanel_centerLayout.setHorizontalGroup(

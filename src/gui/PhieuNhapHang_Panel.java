@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -186,6 +188,22 @@ public class PhieuNhapHang_Panel extends JPanel implements ActionListener {
 
         jLabel_maSanPham.setFont(new Font("Times New Roman", 1, 14)); 
         jLabel_maSanPham.setText("Nhập mã sản phẩm:");
+        
+        //        Thêm icon
+        ImageIcon img_btnTimKiem = new ImageIcon("src//img//icon//buttonTimKiem.png");
+        Image scaled_btnTimKiem = img_btnTimKiem.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnTimKiem = new ImageIcon(scaled_btnTimKiem);
+        jButton_timKiemNhaCungCap.setIcon(img_btnTimKiem);
+        
+        ImageIcon img_btnLamMoi = new ImageIcon("src//img//icon//buttonLamMoi.png");
+        Image scaled_btnLamMoi = img_btnLamMoi.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnLamMoi = new ImageIcon(scaled_btnLamMoi);
+        jButton_lamMoi.setIcon(img_btnLamMoi);
+        
+        ImageIcon img_btnXem = new ImageIcon("src//img//icon//buttonNhapHang.png");
+        Image scaled = img_btnXem.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnXem = new ImageIcon(scaled);
+        jButton_nhapHang.setIcon(img_btnXem);
 
         GroupLayout jPanel6Layout = new GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);

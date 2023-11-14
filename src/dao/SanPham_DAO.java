@@ -234,6 +234,12 @@ public class SanPham_DAO {
 		return listSP;
 	}
 	public SanPham timKiemSanPhamTheoMa(String ma) {
+		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement statement = null;
 		try {

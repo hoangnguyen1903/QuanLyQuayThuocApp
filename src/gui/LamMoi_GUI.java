@@ -208,7 +208,7 @@ public class LamMoi_GUI extends JFrame implements ActionListener {
 					    NhanVien nv = new NhanVien(tenDN, text);
 					    if (nv_dao.lamMoiMatKhau(nv) == true) {
 					        email.sendMess(mail, text);
-					        JOptionPane.showMessageDialog(null, "Đã làm mới mật khẩu");
+					        JOptionPane.showMessageDialog(null, "Mậu khẩu mới đã được gửi về email của bạn!");
 					    } else {
 					        JOptionPane.showMessageDialog(null, "lỗi!");
 					    }

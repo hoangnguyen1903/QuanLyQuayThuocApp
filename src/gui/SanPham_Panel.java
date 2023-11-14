@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -17,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -205,6 +207,35 @@ public class SanPham_Panel extends JPanel implements ActionListener{
         jTable.setFont(new Font("Times New Roman", 0, 14));  
 
         jLabel_nguoiDung.setFont(new Font("Times New Roman", 0, 14));  
+        
+        //        Thêm icon
+        ImageIcon img_btnTimKiem = new ImageIcon("src//img//icon//buttonTimKiem.png");
+        Image scaled_btnTimKiem = img_btnTimKiem.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnTimKiem = new ImageIcon(scaled_btnTimKiem);
+        jButton_timKiem.setIcon(img_btnTimKiem);
+        
+        ImageIcon img_btnLamMoi = new ImageIcon("src//img//icon//buttonLamMoi.png");
+        Image scaled_btnLamMoi = img_btnLamMoi.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnLamMoi = new ImageIcon(scaled_btnLamMoi);
+        jButton_lamMoi.setIcon(img_btnLamMoi);
+        
+        ImageIcon img_btnThem = new ImageIcon("src//img//icon//buttonThem.png");
+        Image scaled_btnThem = img_btnThem.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnThem = new ImageIcon(scaled_btnThem);
+        jButton_them.setIcon(img_btnThem);
+        
+        ImageIcon img_btnCapNhat = new ImageIcon("src//img//icon//buttonCapNhat.png");
+        Image scaled_btnCapNhat = img_btnCapNhat.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnCapNhat = new ImageIcon(scaled_btnCapNhat);
+        jButton_sua.setIcon(img_btnCapNhat);
+        
+        ImageIcon img_btnXem = new ImageIcon("src//img//icon//eye.png");
+        Image scaled = img_btnXem.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnXem = new ImageIcon(scaled);
+        jButton_xem.setIcon(img_btnXem);
+        
+        
+        
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);

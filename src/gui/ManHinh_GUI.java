@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -11,6 +13,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import entity.NhanVien;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -61,7 +64,9 @@ public class ManHinh_GUI extends JFrame{
         cardPanel.add(new QuanLyPhieuNhapHang_Panel(nhanVien), "QuanLyPhieuNhapHang");
         cardPanel.add(new NhaCungCap_Panel(nhanVien), "NhaCungCap");
         cardPanel.add(new ThongKe_Panel(nhanVien), "ThongKe");
-
+        
+        this.setBackground(new Color(179, 255, 185));
+        
         setJMenuBar(jMenuBar);
         setContentPane(cardPanel);
         
@@ -233,6 +238,87 @@ public class ManHinh_GUI extends JFrame{
         jMenu_taiKhoan.add(jMenuItem_dangXuat);
 
         jMenuBar.add(jMenu_taiKhoan);
+        
+//      Thêm icon
+      ImageIcon img_btnTrangChu = new ImageIcon("src//img//icon//home.png");
+      Image scaled_btnTrangChu = img_btnTrangChu.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btnTrangChu = new ImageIcon(scaled_btnTrangChu);
+      jMenu_trangChu.setIcon(img_btnTrangChu);
+        
+      ImageIcon img_btnHoaDon = new ImageIcon("src//img//icon//hoadon.png");
+      Image scaled_btnHoaDon = img_btnHoaDon.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btnHoaDon = new ImageIcon(scaled_btnHoaDon);
+      jMenu_hoaDon.setIcon(img_btnHoaDon);
+      
+      ImageIcon img_btnLamMoi = new ImageIcon("src//img//icon//customer.png");
+      Image scaled_btnLamMoi = img_btnLamMoi.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btnLamMoi = new ImageIcon(scaled_btnLamMoi);
+      jMenu_khachHang.setIcon(img_btnLamMoi);
+      
+      ImageIcon img_btnThem = new ImageIcon("src//img//icon//nhacungcap.png");
+      Image scaled_btnThem = img_btnThem.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btnThem = new ImageIcon(scaled_btnThem);
+      jMenu_nhaCungCap.setIcon(img_btnThem);
+      
+      ImageIcon img_btnCapNhat = new ImageIcon("src//img//icon//user_nam.png");
+      Image scaled_btnCapNhat = img_btnCapNhat.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btnCapNhat = new ImageIcon(scaled_btnCapNhat);
+      jMenu_nhanVien.setIcon(img_btnCapNhat);
+      
+      ImageIcon img_btntroGiup = new ImageIcon("src//img//icon//Trogiup.png");
+      Image scaled_btntroGiup = img_btntroGiup.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btntroGiup = new ImageIcon(scaled_btntroGiup);
+      jMenu_troGiup.setIcon(img_btntroGiup);
+      
+      ImageIcon img_btntaiKhoan = new ImageIcon("src//img//icon//taikhoan.png");
+      Image scaled_btntaiKhoan = img_btntaiKhoan.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btntaiKhoan = new ImageIcon(scaled_btntaiKhoan);
+      jMenu_taiKhoan.setIcon(img_btntaiKhoan);
+      
+      ImageIcon img_btnthongKe = new ImageIcon("src//img//icon//thongke.png");
+      Image scaled_btnthongKe = img_btnthongKe.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btnthongKe = new ImageIcon(scaled_btnthongKe);
+      jMenu_thongKe.setIcon(img_btnthongKe);
+
+      ImageIcon img_btnsanPham = new ImageIcon("src//img//icon//productbox.png");
+      Image scaled_btnsanPham = img_btnsanPham.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btnsanPham = new ImageIcon(scaled_btnsanPham);
+      jMenu_sanPham.setIcon(img_btnsanPham);
+      
+      ImageIcon img_btnDoiMatKhau = new ImageIcon("src//img//icon//key.png");
+      Image scaled_btnDoiMatKhau = img_btnDoiMatKhau.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btnDoiMatKhau = new ImageIcon(scaled_btnDoiMatKhau);
+      jMenuItem_thayDoiMatKhau.setIcon(img_btnDoiMatKhau);
+      
+      ImageIcon img_btnDangXuat = new ImageIcon("src//img//icon//logout.png");
+      Image scaled_btnDangXuat = img_btnDangXuat.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btnDangXuat = new ImageIcon(scaled_btnDangXuat);
+      jMenuItem_dangXuat.setIcon(img_btnDangXuat);
+        
+      ImageIcon img_btnTaoHoaDon = new ImageIcon("src//img//icon//buttonTaoDonHang.png");
+      Image scaled_btnTaoHoaDon = img_btnTaoHoaDon.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btnTaoHoaDon = new ImageIcon(scaled_btnTaoHoaDon);
+      jMenuItem_taoHoaDon.setIcon(img_btnTaoHoaDon);
+      
+      ImageIcon img_btnQuanLyHoaDon = new ImageIcon("src//img//icon//hoadon.png");
+      Image scaled_btnQuanLyHoaDon = img_btnQuanLyHoaDon.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btnQuanLyHoaDon = new ImageIcon(scaled_btnQuanLyHoaDon);
+      jMenuItem_quanLyHoaDon.setIcon(img_btnQuanLyHoaDon);
+      
+      ImageIcon img_btnQuanLyNCC = new ImageIcon("src//img//icon//nhacungcap.png");
+      Image scaled_btnQuanLyNCC = img_btnQuanLyNCC.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btnQuanLyNCC = new ImageIcon(scaled_btnQuanLyNCC);
+      jMenuItem_quanLyNhaCungCap.setIcon(img_btnQuanLyNCC);
+      
+      ImageIcon img_btnPhieuNhapHang = new ImageIcon("src//img//icon//phieunhap.png");
+      Image scaled_btnPhieuNhapHang = img_btnPhieuNhapHang.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btnPhieuNhapHang = new ImageIcon(scaled_btnPhieuNhapHang);
+      jMenuItem_phieuNhapHang.setIcon(img_btnPhieuNhapHang);
+      
+      ImageIcon img_btnQuanLyNhapHang = new ImageIcon("src//img//icon//buttonNhapHang.png");
+      Image scaled_btnQuanLyNhapHang = img_btnQuanLyNhapHang.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+      img_btnQuanLyNhapHang = new ImageIcon(scaled_btnQuanLyNhapHang);
+      jMenuItem_quanLyPhieuNhapHang.setIcon(img_btnQuanLyNhapHang);
 	}
 	
     public static void main(String args[]) {

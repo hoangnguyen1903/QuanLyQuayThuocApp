@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -257,6 +259,37 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
         jLabel11.setText("Tiền gửi lại");
 
         jLabel_tienGuiLai.setText("0 VND");
+        
+        //        Thêm icon
+        ImageIcon img_btnTimKiem = new ImageIcon("src//img//icon//buttonTimKiem.png");
+        Image scaled_btnTimKiem = img_btnTimKiem.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnTimKiem = new ImageIcon(scaled_btnTimKiem);
+        jButton_timKiem.setIcon(img_btnTimKiem);
+        
+        ImageIcon img_btnLamMoi = new ImageIcon("src//img//icon//buttonLamMoi.png");
+        Image scaled_btnLamMoi = img_btnLamMoi.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnLamMoi = new ImageIcon(scaled_btnLamMoi);
+        jButton_lamMoi.setIcon(img_btnLamMoi);
+        
+        ImageIcon img_btnThem = new ImageIcon("src//img//icon//buttonThem.png");
+        Image scaled_btnThem = img_btnThem.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnThem = new ImageIcon(scaled_btnThem);
+        jButton_themGioHang.setIcon(img_btnThem);
+        
+        ImageIcon img_btnCapNhat = new ImageIcon("src//img//icon//buttonXoa.png");
+        Image scaled_btnCapNhat = img_btnCapNhat.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnCapNhat = new ImageIcon(scaled_btnCapNhat);
+        jButton_xoaGioHang.setIcon(img_btnCapNhat);
+        
+        ImageIcon img_btnXem = new ImageIcon("src//img//icon//buttonTaoDonHang.png");
+        Image scaled = img_btnXem.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnXem = new ImageIcon(scaled);
+        jButton_taoHoaDon.setIcon(img_btnXem);
+        
+        ImageIcon img_btnTinh = new ImageIcon("src//img//icon//phieunhap.png");
+        Image scala = img_btnTinh.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        img_btnTinh = new ImageIcon(scala);
+        jButton_taoHoaDon.setIcon(img_btnTinh);
 
         GroupLayout jPanel4Layout = new GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);

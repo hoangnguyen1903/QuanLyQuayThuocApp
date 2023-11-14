@@ -54,7 +54,7 @@ public class DangNhap_GUI extends JFrame implements ActionListener{
         jLabel_matKhau = new JLabel();
         jPasswordField_matKhau = new JPasswordField();
         // matkhau
-        jPasswordField_matKhau.setText("1111");
+        jPasswordField_matKhau.setText("600046");
         jPanel3 = new JPanel();
         jButton_dangNhap = new JButton();
         jButton_quenMatKhau = new JButton();
