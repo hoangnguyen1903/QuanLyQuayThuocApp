@@ -84,7 +84,6 @@ public class SanPham_Panel extends JPanel implements ActionListener{
         // Table
 //        String[] cols = {"Mã sản phẩm", "Tên sản phẩm", "Ảnh", "Thành phần", "Cách dùng", "Xuất xứ", "Ngày sản xuất", "Ngày hết hạn", "Đơn giá", "Số lượng tồn", "Loại", "Tình trạng"};
         tableModel = new DefaultTableModel();
-//        tableModel.setColumnIdentifiers(cols);
         jTable = new JTable();
         jTable.setModel(new javax.swing.table.DefaultTableModel(
                 new Object [][] {
@@ -170,7 +169,7 @@ public class SanPham_Panel extends JPanel implements ActionListener{
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel_centerLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTextField_nhapMa)
-                    .addComponent(jComboBox_loaiSanPham, 0, 524, Short.MAX_VALUE))
+                    .addComponent(jComboBox_loaiSanPham, 0, 400, Short.MAX_VALUE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel_centerLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton_timKiem, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

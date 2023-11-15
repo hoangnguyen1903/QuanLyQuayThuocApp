@@ -145,7 +145,7 @@ public class QuanLyPhieuNhapHang_Panel extends JPanel implements ActionListener 
                 .addGap(25, 25, 25)
                 .addComponent(jLabel_ngayNhap, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jDateChooser_ngayNhap, GroupLayout.PREFERRED_SIZE, 505, GroupLayout.PREFERRED_SIZE)
+                .addComponent(jDateChooser_ngayNhap, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton_timKiem)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)

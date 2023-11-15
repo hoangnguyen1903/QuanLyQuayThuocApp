@@ -337,8 +337,13 @@ public class NhanVien_DAO {
 		}
     }
     
-    public Boolean checkNV(String email, String tenTK) throws SQLException {
-        ConnectDB.getInstance().connect();;
+    public Boolean checkNV(String email, String tenTK) {
+        try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         Connection con = ConnectDB.getConnection();
         PreparedStatement statement = null;
         try {

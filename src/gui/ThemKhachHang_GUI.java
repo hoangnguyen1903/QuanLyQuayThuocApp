@@ -278,7 +278,6 @@ public class ThemKhachHang_GUI extends JFrame implements ActionListener {
             java.util.logging.Logger.getLogger(ThemKhachHang_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     
-        new ThemKhachHang_GUI().setVisible(true);
     }
     
     // Code
@@ -327,7 +326,7 @@ public class ThemKhachHang_GUI extends JFrame implements ActionListener {
 		}
 		String khachHangID = generateID.sinhMa("KH");
 		
-		KhachHang kh = new KhachHang(khachHangID, tenKH, gioiTinh, ngaySinh, khachHangID, email, diaChi);
+		KhachHang kh = new KhachHang(khachHangID, tenKH, gioiTinh, ngaySinh, sdt, email, diaChi);
 		
 		boolean kq = kh_dao.themKhachHang(kh);
 		if(kq) {

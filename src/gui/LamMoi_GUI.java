@@ -215,10 +215,7 @@ public class LamMoi_GUI extends JFrame implements ActionListener {
 				} catch (HeadlessException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				} 
 			}
 		}
 	}

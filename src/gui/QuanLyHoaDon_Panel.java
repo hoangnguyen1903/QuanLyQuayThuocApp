@@ -159,7 +159,7 @@ public class QuanLyHoaDon_Panel extends JPanel implements ActionListener {
                     .addComponent(jLabel_ngayLap, GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel_centerLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField_ma, GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
+                    .addComponent(jTextField_ma, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                     .addComponent(jDateChooser_ngayLap, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel_centerLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)

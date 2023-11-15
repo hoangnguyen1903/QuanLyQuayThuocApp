@@ -146,7 +146,7 @@ public class NhaCungCap_Panel extends JPanel implements ActionListener {
                     .addComponent(jLabel_soDienThoai, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel_centerLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField_soDienThoai, GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
+                    .addComponent(jTextField_soDienThoai, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
                     .addComponent(jTextField_nhapMa))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton_timKiem)

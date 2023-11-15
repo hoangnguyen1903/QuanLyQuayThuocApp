@@ -170,7 +170,7 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
                 .addContainerGap()
                 .addComponent(jLabel_nhapMa, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField_ma, GroupLayout.PREFERRED_SIZE, 402, GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextField_ma, GroupLayout.PREFERRED_SIZE, 370, GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton_timKiem)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
@@ -305,7 +305,7 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel_tenKhachHang, GroupLayout.PREFERRED_SIZE, 237, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField_soDienThoai, GroupLayout.PREFERRED_SIZE, 229, GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jTextField_soDienThoai, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
@@ -317,7 +317,7 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel_tongTien, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField_tienNhan, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jTextField_tienNhan, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel4Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -457,9 +457,15 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
 		jTextField_ma.setText("");
 		jTextField_soLuong.setText("");
 		jTable_sanPham.clearSelection();
-		jTable_gioHang.clearSelection();
-		tableModel_sanPham.getDataVector().removeAllElements();
+		tableModel_sanPham.setRowCount(0);
 		importSanPham();
+		tableModel_gioHang.setRowCount(0);
+		
+		jTextField_soDienThoai.setText("");
+		jLabel_tenKhachHang.setText("");
+		jLabel_tongTien.setText("");
+		jTextField_tienNhan.setText("");
+		jLabel_tienGuiLai.setText("");
 	}
 	
 	public void importSanPham() {
@@ -515,7 +521,11 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
 		}
 		jLabel_tongTien.setText(tongTien+""+" VND");
 		
-		lamMoi();
+		jTextField_ma.setText("");
+		jTextField_soLuong.setText("");
+		jTable_sanPham.clearSelection();
+		tableModel_sanPham.setRowCount(0);
+		importSanPham();
 	}
 	
 	public void xoaKhoiGioHang() {
@@ -596,6 +606,7 @@ public class TaoHoaDon_Panel extends JPanel implements ActionListener {
 			double tienGuiLai = Double.parseDouble(jLabel_tienGuiLai.getText().trim().split(" ")[0]);
 			double tienNhan = Double.parseDouble(jTextField_tienNhan.getText().trim().split(" ")[0]);
 			new ThongTinHoaDon_GUI(maHD, tienGuiLai, tienNhan).setVisible(true);
+			lamMoi();
 		} else {
 			JOptionPane.showMessageDialog(this, "Tạo hoá đơn thất bại!");
 		}

@@ -190,6 +190,7 @@ public class ManHinh_GUI extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				dispose();
 				new ThayDoiMatKhau_GUI(nhanVien).setVisible(true);
 			}
 		});

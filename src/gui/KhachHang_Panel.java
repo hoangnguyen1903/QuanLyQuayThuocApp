@@ -153,7 +153,7 @@ public class KhachHang_Panel extends JPanel implements ActionListener{
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
                         .addGap(98, 98, 98)
-                        .addComponent(jTextField_ma, GroupLayout.PREFERRED_SIZE, 398, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextField_ma, GroupLayout.PREFERRED_SIZE, 370, GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)

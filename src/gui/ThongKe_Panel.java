@@ -68,8 +68,12 @@ public class ThongKe_Panel extends JPanel implements ActionListener {
         jLabel1 = new JLabel();
         jMonthChooser_theoThang = new JMonthChooser();
         jMonthChooser_theoThang.setLocale(new Locale("vi", "VN"));
+        jMonthChooser_theoThang.setMonth(LocalDate.now().getMonthValue()+1);
+
         jLabel2 = new JLabel();
         jYearChooser_theoNam = new JYearChooser();
+        jYearChooser_theoNam.setYear(LocalDate.now().getYear());
+        System.out.println(jYearChooser_theoNam.getYear());
         jButton_xuatFile = new JButton();
         jButton_sanPham = new JButton();
         jLabel5 = new JLabel();
@@ -274,12 +278,10 @@ public class ThongKe_Panel extends JPanel implements ActionListener {
 	public void importSanPham() {
 		ArrayList<ThongKeSanPham> thongKeSPList = null;
 		if(jComboBox_thongKeTheo.getSelectedItem().equals("Tháng")) {
-			int thang = jMonthChooser_theoThang.getMonth();
-			System.out.println(thang+"");
+			int thang = jMonthChooser_theoThang.getMonth()+1;
 			thongKeSPList = tk_dao.getAllSanPhamBanChayNhatTheoThang(thang);
 		} else if(jComboBox_thongKeTheo.getSelectedItem().equals("Năm")) {
 			int nam = jYearChooser_theoNam.getYear();
-			System.out.println(nam+"");
 			thongKeSPList = tk_dao.getAllSanPhamBanChayNhatTheoNam(nam);
 		}
 		
@@ -294,7 +296,7 @@ public class ThongKe_Panel extends JPanel implements ActionListener {
 	public void importNhanVien() {
 		ArrayList<ThongKeNhanVien> thongKeNVList = null;
 		if(jComboBox_thongKeTheo.getSelectedItem().equals("Tháng")) {
-			int thang = jMonthChooser_theoThang.getMonth();
+			int thang = jMonthChooser_theoThang.getMonth()+1;
 			thongKeNVList = tk_dao.getAllDoanhThuNhanVienTheoThang(thang);
 		} else if(jComboBox_thongKeTheo.getSelectedItem().equals("Năm")) {
 			int nam = jYearChooser_theoNam.getYear();
@@ -312,7 +314,7 @@ public class ThongKe_Panel extends JPanel implements ActionListener {
 	public void importDoanhThu() {
 		ArrayList<ThongKeDoanhThu> thongKeDTList = null;
 		if(jComboBox_thongKeTheo.getSelectedItem().equals("Tháng")) {
-			int thang = jMonthChooser_theoThang.getMonth();
+			int thang = jMonthChooser_theoThang.getMonth()+1;
 			thongKeDTList = tk_dao.getDoanhThuTheoThang(thang);
 		} else if(jComboBox_thongKeTheo.getSelectedItem().equals("Năm")) {
 			int nam = jYearChooser_theoNam.getYear();

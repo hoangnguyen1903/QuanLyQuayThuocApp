@@ -188,12 +188,6 @@ public class ThayDoiMatKhau_GUI extends JFrame implements ActionListener {
             java.util.logging.Logger.getLogger(ThayDoiMatKhau_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        try {
-			new ThayDoiMatKhau_GUI(nhanVien).setVisible(true);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
     }
 
 	@Override
@@ -208,6 +202,7 @@ public class ThayDoiMatKhau_GUI extends JFrame implements ActionListener {
 				if (nv_Dao.lamMoiMatKhau(new NhanVien(account, newPassword))) {
 					JOptionPane.showMessageDialog(null, "Thay đổi mật khẩu thành công");
 					dispose();
+					new DangNhap_GUI().setVisible(true);
 				}
 				
 			}
