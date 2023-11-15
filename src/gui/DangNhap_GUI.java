@@ -50,7 +50,7 @@ public class DangNhap_GUI extends JFrame implements ActionListener{
         jLabel_tenDangNhap = new JLabel();
         jTextField_tenDangNhap = new JTextField();
         // tendangnhap
-        jTextField_tenDangNhap.setText("huytran123");
+        jTextField_tenDangNhap.setText("0367819442");
         jLabel_matKhau = new JLabel();
         jPasswordField_matKhau = new JPasswordField();
         // matkhau
